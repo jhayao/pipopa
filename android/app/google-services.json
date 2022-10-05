@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "332313905355",
+    "firebase_url": "https://ustpthesis-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ustpthesis",
+    "storage_bucket": "ustpthesis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332313905355:android:a300c930f4b48efec9f34e",
+        "android_client_info": {
+          "package_name": "com.example.passit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332313905355-932p51krl8mm5963idjobljugelu6vfq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA308fx1Q-iCnfdkj32YtabgmK65vAxcdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332313905355-932p51krl8mm5963idjobljugelu6vfq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

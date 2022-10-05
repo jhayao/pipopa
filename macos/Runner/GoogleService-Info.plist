@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>504776877396-2r5ut84umpuiomaob5sacsrf6hqmvk25.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.504776877396-2r5ut84umpuiomaob5sacsrf6hqmvk25</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA8tmbRjxlmJbRK9mZOyJiQ-WaIN3kHPMI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>504776877396</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.passit</string>
+	<key>PROJECT_ID</key>
+	<string>passit-c942c</string>
+	<key>STORAGE_BUCKET</key>
+	<string>passit-c942c.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:504776877396:ios:818bef0e2bdab1a8ae54c1</string>
+	<key>DATABASE_URL</key>
+	<string>https://passit-c942c-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
