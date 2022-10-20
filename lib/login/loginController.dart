@@ -8,6 +8,8 @@ import 'package:passit/models/userModel.dart';
 import 'package:passit/phone_confirmation/phoneConfirmation.dart';
 import 'package:passit/register/register.dart';
 
+import '../firebase/firestore.dart';
+
 class LoginController extends GetxController {
   var nome = '';
   var Password = '';
@@ -24,10 +26,21 @@ class LoginController extends GetxController {
     try {
       var result =
           await Auth().signInWithEmailAndPassword(email: nome, password: Password);
+
       if (Auth().currentuser != null) {
-        Get.to(const HomePage());
+        // var user = UserModel();
+        var user = Auth().currentuser;
+
+        // box.write("logged_user", user.);
+
+        await Firestore().getUser(uid: user!.uid);
+        var users = UserModel();
+
+        // Get.to(const HomePage());
+        Get.to(() => const HomePage());
       }
     } catch (e) {
+      print("ERROR ${e.toString()}");
       Get.snackbar("ERROR!",
           "Username and password do not match. Check and try again",
           colorText: Colors.black);

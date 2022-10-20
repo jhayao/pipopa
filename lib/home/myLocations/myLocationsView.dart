@@ -26,11 +26,11 @@ class MyLocationsView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PrimaryMainButtonDecorated(),
+            // PrimaryMainButtonDecorated(),
             SizedBox(
               height: 20,
             ),
-            TextNormal(text: "My Locations:", textColor: Colors.grey),
+            TextNormal(text: "My favorite locations:", textColor: Colors.grey),
             SizedBox(
               height: 20,
             ),

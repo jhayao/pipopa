@@ -53,6 +53,12 @@ dependencies:
   firebase_auth: ^3.9.0
   cloud_firestore: ^3.4.8
   flutter_launcher_icons: ^0.10.0
+  firebase_storage: ^10.3.11
+  image_picker: ^0.8.6
+  permission_handler: ^10.1.0
+  firebase_app_check: ^0.0.9+1
+  group_radio_button: ^1.2.0
+  percent_indicator: ^4.2.2
 
 dependency_overrides:
   flutter_map: ^2.2.0

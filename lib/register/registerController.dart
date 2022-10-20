@@ -27,8 +27,13 @@ class RegisterController extends GetxController {
           colorText: Colors.black, duration: Duration(seconds: 10));
       return;
     }
-    if (user.numberId == null) {
-      Get.snackbar("ERROR!", "Identity Card is mandatory",
+    if (user.numberId == null && user.account_type == 'Passenger') {
+        Get.snackbar("ERROR!", "Identity Card is mandatory",
+            colorText: Colors.black, duration: Duration(seconds: 10));
+      return;
+    }
+    if (user.plate == null && user.account_type == 'Driver') {
+      Get.snackbar("ERROR!", "Plate number is mandatory",
           colorText: Colors.black, duration: Duration(seconds: 10));
       return;
     }
@@ -68,7 +73,7 @@ class RegisterController extends GetxController {
         print("Could not log in...");
       }
     } on FirebaseAuthException catch (e) {
-      print("Nao deu para Logar no catch... ${e.code}");
+      print("Couldn't log in to catch... ${e.code}");
       Get.snackbar("ERROR!", "${e.message}",
           colorText: Colors.black, duration: Duration(seconds: 10));
       return;

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
   UserModel({
     this.id,
@@ -14,6 +16,10 @@ class UserModel {
     this.accountStatus,
     this.picture,
     this.password,
+    this.account_type,
+    this.label,
+    this.plate,
+    this.progress
   });
 
   String? id;
@@ -24,6 +30,10 @@ class UserModel {
   int? accountStatus;
   String? picture;
   String? password;
+  String? account_type;
+  String? label;
+  String? plate;
+  double? progress;
 
   factory UserModel.fromRawJson(String str) =>
       UserModel.fromJson(json.decode(str));
@@ -39,8 +49,10 @@ class UserModel {
         accountStatus: json["accountStatus"],
         picture: json["picture"],
         password: json["password"],
+        account_type: json['accountType'],
+        plate: json['plateNumber']
       );
-
+  
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
@@ -50,5 +62,7 @@ class UserModel {
         "accountStatus": accountStatus,
         "picture": picture,
         "password": password,
+        "accountType": account_type,
+        "plate" : plate
       };
 }

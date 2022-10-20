@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "332313905355-qo5ueiaa4s3oecj4blt9cq6o23lkiqt1.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.passit",
-            "certificate_hash": "45511e0959efc1ae2075e24563984b5596d056e9"
-          }
-        },
-        {
           "client_id": "332313905355-932p51krl8mm5963idjobljugelu6vfq.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -38,13 +30,6 @@
             {
               "client_id": "332313905355-932p51krl8mm5963idjobljugelu6vfq.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "332313905355-q7vobquckt7nq5tpi1jkplgavs5oo59i.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.passit"
-              }
             }
           ]
         }

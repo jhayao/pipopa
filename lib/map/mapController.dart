@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tappable_polyline/flutter_map_tappable_polyline.dart';
@@ -13,6 +14,7 @@ import 'package:passit/models/userModel.dart';
 import 'package:unicons/unicons.dart';
 import 'package:geolocator/geolocator.dart';
 import '../components/TextNormal.dart';
+import '../firebase/firestore.dart';
 import '../models/routesModel.dart';
 import '../models/travelHistoryModel.dart';
 import '../server/requests.dart';
@@ -20,6 +22,7 @@ import '../utils/constants.dart';
 import 'package:latlong2/latlong.dart' as LatLong;
 
 class MapController extends GetxController {
+  final box = GetStorage();
   var choosen_location = ''.obs;
   var searchWorld = ''.obs;
   var polylines = <TaggedPolyline>[
@@ -248,29 +251,41 @@ class MapController extends GetxController {
     ));
   }
 
-  void changeMarkerPosition(double _long, double _lat, String address) {
+  void addDriversMarker() {
+    try {
+
+    }
+    catch (e) {
+      Get.snackbar("Error determining position.",
+          "Please make sure your GPS is active and your internet connection. $e",
+          duration: Duration(seconds: 10), colorText: Colors.black);
+    }
+  }
+
+  void changeMarkerPosition(double _long, double _lat, String address) async {
+    final constants = Constants();
     try {
       startPoint = LatLong.LatLng(_lat, _long);
       startAddress.value = address;
+      var user = UserModel().obs;
       markers.value.clear();
+      user.value = UserModel.fromJson(box.read("logged_user"));
+      await Firestore().setRiderLocation(user.value, _long, _lat);
+
       markers.value.add(
         Marker(
           width: 80.0,
           height: 80.0,
           point: LatLong.LatLng(_lat, _long),
           builder: (ctx) => Stack(
-            alignment: Alignment.center,
+            alignment: Alignment.bottomCenter,
             children: [
               CircleAvatar(
                 backgroundColor: Constants().primary1.withOpacity(0.5),
-                child: Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Constants().primary1,
-                  ),
-                ),
+                backgroundImage: NetworkImage("${(user.value.picture != null) ? user.value.picture : constants.texts['default']}"),
+
               ),
+
               Text(
                 "My Location",
                 style: TextStyle(fontSize: 13, color: Colors.white),
@@ -324,6 +339,8 @@ class MapController extends GetxController {
           duration: Duration(seconds: 10), colorText: Colors.black);
     }
   }
+
+
 
   void fetchWord(String word) async {
     var res = Get.dialog(
@@ -629,6 +646,7 @@ class MapController extends GetxController {
           startPoint: startLocation,
           endPoint: endLocation,
           routes: myRoute.value,
+          status: "Pending Ride"
         ));
 
     Get.back();

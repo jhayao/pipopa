@@ -12,6 +12,8 @@ class TravelHistoryModel {
     this.startPoint,
     this.endPoint,
     this.routes,
+    this.status,
+    this.uid
   });
 
   UserModel? driver;
@@ -20,6 +22,8 @@ class TravelHistoryModel {
   LocationModel? endPoint;
   RoutesModel? routes;
   String? createdAt;
+  String? status;
+  String? uid;
 
   factory TravelHistoryModel.fromRawJson(String str) =>
       TravelHistoryModel.fromJson(json.decode(str));
@@ -44,6 +48,8 @@ class TravelHistoryModel {
             : RoutesModel.fromJson(json["routes"]),
         createdAt:
             json["createdAt"] == null ? null : (json["createdAt"]).toString(),
+        status:
+          json["status"] == null ? null : (json["status"]).toString(),
       );
 
   Map<String, dynamic> toJson() => {

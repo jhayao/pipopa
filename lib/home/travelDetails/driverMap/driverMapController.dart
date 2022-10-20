@@ -156,7 +156,7 @@ class DriverMapController extends GetxController {
                   height: 20,
                 ),
                 Text(
-                  "Carregando Locais...",
+                  "Loading Locations...",
                   style: TextStyle(color: Colors.white),
                 ),
                 SizedBox(

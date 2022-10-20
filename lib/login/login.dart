@@ -4,10 +4,12 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:passit/components/TextButtonDecoratedSecondary.dart';
 import 'package:passit/components/TextNormal.dart';
 import 'package:passit/components/TextSmall.dart';
+import 'package:passit/models/userModel.dart';
 import 'package:passit/utils/constants.dart';
 import 'package:unicons/unicons.dart';
 
@@ -23,6 +25,9 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ctrl = Get.put(LoginController());
     final constants = Constants();
+    final box = GetStorage();
+    // print("Logged User: ${box.read("logged_user")}");
+
     return Scaffold(
       body: Container(
         width: Get.width,

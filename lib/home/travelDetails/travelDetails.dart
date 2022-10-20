@@ -14,6 +14,7 @@ class TravelDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final constants = Constants();
+    // print(travelHistory.startPoint!.displayName);
     return Stack(
       children: [
         Container(

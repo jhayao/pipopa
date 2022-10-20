@@ -13,6 +13,7 @@ import '../../components/TextHeader.dart';
 import '../../components/TextNormal.dart';
 import '../../components/TextNormalBolded.dart';
 import '../../components/TextNormalTittle.dart';
+import '../../models/userModel.dart';
 import '../../utils/constants.dart';
 
 class MainView extends StatelessWidget {
@@ -21,14 +22,20 @@ class MainView extends StatelessWidget {
     required this.constants,
     required this.travelHistory,
     required this.ctrl,
+    required this.user,
+    required this.uid
   }) : super(key: key);
 
   final Constants constants;
   final RxList<TravelHistoryModel> travelHistory;
   final HomeController ctrl;
+  final UserModel user;
+  final String uid;
 
   @override
   Widget build(BuildContext context) {
+    int counter = 0;
+
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Obx((() => Container(
@@ -41,16 +48,17 @@ class MainView extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    user.account_type != 'Driver' ?
                     PrimaryMainButtonDecorated(
                       onclick: () async {
                         ctrl.openMap();
                       },
-                    ),
+                    ) : SizedBox.shrink(),
                     SizedBox(
                       height: 20,
                     ),
                     TextNormal(
-                        text: "Booking History:", textColor: Colors.grey),
+                        text: "Booking History:", textColor: Colors.grey,),
                     SizedBox(
                       height: 20,
                     ),
@@ -71,6 +79,9 @@ class MainView extends StatelessWidget {
                                 padding: const EdgeInsets.only(bottom: 10),
                                 child: OpenContainer(
                                   closedBuilder: (context, action) {
+                                    // counter = counter +1;
+                                    // print("Counter First: $counter");
+                                    // print("Travel Details: ${history.startPoint!.lat}");
                                     return Container(
                                       padding: EdgeInsets.symmetric(
                                           vertical: 10, horizontal: 2),
@@ -163,7 +174,7 @@ class MainView extends StatelessWidget {
                                                               10),
                                                     ),
                                                     child: Text(
-                                                        "Pending Ride"),
+                                                        "${history.status}"),
                                                   ),
                                                 ),
                                                 Column(
@@ -199,52 +210,67 @@ class MainView extends StatelessWidget {
                                             SizedBox(
                                               height: 10,
                                             ),
-                                            SizedBox(
-                                              child: Material(
-                                                color: Theme.of(context)
-                                                    .primaryColor
-                                                    .withOpacity(0.5),
-                                                elevation: 0,
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    ctrl.favTravelHistory
-                                                        .add(history);
+                                            user.account_type =='Diver' ? Row(
+                                              children: [
+                                                Expanded(
+                                                  flex : 8,
+                                                  child: SizedBox(
 
-                                                    ctrl.currentTab.value = 1;
+                                                    child: Material(
+                                                      color: Theme.of(context)
+                                                          .primaryColor
+                                                          .withOpacity(0.5),
+                                                      elevation: 0,
+                                                      borderRadius:
+                                                          BorderRadius.circular(5),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          ctrl.favTravelHistory
+                                                              .add(history);
 
-                                                    ctrl.save();
-                                                  },
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10,
-                                                            vertical: 10),
-                                                    child: Row(
-                                                      children: [
-                                                        Icon(
-                                                          Icons.star,
-                                                          color: Colors.green,
+                                                          ctrl.currentTab.value = 1;
+
+                                                          ctrl.save();
+                                                        },
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.symmetric(
+                                                                  horizontal: 10,
+                                                                  vertical: 10),
+                                                          child: Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons.star,
+                                                                color: Colors.green,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              Text(
+                                                                "Pick up passenger",
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        Text(
-                                                          "Add to my locations",
-                                                        ),
-                                                      ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            )
+                                                // Expanded( flex : 1,child: SizedBox( width: 10,)),
+
+                                              ],
+                                            ) : SizedBox.shrink()
                                           ],
                                         ),
                                       ),
                                     );
                                   },
                                   openBuilder: (context, action) {
+                                    // counter = counter +1;
+                                    // print("Counter : $counter");
+                                    // print("Travel Details: ${history.startPoint!.lat}");
+                                    // updateTravel(user,history.)
+                                    print("HISToRY UID: ${history.uid}");
                                     return TravelDetails(
                                       travelHistory: history,
                                     );

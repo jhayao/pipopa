@@ -19,6 +19,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   var updater = 0.obs;
 
   var travelHistory = <TravelHistoryModel>[].obs;
+  var bookingList = <TravelHistoryModel>[].obs;
   var lastTravelLegnth = 0;
   var favTravelHistory = <TravelHistoryModel>[].obs;
 
@@ -29,7 +30,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     await Get.to(() => MapPage(), arguments: [travelHistory]);
     updater.value = updater.value + 1;
-    print("travelHistory : ${travelHistory.length}");
+    // print("travelHistory : ${travelHistory.length}");
     if (lastTravelLegnth < travelHistory.length) {
       var result =
           await Firestore().storeTravel(travel: travelHistory.value[0]);
@@ -47,16 +48,18 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     currentTab.value = tabController.index;
   }
 
-  void save() {
+  void save() async {
     box.write("myFavs",
         jsonEncode(favTravelHistory.value.map((e) => e.toJson()).toList()));
+    // print("MYFAVS : ${box.read("myFavs")}");
+    await Firestore().storeFav(travel: favTravelHistory.last);
   }
 
   @override
   void onInit() async {
     tabController = TabController(length: 3, vsync: this);
     tabController.addListener(navigate);
-
+    print("CurrentTab: ${currentTab.toString()}");
     super.onInit();
 
     final mainCtrl = Get.put(MainController());
@@ -64,10 +67,19 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     mainCtrl.showNotifications();
 
     user.value = UserModel.fromJson(box.read("logged_user"));
+    // print("LOGGED USER HOME CONTROLLER: ${box.read("logged_user")}");
+    print("User Value ${user.value.plate}");
+    // travelHistory.value.clear();
+    if (user.value.account_type != 'Driver') {
+      travelHistory.value = await Firestore().getTravels(user.value, (error) {
+        print("HISTORY ERROR $error");
+      });
+    } else {
+      travelHistory.value = await Firestore().getBooking(user.value, (error) {
+        print("Get Booking ERROR $error");
+      });
+    }
 
-    travelHistory.value = await Firestore().getTravels(user.value, (error) {
-      print("HISTORY ERROR $error");
-    });
     updater.value = updater.value + 1;
 
     var stored = box.read("myFavs");
@@ -77,6 +89,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           .map((e) => TravelHistoryModel.fromJson(e))
           .toList();
     }
+    favTravelHistory.value = await Firestore().getTravels(user.value, (error) {
+      print("HISTORY ERROR $error");
+    });
   }
 
   @override
