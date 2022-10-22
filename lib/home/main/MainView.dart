@@ -343,7 +343,7 @@ class MainView extends StatelessWidget {
                                           TravelHistoryModel history =
                                               TravelHistoryModel.fromRawJson(
                                                   jsonEncode(e.data()));
-                                          print(history.status);
+                                          // print(history.status);
                                           return Container(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 10, horizontal: 2),
@@ -392,7 +392,7 @@ class MainView extends StatelessWidget {
                                                                       right: 5),
                                                               child: ExtendedImage.network(
                                                                   (history.driver ==
-                                                                              null &&
+                                                                              null ||
                                                                           history.driver!.picture ==
                                                                               null)
                                                                       ? "https://images.pexels.com/photos/428361/pexels-photo-428361.jpeg?auto=compress&cs=tinysrgb&w=600"
@@ -424,7 +424,7 @@ class MainView extends StatelessWidget {
                                                                   height: 5,
                                                                 ),
                                                                 TextNormal(
-                                                                  text: history.driver!.plate != null ?
+                                                                  text: history.driver != null && history.driver!.plate != null ?
                                                                       "Plate number: ${history.driver!.plate!}" : '',
                                                                   textColor:
                                                                       constants
@@ -455,7 +455,7 @@ class MainView extends StatelessWidget {
                                                                         10),
                                                           ),
                                                           child: Text(
-                                                              "${history.status}"),
+                                                              "${history.status!.substring(0,12)}...."),
                                                         ),
                                                       ),
                                                       Column(

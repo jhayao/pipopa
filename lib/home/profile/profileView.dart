@@ -241,7 +241,7 @@ class ProfileView extends StatelessWidget {
                   final box = GetStorage();
                   box.remove("logged_user");
                   box.erase();
-                  Get.to(MyApp());
+                  Get.to(LoginPage());
                   Get.deleteAll();
                   Get.reset();
                 } else {}
