@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:passit/home/travelDetails/driverMap/driverMap.dart';
+import 'package:passit/models/userModel.dart';
 import 'package:passit/utils/constants.dart';
 
 import '../../components/RouteStartEnd.dart';
 import '../../models/travelHistoryModel.dart';
 
 class TravelDetails extends StatelessWidget {
-  const TravelDetails({super.key, required this.travelHistory});
+  const TravelDetails({super.key, required this.travelHistory, required this.user});
 
   final TravelHistoryModel travelHistory;
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +74,7 @@ class TravelDetails extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(5),
                                 child: Text(
-                                  "The driver is on the way",
+                                  "${travelHistory.status}",
                                   style: TextStyle(
                                       color: Colors.green.shade800,
                                       fontSize: 15),
@@ -191,16 +193,19 @@ class TravelDetails extends StatelessWidget {
                     onTap: () {
 
                     },
-                    child: Padding(
-                      padding: EdgeInsets.all(17),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Cancel booking",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          )
-                        ],
+                    child: Visibility(
+                      visible: user.account_type == 'Driver' || travelHistory.status != 'Pending Ride' ? false : true,
+                      child: Padding(
+                        padding: EdgeInsets.all(17),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Cancel booking",
+                              style: TextStyle(color: Colors.white, fontSize: 15),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

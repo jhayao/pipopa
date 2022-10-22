@@ -20,6 +20,7 @@ import '../models/travelHistoryModel.dart';
 import '../server/requests.dart';
 import '../utils/constants.dart';
 import 'package:latlong2/latlong.dart' as LatLong;
+import 'package:geocoding/geocoding.dart';
 
 class MapController extends GetxController {
   final box = GetStorage();
@@ -56,6 +57,7 @@ class MapController extends GetxController {
   var myLocations = <LocationModel>[].obs;
   late LocationModel startLocation;
   late LocationModel endLocation;
+  late LocationModel temp;
   var myRoute = RoutesModel(code: '', routes: [], waypoints: []).obs;
   late LatLong.LatLng startPoint, endPoint;
   var startAddress = ''.obs, endAddress = ''.obs;
@@ -219,12 +221,22 @@ class MapController extends GetxController {
                         changeMarkerPosition(
                             cpos.longitude, cpos.latitude, 'Current position');
 
+                        List<Placemark> placemarks =
+                            await placemarkFromCoordinates(
+                                cpos.latitude, cpos.longitude);
+
+
+                        temp = await Requests().SearchLocations2(lat.value.toString(), long.value.toString());
+                        // placemarks[0].
+
+                        // print("Address : ${add.country} ${add.city}");
+                        print(temp.address!.toJson());
                         startLocation = LocationModel(
-                          address: Address(),
-                          displayName: "Current position",
-                          lat: cpos.latitude.toString(),
-                          lon: cpos.longitude.toString(),
-                        );
+                            address: temp.address,
+                            displayName: temp.displayName!,
+                            lat: cpos.latitude.toString(),
+                            lon: cpos.longitude.toString(),
+                            importance: '1');
                       } else {
                         Get.snackbar("Error determining position",
                             "Make sure your GPS is on and try again");
@@ -252,10 +264,7 @@ class MapController extends GetxController {
   }
 
   void addDriversMarker() {
-    try {
-
-    }
-    catch (e) {
+    try {} catch (e) {
       Get.snackbar("Error determining position.",
           "Please make sure your GPS is active and your internet connection. $e",
           duration: Duration(seconds: 10), colorText: Colors.black);
@@ -282,10 +291,9 @@ class MapController extends GetxController {
             children: [
               CircleAvatar(
                 backgroundColor: Constants().primary1.withOpacity(0.5),
-                backgroundImage: NetworkImage("${(user.value.picture != null) ? user.value.picture : constants.texts['default']}"),
-
+                backgroundImage: NetworkImage(
+                    "${(user.value.picture != null) ? user.value.picture : constants.texts['default']}"),
               ),
-
               Text(
                 "My Location",
                 style: TextStyle(fontSize: 13, color: Colors.white),
@@ -303,6 +311,7 @@ class MapController extends GetxController {
 
   void setMyDestination(double _long, double _lat, String address) {
     try {
+      // print("Address $address");
       endPoint = LatLong.LatLng(_lat, _long);
       endAddress.value = address;
       destinationMarkers.value.clear();
@@ -333,14 +342,13 @@ class MapController extends GetxController {
         ),
       );
       getCordinates();
+      choosen_location.value ='cxzczs';
     } catch (e) {
       Get.snackbar("Error determining position.",
           "Please make sure your GPS is active and your internet connection. $e",
           duration: Duration(seconds: 10), colorText: Colors.black);
     }
   }
-
-
 
   void fetchWord(String word) async {
     var res = Get.dialog(
@@ -564,7 +572,7 @@ class MapController extends GetxController {
                     Text(
                       Constants().formatNumber(
                               myRoute.value.routes[0].distance)(',') +
-                          " Meter",
+                          " Kilometer",
                       style: TextStyle(fontSize: 20),
                     ),
                   ],
@@ -579,7 +587,7 @@ class MapController extends GetxController {
                       style: TextStyle(fontSize: 20),
                     ),
                     Text(
-                      (myRoute.value.routes[0].duration / 60)
+                      (myRoute.value.routes[0].duration / 30)
                               .round()
                               .toString() +
                           ' Minutes',
@@ -641,14 +649,13 @@ class MapController extends GetxController {
     travelHistory.value.insert(
         0,
         TravelHistoryModel(
-          createdAt: DateTime.now().toIso8601String(),
-          passenger: user,
-          startPoint: startLocation,
-          endPoint: endLocation,
-          routes: myRoute.value,
-          status: "Pending Ride"
-        ));
-
+            createdAt: DateTime.now().toIso8601String(),
+            passenger: user,
+            startPoint: startLocation,
+            endPoint: endLocation,
+            routes: myRoute.value,
+            status: "Pending Ride"));
+    // print("Travel History : ${travelHistory.value.first.status}");
     Get.back();
     Get.back();
   }

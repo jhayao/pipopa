@@ -32,8 +32,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     updater.value = updater.value + 1;
     // print("travelHistory : ${travelHistory.length}");
     if (lastTravelLegnth < travelHistory.length) {
+      // print("Travel History : ${travelHistory.value[0].status}");
       var result =
-          await Firestore().storeTravel(travel: travelHistory.value[0]);
+          await Firestore().storeTravel(travel: travelHistory.value.first);
       print("ERROR?: $result");
 
       // save();
@@ -67,7 +68,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     mainCtrl.showNotifications();
 
     user.value = UserModel.fromJson(box.read("logged_user"));
-    // print("LOGGED USER HOME CONTROLLER: ${box.read("logged_user")}");
+    print("LOGGED USER HOME CONTROLLER: ${box.read("logged_user")}");
     print("User Value ${user.value.plate}");
     // travelHistory.value.clear();
     if (user.value.account_type != 'Driver') {

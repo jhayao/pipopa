@@ -52,6 +52,29 @@ class TravelHistoryModel {
           json["status"] == null ? null : (json["status"]).toString(),
       );
 
+  factory TravelHistoryModel.fromJson2(Map<String, dynamic> json,String uids) =>
+      TravelHistoryModel(
+        uid: uids,
+        driver:
+        json["driver"] == null ? null : UserModel.fromJson(json["driver"]),
+        passenger: json["passenger"] == null
+            ? null
+            : UserModel.fromJson(json["passenger"]),
+        startPoint: json["startPoint"] == null
+            ? null
+            : LocationModel.fromJson(json["startPoint"]),
+        endPoint: json["endPoint"] == null
+            ? null
+            : LocationModel.fromJson(json["endPoint"]),
+        routes: json["routes"] == null
+            ? null
+            : RoutesModel.fromJson(json["routes"]),
+        createdAt:
+        json["createdAt"] == null ? null : (json["createdAt"]).toString(),
+        status:
+        json["status"] == null ? null : (json["status"]).toString(),
+      );
+
   Map<String, dynamic> toJson() => {
         "driver": driver?.toJson(),
         "passenger": passenger?.toJson(),
@@ -59,5 +82,6 @@ class TravelHistoryModel {
         "endPoint": endPoint?.toJson(),
         "routes": routes?.toJson(),
         "createdAt": createdAt.toString(),
+        "status" : status.toString()
       };
 }

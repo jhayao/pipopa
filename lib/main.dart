@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:passit/firebase_options.dart';
 import 'package:passit/login/login.dart';
+import 'package:passit/splash.dart';
 
 import 'mainController.dart';
 
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: LoginPage(),
+      home: Splash(),
     );
   }
 }

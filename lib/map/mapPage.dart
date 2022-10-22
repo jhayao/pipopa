@@ -8,10 +8,13 @@ import 'package:passit/components/PrimaryButtonDecorated.dart';
 import 'package:passit/components/TextNormal.dart';
 import 'package:passit/components/TextNormalTittle.dart';
 import 'package:passit/map/mapController.dart' as controller;
+import 'package:passit/models/locationModels.dart';
 import 'package:unicons/unicons.dart';
 import 'package:passit/firebase/firestore.dart';
+import 'package:geocoding/geocoding.dart';
 import '../components/TextHeader.dart';
 import '../components/TextNormalBolded.dart';
+import '../server/requests.dart';
 import '../utils/constants.dart';
 import 'package:latlong2/latlong.dart' as LatLong;
 
@@ -29,6 +32,17 @@ class MapPage extends StatelessWidget {
             () => FlutterMap(
               key: Key('map_id_${ctrl.lat.value}'),
               options: MapOptions(
+                  onLongPress: (position, latlng) async {
+                    print("Long press");
+                    LatLong.LatLng temp = latlng;
+                    ctrl.endLocation = await Requests().SearchLocations2(temp.latitude.toString(), temp.longitude.toString());
+                    ctrl.setMyDestination(temp.longitude, temp.latitude, ctrl.endLocation.displayName!);
+                    print("My Locations ${ctrl.endLocation.displayName}");
+                    // LocationModel locate = LocationModel.fromJson2(placemarks[0].toJson());
+                    // ctrl.endLocation = locate;
+                    // ctrl.setMyDestination(temp.longitude, temp.latitude, address)
+
+                  },
                   center: LatLong.LatLng(ctrl.lat.value, ctrl.long.value),
                   zoom: 13.0,
                   plugins: [
@@ -240,7 +254,7 @@ class MapPage extends StatelessWidget {
                                     height: 5,
                                   ),
                                   GestureDetector(
-                                    onTap: () async{
+                                    onTap: () async {
                                       // var result =
                                       //     await Firestore().storeTravel(travel: travelHistory.value[0]);
                                       // print("ERROR?: $result");
@@ -258,7 +272,8 @@ class MapPage extends StatelessWidget {
                                             Container(
                                               width: 50,
                                               height: 50,
-                                              color: Colors.grey.withOpacity(0.3),
+                                              color:
+                                                  Colors.grey.withOpacity(0.3),
                                               margin: EdgeInsets.only(right: 5),
                                               child: ExtendedImage.network(
                                                   "https://images.pexels.com/photos/428361/pexels-photo-428361.jpeg?auto=compress&cs=tinysrgb&w=600",
@@ -271,7 +286,7 @@ class MapPage extends StatelessWidget {
                                                   MainAxisAlignment.start,
                                               children: [
                                                 TextNormalBolded(
-                                                  text: "Filipe Lukebana",
+                                                  text: "Regular Ride",
                                                   textColor: Colors.black
                                                       .withOpacity(0.8),
                                                 ),
@@ -293,7 +308,8 @@ class MapPage extends StatelessWidget {
                                               CrossAxisAlignment.end,
                                           children: [
                                             TextHeader(
-                                              text: "1.300,00Kz",
+                                              text: ctrl.myRoute.value.routes.length > 0 ?
+                                              "PHP " +  Constants().calculateFare(ctrl.myRoute.value.routes[0].distance.toDouble()/1000).toStringAsFixed(2) : '',
                                               textColor:
                                                   Colors.black.withOpacity(0.8),
                                             ),
@@ -301,7 +317,10 @@ class MapPage extends StatelessWidget {
                                               height: 5,
                                             ),
                                             TextNormal(
-                                                text: "2.3Km",
+                                                text: ctrl.myRoute.value.routes.length > 0 ?
+                                                Constants().formatNumber(
+                                                    ctrl.myRoute.value.routes[0].distance)(',') : '0' +
+                                                    " Kilometer" ,
                                                 textColor: Colors.grey)
                                           ],
                                         )
@@ -315,68 +334,7 @@ class MapPage extends StatelessWidget {
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: 50,
-                                            height: 50,
-                                            color: Colors.grey.withOpacity(0.3),
-                                            margin: EdgeInsets.only(right: 5),
-                                            child: ExtendedImage.network(
-                                                "https://images.pexels.com/photos/428361/pexels-photo-428361.jpeg?auto=compress&cs=tinysrgb&w=600",
-                                                fit: BoxFit.cover),
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              TextNormalBolded(
-                                                text: "Moisés António",
-                                                textColor: Colors.black
-                                                    .withOpacity(0.8),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              TextNormalTittle(
-                                                text: "Exclusive",
-                                                textColor: constants.primary2,
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          TextHeader(
-                                            text: "2.300,00Kz",
-                                            textColor:
-                                                Colors.black.withOpacity(0.8),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          TextNormal(
-                                              text: "2.3Km",
-                                              textColor: Colors.grey)
-                                        ],
-                                      )
-                                    ],
-                                  ),
+
                                   SizedBox(
                                     height: 5,
                                   ),

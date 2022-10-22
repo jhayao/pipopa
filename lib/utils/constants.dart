@@ -64,7 +64,11 @@ class Constants {
 
   double calculateFare(double number)
   {
-
-    return number * 40;
+    if(number > 10)
+      return number * 10;
+    else
+      {
+        return 100 + ((number - 10) * 5);
+      }
   }
 }

@@ -56,7 +56,9 @@ class Firestore {
   Future<String?> storeTravel({required TravelHistoryModel travel}) async {
     try {
       var doc = await FirebaseFirestore.instance.collection('travel_history');
+      print(travel.status);
       var json = travel.toJson();
+      // print(json)
       doc.add(json).then((value) {});
     } catch (e) {
       return e.toString();
@@ -67,8 +69,8 @@ class Firestore {
     try {
       var doc = await FirebaseFirestore.instance.collection('travel_history');
       var json = userModel.toJson();
-      doc.doc(uid).update({'driver': '$json'});
-      doc.add(json).then((value) {});
+      doc.doc(uid).update({'driver': json,'status' : 'The driver is on the way'}).then((value) => print("Success")).onError((error, stackTrace) => print(error));
+      // doc.add(json).then((value) {});
     } catch (e) {
       return e.toString();
     }
@@ -102,6 +104,7 @@ class Firestore {
         travels = value.docs.map((travel) {
           var data = travel.data();
 
+
           return TravelHistoryModel.fromJson(data);
         }).toList();
       });
@@ -133,10 +136,10 @@ class Firestore {
 
 
           data['uid'] = travel.id;
-          print("Data String: ${data.toString()}");
-          print('Data UID: ${data['uid']}');
+          // print("Data String: ${data.toString()}");
+          print('Data UID: ${data.runtimeType}');
         //   //
-          return TravelHistoryModel.fromJson(data);
+          return TravelHistoryModel.fromJson2(data,travel.id);
         //   // return null;
         }).toList();
       });
@@ -146,7 +149,7 @@ class Firestore {
         onError(e.toString());
       }
     }
-    // print("Travel Data : ${travels.first.toString()}");
+    print("Travel Data : ${travels.first.uid.toString()}");
     return travels;
   }
 

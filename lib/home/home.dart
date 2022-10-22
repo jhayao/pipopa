@@ -79,6 +79,7 @@ class HomePage extends StatelessWidget {
                 )),
             MyLocationsView(
               controller: ctrl,
+              user: ctrl.user.value,
             ),
             ProfileView(
               user: ctrl.user.value,
@@ -106,7 +107,7 @@ class HomePage extends StatelessWidget {
               icon: Icon(
                 UniconsLine.location_pin_alt,
               ),
-              label: "My Locations",
+              label: ctrl.user.value.account_type == 'Driver' ? "My Passengers" : "My Locations",
             ),
             BottomNavigationBarItem(
               icon: Icon(

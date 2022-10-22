@@ -35,7 +35,7 @@ class LocationModel {
   String? displayName;
   String? locationModelClass;
   String? type;
-  double? importance;
+  String? importance;
   String? icon;
   Address? address;
 
@@ -49,10 +49,26 @@ class LocationModel {
         displayName: json["display_name"],
         locationModelClass: json["class"],
         type: json["type"],
-        importance: json["importance"].toDouble(),
+        importance: json["importance"].toString(),
         icon: json["icon"],
         address: Address.fromJson(json["address"]),
       );
+
+
+  factory LocationModel.fromJson2(Map<String, dynamic> json) => LocationModel(
+    placeId: json["place_id"],
+    licence: json["licence"],
+    osmType: json["osm_type"],
+    osmId: json["osm_id"],
+    lat: json["lat"],
+    lon: json["lon"],
+    displayName: json["display_name"],
+    locationModelClass: json["class"],
+    type: json["type"],
+    importance: '1',
+    icon: json["icon"],
+    address: Address.fromJson(json["address"]),
+  );
 
   Map<String, dynamic> toJson() => {
         "place_id": placeId,
@@ -107,6 +123,19 @@ class Address {
         country: json["country"],
         countryCode: json["country_code"],
       );
+
+  factory Address.fromJson2(Map<String, dynamic> json) => Address(
+    tourism: json["tourism"],
+    road: json["Street"],
+    neighbourhood: json["neighbourhood"],
+    suburb: json["subThoroughfare"],
+    city: json["locality"],
+    county: json["county"],
+    state: json["subAdministrativeArea"],
+    iso31662Lvl4: json["ISO3166-2-lvl4"],
+    country: json["country"],
+    countryCode: json["ISO Country Code"],
+  );
 
   Map<String, dynamic> toJson() => {
         "tourism": tourism,
