@@ -13,7 +13,8 @@ class TravelHistoryModel {
     this.endPoint,
     this.routes,
     this.status,
-    this.uid
+    this.uid,
+    this.currentLocation
   });
 
   UserModel? driver;
@@ -24,6 +25,7 @@ class TravelHistoryModel {
   String? createdAt;
   String? status;
   String? uid;
+  LocationModel? currentLocation;
 
   factory TravelHistoryModel.fromRawJson(String str) =>
       TravelHistoryModel.fromJson(json.decode(str));
@@ -82,6 +84,7 @@ class TravelHistoryModel {
         "endPoint": endPoint?.toJson(),
         "routes": routes?.toJson(),
         "createdAt": createdAt.toString(),
-        "status" : status.toString()
+        "status" : status.toString(),
+        "currentLocation" : currentLocation?.toJson()
       };
 }

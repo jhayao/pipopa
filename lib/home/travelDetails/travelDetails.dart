@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:passit/firebase/firestore.dart';
 import 'package:passit/home/travelDetails/driverMap/driverMap.dart';
+import 'package:passit/models/locationModels.dart';
 import 'package:passit/models/userModel.dart';
 import 'package:passit/utils/constants.dart';
-
+import 'package:latlong2/latlong.dart' as LatLong;
 import '../../components/RouteStartEnd.dart';
+import '../../map/mapController.dart';
 import '../../models/travelHistoryModel.dart';
+import '../../server/requests.dart';
 
 class TravelDetails extends StatelessWidget {
-  const TravelDetails({super.key, required this.travelHistory, required this.user});
+  const TravelDetails(
+      {super.key, required this.travelHistory, required this.user});
 
   final TravelHistoryModel travelHistory;
   final UserModel user;
@@ -190,19 +195,25 @@ class TravelDetails extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.black,
                   child: InkWell(
-                    onTap: () {
-
+                    onTap: () async {
+                      await Requests().launchURL(
+                          travelHistory.startPoint, travelHistory.endPoint);
                     },
                     child: Visibility(
-                      visible: user.account_type == 'Driver' || travelHistory.status != 'Pending Ride' ? false : true,
+                      visible: user.account_type == 'Passenger' &&
+                              travelHistory.status != 'Pending Ride'
+                          ? false
+                          : true,
+                      // visible: true,
                       child: Padding(
                         padding: EdgeInsets.all(17),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Cancel booking",
-                              style: TextStyle(color: Colors.white, fontSize: 15),
+                              "${user.account_type == 'Driver' ? 'Navigate' : 'Cancel booking'}",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 15),
                             )
                           ],
                         ),
@@ -216,8 +227,29 @@ class TravelDetails extends StatelessWidget {
             top: (Get.height / 2) - 100,
             right: 20,
             child: FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.chat),
+              onPressed: () async {
+                print("emergency");
+                var cur = await  MapController().determinePosition();
+                if (cur != null) {
+                  print(cur.latitude.toString());
+                  var temp = await Requests().SearchLocations2(cur.latitude.toString(),cur.longitude.toString());
+                  // print("Temp ${temp.displayName}");
+                  var currentLocation = LocationModel(
+                      address: temp.address,
+                      displayName: temp.displayName!,
+                      lat: cur.latitude.toString(),
+                      lon: cur.longitude.toString(),
+                      importance: '1');
+                  travelHistory.currentLocation = currentLocation;
+                  // print(travelHistory.currentLocation!.displayName);
+                  await  Firestore().setEmergency(travelHistory);
+                }
+
+                // travelHistory.currentLocation =
+                //
+              },
+              backgroundColor: Colors.red,
+              child: Icon(Icons.sos),
             ))
       ],
     );

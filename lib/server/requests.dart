@@ -4,6 +4,7 @@ import 'package:passit/models/locationModels.dart';
 import 'package:dio/dio.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:passit/models/routesModel.dart';
+import 'package:map_launcher/map_launcher.dart';
 
 class Requests {
   final baseUrl =
@@ -11,9 +12,9 @@ class Requests {
 
   final baseUrl2 =
       'https://nominatim.openstreetmap.org/reverse.php?###&zoom=18&format=json';
-      // 'https://nominatim.openstreetmap.org/ui/reverse.html?###&format=json&polygon_geojson=1&addressdetails=1';
 
-  // 'https://nominatim.openstreetmap.org/ui/reverse.html?lat=8.4668&lon=123.791&format=json&polygon_geojson=1&addressdetails=1';
+  final maps =
+      'https://www.google.com/maps/dir/?api=1&origin=###&destination=###&travelmode=driving';
 
   final routesUrls =
       "http://router.project-osrm.org/route/v1/driving/###?overview=full&geometries=polyline";
@@ -34,7 +35,21 @@ class Requests {
     return locationLists;
   }
 
-  Future<LocationModel> SearchLocations2(String lat,String long) async {
+  launchURL(LocationModel? origin, LocationModel? destination) async {
+    String paramenters = 'origin=&destination=###';
+    DirectionsMode directionsMode = DirectionsMode.driving;
+
+    final availableMaps = await MapLauncher.installedMaps;
+    ;
+    await availableMaps.first.showDirections(
+      origin: Coords(double.parse(origin!.lat!), double.parse(origin!.lon!)),
+      destination: Coords(double.parse(destination!.lat!), double.parse(destination!.lon!)),
+      directionsMode: DirectionsMode.driving,
+      // title: "Ocean Beach",
+    );
+  }
+
+  Future<LocationModel> SearchLocations2(String lat, String long) async {
     // String toSearch = word.split(' ').join('+');
     String toSearch = "lat=$lat&lon=$long";
     // var locationLists = <LocationModel>[];
@@ -42,7 +57,7 @@ class Requests {
     // print("Final String ${baseUrl2.split('###').join(toSearch)}");
     try {
       var response = await Dio().get(baseUrl2.split('###').join(toSearch));
-      print(response.data.runtimeType);
+      print(response.data);
       // locationLists = List.from(response.data)
       //     .map((e) => LocationModel.fromJson(e))
       //     .toList();
@@ -61,6 +76,4 @@ class Requests {
 
     return routes;
   }
-
-
 }

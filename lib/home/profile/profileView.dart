@@ -17,6 +17,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:unicons/unicons.dart';
 import '../../firebase/firestore.dart';
 import '../../main.dart';
+
+import '../../start.dart';
 import '../../utils/constants.dart';
 import 'package:passit/firebase/auth.dart';
 import 'package:passit/login/login.dart';
@@ -241,9 +243,10 @@ class ProfileView extends StatelessWidget {
                   final box = GetStorage();
                   box.remove("logged_user");
                   box.erase();
-                  Get.to(LoginPage());
+                  Get.to(Start());
                   Get.deleteAll();
                   Get.reset();
+
                 } else {}
               },
               icon: Icon(

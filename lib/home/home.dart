@@ -107,7 +107,7 @@ class HomePage extends StatelessWidget {
               icon: Icon(
                 UniconsLine.location_pin_alt,
               ),
-              label: ctrl.user.value.account_type == 'Driver' ? "My Passengers" : "My Locations",
+              label: ctrl.user.value.account_type == 'Driver' ? "My Passengers" : ctrl.user.value.account_type == 'Passenger' ? "My Locations" : "Recent Accidents",
             ),
             BottomNavigationBarItem(
               icon: Icon(

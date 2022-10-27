@@ -51,18 +51,19 @@ class MainView extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  user.account_type != 'Driver'
-                      ? PrimaryMainButtonDecorated(
-                          onclick: () async {
-                            ctrl.openMap();
-                          },
-                        )
-                      : SizedBox.shrink(),
+                  Visibility(
+                      visible: user.account_type == 'Passenger',
+                      child: PrimaryMainButtonDecorated(
+                        onclick: () async {
+                          ctrl.openMap();
+                        },
+                      )),
                   SizedBox(
                     height: 20,
                   ),
                   TextNormal(
-                    text: "Booking History:",
+                    text:
+                        "${user.account_type == 'cdrrmo' ? "Active Accidents" : ' Booking History:'}",
                     textColor: Colors.grey,
                   ),
                   SizedBox(
@@ -323,262 +324,537 @@ class MainView extends StatelessWidget {
                           );
                         }
                       })
-                  : StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('travel_history')
-                          .where('passenger.id', isEqualTo: user.id)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return Text('No Data');
-                        } else {
-                          print(snapshot.data!.docs.length);
-                          return Column(
-                            children: snapshot.data!.docs
-                                .map((e) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10),
-                                      child: OpenContainer(
-                                        closedBuilder: (context, action) {
-                                          TravelHistoryModel history =
-                                              TravelHistoryModel.fromRawJson(
-                                                  jsonEncode(e.data()));
-                                          // print(history.status);
-                                          return Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 10, horizontal: 2),
-                                            width: Get.width,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  TextNormalTittle(
-                                                    text:
-                                                        "Book Information - ${history.createdAt?.split('T')[0]}",
-                                                    textColor:
-                                                        constants.primary2,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                  : user.account_type == 'Passenger'
+                      ? StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('travel_history')
+                              .where('passenger.id', isEqualTo: user.id)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return Text('No Data');
+                            } else {
+                              print(snapshot.data!.docs.length);
+                              return Column(
+                                children: snapshot.data!.docs
+                                    .map((e) => Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: OpenContainer(
+                                            closedBuilder: (context, action) {
+                                              TravelHistoryModel history =
+                                                  TravelHistoryModel
+                                                      .fromRawJson(
+                                                          jsonEncode(e.data()));
+                                              // print(history.status);
+                                              return Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 10,
+                                                    horizontal: 2),
+                                                width: Get.width,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Visibility(
-                                                        visible:
-                                                            history.driver !=
+                                                      TextNormalTittle(
+                                                        text:
+                                                            "Book Information - ${history.createdAt?.split('T')[0]}",
+                                                        textColor:
+                                                            constants.primary2,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Visibility(
+                                                            visible: history
+                                                                    .driver !=
                                                                 null,
-                                                        child: Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Container(
-                                                              width: 50,
-                                                              height: 50,
-                                                              color: Colors.grey
-                                                                  .withOpacity(
-                                                                      0.3),
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      right: 5),
-                                                              child: ExtendedImage.network(
-                                                                  (history.driver ==
-                                                                              null ||
-                                                                          history.driver!.picture ==
-                                                                              null)
-                                                                      ? "https://images.pexels.com/photos/428361/pexels-photo-428361.jpeg?auto=compress&cs=tinysrgb&w=600"
-                                                                      : history
-                                                                          .driver!
-                                                                          .picture!,
-                                                                  fit: BoxFit
-                                                                      .cover),
-                                                            ),
-                                                            Column(
+                                                            child: Row(
                                                               crossAxisAlignment:
                                                                   CrossAxisAlignment
                                                                       .start,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
                                                               children: [
-                                                                TextNormalBolded(
-                                                                  text: history
-                                                                          .driver
-                                                                          ?.name ??
-                                                                      'ad',
-                                                                  textColor: Colors
-                                                                      .black
+                                                                Container(
+                                                                  width: 50,
+                                                                  height: 50,
+                                                                  color: Colors
+                                                                      .grey
                                                                       .withOpacity(
-                                                                          0.8),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 5,
-                                                                ),
-                                                                TextNormal(
-                                                                  text: history.driver != null && history.driver!.plate != null ?
-                                                                      "Plate number: ${history.driver!.plate!}" : '',
-                                                                  textColor:
-                                                                      constants
-                                                                          .primary2,
-                                                                ),
-                                                              ],
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Visibility(
-                                                        child: Container(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical: 5,
-                                                                  horizontal:
-                                                                      10),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                          ),
-                                                          child: Text(
-                                                              "${history.status!.substring(0,12)}...."),
-                                                        ),
-                                                      ),
-                                                      Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          TextHeader(
-                                                            text:
-                                                                "${Constants().formatNumber(history.routes?.routes[0].distance ?? 0)(',')}",
-                                                            textColor: Colors
-                                                                .black
-                                                                .withOpacity(
-                                                                    0.8),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          TextNormal(
-                                                              text:
-                                                                  "${Constants().formatNumber(history.routes?.routes[0].distance ?? 0)(',')} KM",
-                                                              textColor:
-                                                                  Colors.grey)
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  RouteStartEnd(
-                                                    constants: constants,
-                                                    start: history.startPoint,
-                                                    end: history.endPoint,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  user.account_type == 'Diver'
-                                                      ? Row(
-                                                          children: [
-                                                            Expanded(
-                                                              flex: 8,
-                                                              child: SizedBox(
-                                                                child: Material(
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .primaryColor
-                                                                      .withOpacity(
-                                                                          0.5),
-                                                                  elevation: 0,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
+                                                                          0.3),
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          right:
                                                                               5),
+                                                                  child: ExtendedImage.network(
+                                                                      (history.driver == null ||
+                                                                              history.driver!.picture ==
+                                                                                  null)
+                                                                          ? "https://images.pexels.com/photos/428361/pexels-photo-428361.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                                                          : history
+                                                                              .driver!
+                                                                              .picture!,
+                                                                      fit: BoxFit
+                                                                          .cover),
+                                                                ),
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    TextNormalBolded(
+                                                                      text: history
+                                                                              .driver
+                                                                              ?.name ??
+                                                                          'ad',
+                                                                      textColor: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                              0.8),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 5,
+                                                                    ),
+                                                                    TextNormal(
+                                                                      text: history.driver != null &&
+                                                                              history.driver!.plate != null
+                                                                          ? "Plate number: ${history.driver!.plate!}"
+                                                                          : '',
+                                                                      textColor:
+                                                                          constants
+                                                                              .primary2,
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Visibility(
+                                                            child: Container(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          5,
+                                                                      horizontal:
+                                                                          10),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child: Text(
+                                                                  "${history.status!.substring(0, 12)}...."),
+                                                            ),
+                                                          ),
+                                                          Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              TextHeader(
+                                                                text:
+                                                                    "${Constants().formatNumber(history.routes?.routes[0].distance ?? 0)(',')}",
+                                                                textColor: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        0.8),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextNormal(
+                                                                  text:
+                                                                      "${Constants().formatNumber(history.routes?.routes[0].distance ?? 0)(',')} KM",
+                                                                  textColor:
+                                                                      Colors
+                                                                          .grey)
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      RouteStartEnd(
+                                                        constants: constants,
+                                                        start:
+                                                            history.startPoint,
+                                                        end: history.endPoint,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      user.account_type ==
+                                                              'Diver'
+                                                          ? Row(
+                                                              children: [
+                                                                Expanded(
+                                                                  flex: 8,
                                                                   child:
-                                                                      InkWell(
-                                                                    onTap: () {
-                                                                      ctrl.favTravelHistory
-                                                                          .add(
-                                                                              history);
-
-                                                                      ctrl.currentTab
-                                                                          .value = 1;
-
-                                                                      ctrl.save();
-                                                                    },
+                                                                      SizedBox(
                                                                     child:
-                                                                        Padding(
-                                                                      padding: EdgeInsets.symmetric(
-                                                                          horizontal:
-                                                                              10,
-                                                                          vertical:
-                                                                              10),
+                                                                        Material(
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .primaryColor
+                                                                          .withOpacity(
+                                                                              0.5),
+                                                                      elevation:
+                                                                          0,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5),
                                                                       child:
-                                                                          Row(
-                                                                        children: [
-                                                                          Icon(
-                                                                            Icons.star,
-                                                                            color:
-                                                                                Colors.green,
+                                                                          InkWell(
+                                                                        onTap:
+                                                                            () {
+                                                                          ctrl.favTravelHistory
+                                                                              .add(history);
+
+                                                                          ctrl.currentTab.value =
+                                                                              1;
+
+                                                                          ctrl.save();
+                                                                        },
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: EdgeInsets.symmetric(
+                                                                              horizontal: 10,
+                                                                              vertical: 10),
+                                                                          child:
+                                                                              Row(
+                                                                            children: [
+                                                                              Icon(
+                                                                                Icons.star,
+                                                                                color: Colors.green,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                width: 10,
+                                                                              ),
+                                                                              Text(
+                                                                                "Pick up passenger",
+                                                                              ),
+                                                                            ],
                                                                           ),
-                                                                          SizedBox(
-                                                                            width:
-                                                                                10,
-                                                                          ),
-                                                                          Text(
-                                                                            "Pick up passenger",
-                                                                          ),
-                                                                        ],
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                            ),
-                                                            // Expanded( flex : 1,child: SizedBox( width: 10,)),
-                                                          ],
-                                                        )
-                                                      : SizedBox.shrink()
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        openBuilder: (context, action) {
-                                          TravelHistoryModel travel =
-                                              TravelHistoryModel.fromRawJson(
-                                                  jsonEncode(e.data()));
+                                                                // Expanded( flex : 1,child: SizedBox( width: 10,)),
+                                                              ],
+                                                            )
+                                                          : SizedBox.shrink()
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            openBuilder: (context, action) {
+                                              TravelHistoryModel travel =
+                                                  TravelHistoryModel
+                                                      .fromRawJson(
+                                                          jsonEncode(e.data()));
 
-                                          return TravelDetails(
-                                              user: user,
-                                              travelHistory: travel);
-                                        },
-                                      ),
-                                    ))
-                                .toList(),
-                          );
-                        }
-                      }),
+                                              return TravelDetails(
+                                                  user: user,
+                                                  travelHistory: travel);
+                                            },
+                                          ),
+                                        ))
+                                    .toList(),
+                              );
+                            }
+                          })
+                      : StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('accidents')
+                              .where('status', isEqualTo: 'Active')
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return Text('No Data');
+                            } else {
+                              print(snapshot.data!.docs.length);
+                              return Column(
+                                children: snapshot.data!.docs
+                                    .map((e) => Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: OpenContainer(
+                                            closedBuilder: (context, action) {
+                                              TravelHistoryModel history =
+                                                  TravelHistoryModel
+                                                      .fromRawJson(
+                                                          jsonEncode(e.data()));
+                                              // print(history.status);
+                                              return Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 10,
+                                                    horizontal: 2),
+                                                width: Get.width,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      TextNormalTittle(
+                                                        text:
+                                                            "Book Information - ${history.createdAt?.split('T')[0]}",
+                                                        textColor:
+                                                            constants.primary2,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Visibility(
+                                                            visible: history
+                                                                    .driver !=
+                                                                null,
+                                                            child: Row(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Container(
+                                                                  width: 50,
+                                                                  height: 50,
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .withOpacity(
+                                                                          0.3),
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          right:
+                                                                              5),
+                                                                  child: ExtendedImage.network(
+                                                                      (history.driver == null ||
+                                                                              history.driver!.picture ==
+                                                                                  null)
+                                                                          ? "https://images.pexels.com/photos/428361/pexels-photo-428361.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                                                          : history
+                                                                              .driver!
+                                                                              .picture!,
+                                                                      fit: BoxFit
+                                                                          .cover),
+                                                                ),
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    TextNormalBolded(
+                                                                      text: history
+                                                                              .driver
+                                                                              ?.name ??
+                                                                          'ad',
+                                                                      textColor: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                              0.8),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 5,
+                                                                    ),
+                                                                    TextNormal(
+                                                                      text: history.driver != null &&
+                                                                              history.driver!.plate != null
+                                                                          ? "Plate number: ${history.driver!.plate!}"
+                                                                          : '',
+                                                                      textColor:
+                                                                          constants
+                                                                              .primary2,
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Visibility(
+                                                            child: Container(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          5,
+                                                                      horizontal:
+                                                                          10),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child: Text(
+                                                                  "${ history.status!.length>12 ? history.status!.substring(0, 12) + '....' :history.status }"),
+                                                            ),
+                                                          ),
+                                                          Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              TextHeader(
+                                                                text:
+                                                                    "${Constants().formatNumber(history.routes?.routes[0].distance ?? 0)(',')}",
+                                                                textColor: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        0.8),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextNormal(
+                                                                  text:
+                                                                      "${Constants().formatNumber(history.routes?.routes[0].distance ?? 0)(',')} KM",
+                                                                  textColor:
+                                                                      Colors
+                                                                          .grey)
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      RouteStartEnd(
+                                                        constants: constants,
+                                                        start:
+                                                            history.startPoint,
+                                                        end: history.endPoint,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      user.account_type ==
+                                                              'Diver'
+                                                          ? Row(
+                                                              children: [
+                                                                Expanded(
+                                                                  flex: 8,
+                                                                  child:
+                                                                      SizedBox(
+                                                                    child:
+                                                                        Material(
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .primaryColor
+                                                                          .withOpacity(
+                                                                              0.5),
+                                                                      elevation:
+                                                                          0,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5),
+                                                                      child:
+                                                                          InkWell(
+                                                                        onTap:
+                                                                            () {
+                                                                          ctrl.favTravelHistory
+                                                                              .add(history);
+
+                                                                          ctrl.currentTab.value =
+                                                                              1;
+
+                                                                          ctrl.save();
+                                                                        },
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: EdgeInsets.symmetric(
+                                                                              horizontal: 10,
+                                                                              vertical: 10),
+                                                                          child:
+                                                                              Row(
+                                                                            children: [
+                                                                              Icon(
+                                                                                Icons.star,
+                                                                                color: Colors.green,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                width: 10,
+                                                                              ),
+                                                                              Text(
+                                                                                "Pick up passenger",
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                // Expanded( flex : 1,child: SizedBox( width: 10,)),
+                                                              ],
+                                                            )
+                                                          : SizedBox.shrink()
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            openBuilder: (context, action) {
+                                              TravelHistoryModel travel =
+                                                  TravelHistoryModel
+                                                      .fromRawJson(
+                                                          jsonEncode(e.data()));
+
+                                              return TravelDetails(
+                                                  user: user,
+                                                  travelHistory: travel);
+                                            },
+                                          ),
+                                        ))
+                                    .toList(),
+                              );
+                            }
+                          }),
             ]),
           ))),
     );

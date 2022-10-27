@@ -33,24 +33,22 @@ class Firestore {
         .doc(uid)
         .get()
         .then((value) {
-        // print("VALUE GETUSER ${value.data()?['email']}");
-         var user = UserModel();
-        user.id = value.id;
-        user.email = value.data()?["email"];
-        user.picture = value.data()?["picture"];
-        user.accountStatus = value.data()?["accountStatus"];
-        user.name = value.data()?['name'];
-        user.numberId = value.data()?["numberId"];
-        user.phone = value.data()?["phone"];
-        user.account_type = value.data()?['accountType'];
-        user.plate = value.data()?['plateNumber'];
-        final box = GetStorage();
-        print(user.toJson().toString());
-        box.write("logged_user", user.toJson());
-        print("plate: ${user.plate}");
+      // print("VALUE GETUSER ${value.data()?['email']}");
+      var user = UserModel();
+      user.id = value.id;
+      user.email = value.data()?["email"];
+      user.picture = value.data()?["picture"];
+      user.accountStatus = value.data()?["accountStatus"];
+      user.name = value.data()?['name'];
+      user.numberId = value.data()?["numberId"];
+      user.phone = value.data()?["phone"];
+      user.account_type = value.data()?['accountType'];
+      user.plate = value.data()?['plateNumber'];
+      final box = GetStorage();
+      print(user.toJson().toString());
+      box.write("logged_user", user.toJson());
+      print("plate: ${user.plate}");
     });
-
-
   }
 
   Future<String?> storeTravel({required TravelHistoryModel travel}) async {
@@ -65,11 +63,16 @@ class Firestore {
     }
   }
 
-  Future<String?> updateTravel({required UserModel userModel,required String uid}) async {
+  Future<String?> updateTravel(
+      {required UserModel userModel, required String uid}) async {
     try {
       var doc = await FirebaseFirestore.instance.collection('travel_history');
       var json = userModel.toJson();
-      doc.doc(uid).update({'driver': json,'status' : 'The driver is on the way'}).then((value) => print("Success")).onError((error, stackTrace) => print(error));
+      doc
+          .doc(uid)
+          .update({'driver': json, 'status': 'The driver is on the way'})
+          .then((value) => print("Success"))
+          .onError((error, stackTrace) => print(error));
       // doc.add(json).then((value) {});
     } catch (e) {
       return e.toString();
@@ -85,7 +88,6 @@ class Firestore {
       return e.toString();
     }
   }
-
 
   Future<List<TravelHistoryModel>> getTravels(
     UserModel user,
@@ -104,7 +106,6 @@ class Firestore {
         travels = value.docs.map((travel) {
           var data = travel.data();
 
-
           return TravelHistoryModel.fromJson(data);
         }).toList();
       });
@@ -118,9 +119,9 @@ class Firestore {
   }
 
   Future<List<TravelHistoryModel>> getBooking(
-      UserModel user,
-      Function(String)? onError,
-      ) async {
+    UserModel user,
+    Function(String)? onError,
+  ) async {
     List<TravelHistoryModel> travels = [];
     try {
       var doc = await FirebaseFirestore.instance.collection('travel_history');
@@ -129,23 +130,21 @@ class Firestore {
           .where('driver', isNull: true)
           .get()
           .then((value) {
-            print(value.docs.length);
+        print(value.docs.length);
         travels = value.docs.map((travel) {
           var data = travel.data();
           // print(data.toString());
 
-
           data['uid'] = travel.id;
           // print("Data String: ${data.toString()}");
           print('Data UID: ${data.runtimeType}');
-        //   //
-          return TravelHistoryModel.fromJson2(data,travel.id);
-        //   // return null;
+          //   //
+          return TravelHistoryModel.fromJson2(data, travel.id);
+          //   // return null;
         }).toList();
       });
     } catch (e) {
       if (onError != null) {
-
         onError(e.toString());
       }
     }
@@ -153,11 +152,10 @@ class Firestore {
     return travels;
   }
 
-
   Future<List<TravelHistoryModel>> getFav(
-      UserModel user,
-      Function(String)? onError,
-      ) async {
+    UserModel user,
+    Function(String)? onError,
+  ) async {
     List<TravelHistoryModel> travels = [];
     try {
       var doc = await FirebaseFirestore.instance.collection('favTravel');
@@ -183,18 +181,32 @@ class Firestore {
     return travels;
   }
 
-  Future<void> setRiderLocation (UserModel user, double _long, double _lat) async {
+  Future<void> setRiderLocation(
+      UserModel user, double _long, double _lat) async {
     try {
       var doc = await FirebaseFirestore.instance.collection('locations');
       doc.add({
-        'long' : _long,
-        'lat' : _lat,
-        'userid' : user.id,
-        'userEmail' : user.email
+        'long': _long,
+        'lat': _lat,
+        'userid': user.id,
+        'userEmail': user.email
       }).then((value) => print(value));
       print("ADDED");
     } catch (e) {
-      print ("${e.toString()}");
+      print("${e.toString()}");
+    }
+  }
+
+  Future<void> setEmergency(TravelHistoryModel travel) async {
+    try {
+      var doc = await FirebaseFirestore.instance.collection('accidents');
+      var json = travel.toJson();
+      travel.status = "Active";
+      print(travel.currentLocation!.displayName);
+      doc.add(json).then((value) {});
+    } catch (e) {
+      // return e.toString();
+      print(e.toString());
     }
   }
 }
