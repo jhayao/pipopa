@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:passit/firebase/firestore.dart';
@@ -8,6 +11,10 @@ import 'package:passit/mainController.dart';
 import 'package:passit/map/mapPage.dart';
 import 'package:passit/models/travelHistoryModel.dart';
 import 'package:passit/models/userModel.dart';
+
+import '../map/mapController.dart';
+import '../models/locationModels.dart';
+import '../server/requests.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
   final box = GetStorage();
@@ -17,11 +24,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   late TabController tabController;
 
   var updater = 0.obs;
-
+  late LocationModel myLocation;
   var travelHistory = <TravelHistoryModel>[].obs;
   var bookingList = <TravelHistoryModel>[].obs;
   var lastTravelLegnth = 0;
   var favTravelHistory = <TravelHistoryModel>[].obs;
+  late StreamSubscription<Position> streamSubcrition;
 
   void openMap() async {
     lastTravelLegnth = travelHistory.length;
@@ -93,6 +101,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     favTravelHistory.value = await Firestore().getTravels(user.value, (error) {
       print("HISTORY ERROR $error");
     });
+    getCurrentLocation();
   }
 
   @override
@@ -100,5 +109,30 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     // TODO: implement onClose
     super.onClose();
     dispose();
+  }
+
+  void getCurrentLocation() async {
+    print("User Details : ${user.value.id}");
+    final userLocation = FirebaseFirestore.instance.collection('locations').doc(user.value.id);
+  print("USER DETAILS ${user.value.account_type}");
+    await MapController().determinePosition();
+    streamSubcrition =
+        Geolocator.getPositionStream().listen((Position cur) async {
+      // var temp = await Requests()
+      //     .SearchLocations2(cur.latitude.toString(), cur.longitude.toString());
+      // var currentLocations = LocationModel(
+      //     address: temp.address,
+      //     displayName: temp.displayName!,
+      //     lat: cur.latitude.toString(),
+      //     lon: cur.longitude.toString(),
+      //     importance: '1');
+      // myLocation = currentLocations;
+      await userLocation.set({
+        'lat' : cur.latitude,
+        'long' : cur.longitude,
+        'userType' : user.value.account_type,
+        'user' : user.value.toJson()
+      }, SetOptions(merge: true));
+    });
   }
 }

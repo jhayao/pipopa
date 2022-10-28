@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tappable_polyline/flutter_map_tappable_polyline.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:latlong2/latlong.dart' as LatLong;
+import 'package:location/location.dart';
 import 'package:passit/components/PrimaryButtonDecorated.dart';
 import 'package:passit/components/TextNormal.dart';
 import 'package:passit/components/TextNormalTittle.dart';
@@ -21,27 +23,31 @@ import 'package:latlong2/latlong.dart' as LatLong;
 class MapPage extends StatelessWidget {
   const MapPage({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     final constants = Constants();
     final ctrl = Get.put(controller.MapController());
     return Scaffold(
+
       body: Stack(
         children: [
           Obx(
             () => FlutterMap(
               key: Key('map_id_${ctrl.lat.value}'),
               options: MapOptions(
+                  onPositionChanged: (mapPosition, boolValue) {
+                    // _lastposition = mapPosition.center;
+                    mapPosition.center;
+                  },
                   onLongPress: (position, latlng) async {
                     print("Long press");
                     LatLong.LatLng temp = latlng;
-                    ctrl.endLocation = await Requests().SearchLocations2(temp.latitude.toString(), temp.longitude.toString());
-                    ctrl.setMyDestination(temp.longitude, temp.latitude, ctrl.endLocation.displayName!);
+                    ctrl.endLocation = await Requests().SearchLocations2(
+                        temp.latitude.toString(), temp.longitude.toString());
+                    ctrl.setMyDestination(temp.longitude, temp.latitude,
+                        ctrl.endLocation.displayName!);
                     print("My Locations ${ctrl.endLocation.displayName}");
-                    // LocationModel locate = LocationModel.fromJson2(placemarks[0].toJson());
-                    // ctrl.endLocation = locate;
-                    // ctrl.setMyDestination(temp.longitude, temp.latitude, address)
-
                   },
                   center: LatLong.LatLng(ctrl.lat.value, ctrl.long.value),
                   zoom: 13.0,
@@ -59,7 +65,8 @@ class MapPage extends StatelessWidget {
                     }),
                 MarkerLayerOptions(markers: [
                   ...ctrl.markers.value,
-                  ...ctrl.destinationMarkers.value
+                  ...ctrl.destinationMarkers.value,
+                  ...ctrl.driverMarkers.value,
                 ]),
                 TappablePolylineLayerOptions(
                     // Will only render visible polylines, increasing performance
@@ -308,8 +315,20 @@ class MapPage extends StatelessWidget {
                                               CrossAxisAlignment.end,
                                           children: [
                                             TextHeader(
-                                              text: ctrl.myRoute.value.routes.length > 0 ?
-                                              "PHP " +  Constants().calculateFare(ctrl.myRoute.value.routes[0].distance.toDouble()/1000).toStringAsFixed(2) : '',
+                                              text: ctrl.myRoute.value.routes
+                                                          .length >
+                                                      0
+                                                  ? "PHP " +
+                                                      Constants()
+                                                          .calculateFare(ctrl
+                                                                  .myRoute
+                                                                  .value
+                                                                  .routes[0]
+                                                                  .distance
+                                                                  .toDouble() /
+                                                              1000)
+                                                          .toStringAsFixed(2)
+                                                  : '',
                                               textColor:
                                                   Colors.black.withOpacity(0.8),
                                             ),
@@ -317,10 +336,16 @@ class MapPage extends StatelessWidget {
                                               height: 5,
                                             ),
                                             TextNormal(
-                                                text: ctrl.myRoute.value.routes.length > 0 ?
-                                                Constants().formatNumber(
-                                                    ctrl.myRoute.value.routes[0].distance)(',') : '0' +
-                                                    " Kilometer" ,
+                                                text: ctrl.myRoute.value.routes
+                                                            .length >
+                                                        0
+                                                    ? Constants().formatNumber(
+                                                        ctrl
+                                                            .myRoute
+                                                            .value
+                                                            .routes[0]
+                                                            .distance)(',')
+                                                    : '0' + " Kilometer",
                                                 textColor: Colors.grey)
                                           ],
                                         )
@@ -334,7 +359,6 @@ class MapPage extends StatelessWidget {
                                   SizedBox(
                                     height: 5,
                                   ),
-
                                   SizedBox(
                                     height: 5,
                                   ),

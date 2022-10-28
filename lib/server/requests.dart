@@ -57,7 +57,7 @@ class Requests {
     // print("Final String ${baseUrl2.split('###').join(toSearch)}");
     try {
       var response = await Dio().get(baseUrl2.split('###').join(toSearch));
-      print(response.data);
+      // print("My Data: ${response.data}");
       // locationLists = List.from(response.data)
       //     .map((e) => LocationModel.fromJson(e))
       //     .toList();

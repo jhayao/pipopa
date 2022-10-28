@@ -64,11 +64,16 @@ class Constants {
 
   double calculateFare(double number)
   {
-    if(number > 10)
-      return number * 10;
+    double fare = 0;
+
+    if(number < 2)
+      {
+        fare = 15;
+      }
     else
       {
-        return 100 + ((number - 10) * 5);
+        fare = number * 7.5;
       }
+    return fare;
   }
 }
