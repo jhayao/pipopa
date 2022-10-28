@@ -413,11 +413,36 @@ class MapPage extends StatelessWidget {
               ))
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: constants.primary1,
-        onPressed: ctrl.showDialog,
-        child: Icon(UniconsLine.location_pin_alt),
-      ),
+      floatingActionButton:
+      Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              backgroundColor: constants.primary1,
+              child: Icon(
+                  Icons.location_searching_sharp
+              ),
+              tooltip: 'Find Driver',
+              onPressed: () {
+
+                ctrl.getDriver();
+                //...
+              },
+              heroTag: null,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              backgroundColor: constants.primary1,
+              onPressed: ctrl.showDialog,
+              heroTag: null,
+              child: Icon(UniconsLine.location_pin_alt),
+            ),
+          ]
+      )
+
+
     );
   }
 }

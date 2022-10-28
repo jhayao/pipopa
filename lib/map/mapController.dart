@@ -24,6 +24,7 @@ import '../server/requests.dart';
 import '../utils/constants.dart';
 import 'package:latlong2/latlong.dart' as LatLong;
 import 'package:geocoding/geocoding.dart';
+import 'dart:math' show cos, sqrt, asin;
 
 class MapController extends GetxController {
   final box = GetStorage();
@@ -31,6 +32,7 @@ class MapController extends GetxController {
   // final Set<Marker> markers = new Set();
   var choosen_location = ''.obs;
   var searchWorld = ''.obs;
+
   // late StreamSubscription<Position> streamSubcrition;
   var polylines = <TaggedPolyline>[
     TaggedPolyline(
@@ -46,8 +48,7 @@ class MapController extends GetxController {
         width: 80.0,
         height: 80.0,
         point: LatLong.LatLng(-8.827, 13.248),
-        builder: (ctx) =>
-            CircleAvatar(
+        builder: (ctx) => CircleAvatar(
               backgroundColor: Constants().primary1.withOpacity(0.5),
               child: Padding(
                 padding: const EdgeInsets.all(2.0),
@@ -59,8 +60,7 @@ class MapController extends GetxController {
   ].obs;
   var destinationMarkers = <Marker>[].obs;
   var driverMarkers = <Marker>[].obs;
-  var long = 0.0.obs,
-      lat = 0.0.obs;
+  var long = 0.0.obs, lat = 0.0.obs;
   var searchingWord = '';
   var searchController = TextEditingController();
   var myLocations = <LocationModel>[].obs;
@@ -70,8 +70,7 @@ class MapController extends GetxController {
   late LocationModel temp;
   var myRoute = RoutesModel(code: '', routes: [], waypoints: []).obs;
   late LatLong.LatLng startPoint, endPoint;
-  var startAddress = ''.obs,
-      endAddress = ''.obs;
+  var startAddress = ''.obs, endAddress = ''.obs;
   late RxList<TravelHistoryModel> travelHistory;
 
   var showSugestions = false.obs;
@@ -123,7 +122,6 @@ class MapController extends GetxController {
     }
   }
 
-
   void showDialog() async {
     await Future.delayed(Duration(milliseconds: 50));
 
@@ -170,7 +168,7 @@ class MapController extends GetxController {
                               hintText: "Search here...",
                               border: InputBorder.none,
                               contentPadding:
-                              EdgeInsets.only(top: 5, left: 5, right: 5),
+                                  EdgeInsets.only(top: 5, left: 5, right: 5),
                               suffixIcon: Icon(UniconsLine.search),
                             ),
                           ),
@@ -184,42 +182,40 @@ class MapController extends GetxController {
                   width: Get.width,
                   height: 200,
                   child: SingleChildScrollView(
-                    child: Obx(() =>
-                        Column(
+                    child: Obx(() => Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: myLocations
-                              .map((location) =>
-                              Container(
-                                width: Get.width,
-                                child: TextButton.icon(
-                                  onPressed: () {
-                                    long.value =
-                                        double.parse(location.lon!);
-                                    lat.value = double.parse(location.lat!);
-                                    changeMarkerPosition(
-                                        long.value,
-                                        lat.value,
-                                        location.displayName ?? '');
-                                    startLocation = location;
+                              .map((location) => Container(
+                                    width: Get.width,
+                                    child: TextButton.icon(
+                                      onPressed: () {
+                                        long.value =
+                                            double.parse(location.lon!);
+                                        lat.value = double.parse(location.lat!);
+                                        changeMarkerPosition(
+                                            long.value,
+                                            lat.value,
+                                            location.displayName ?? '');
+                                        startLocation = location;
 
-                                    Get.back();
-                                  },
-                                  icon: Icon(Icons.location_pin),
-                                  label: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Text(
-                                      location.displayName ?? '',
+                                        Get.back();
+                                      },
+                                      icon: Icon(Icons.location_pin),
+                                      label: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Text(
+                                          location.displayName ?? '',
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        foregroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                          Colors.black,
+                                        ),
+                                        alignment: Alignment.centerLeft,
+                                      ),
                                     ),
-                                  ),
-                                  style: ButtonStyle(
-                                    foregroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                      Colors.black,
-                                    ),
-                                    alignment: Alignment.centerLeft,
-                                  ),
-                                ),
-                              ))
+                                  ))
                               .toList(),
                         )),
                   ),
@@ -236,8 +232,8 @@ class MapController extends GetxController {
                             cpos.longitude, cpos.latitude, 'Current position');
 
                         List<Placemark> placemarks =
-                        await placemarkFromCoordinates(
-                            cpos.latitude, cpos.longitude);
+                            await placemarkFromCoordinates(
+                                cpos.latitude, cpos.longitude);
 
                         temp = await Requests().SearchLocations2(
                             lat.value.toString(), long.value.toString());
@@ -300,23 +296,20 @@ class MapController extends GetxController {
           width: 80.0,
           height: 80.0,
           point: LatLong.LatLng(_lat, _long),
-          builder: (ctx) =>
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Constants().primary1.withOpacity(0.5),
-                    backgroundImage: NetworkImage(
-                        "${(user.value.picture != null)
-                            ? user.value.picture
-                            : constants.texts['default']}"),
-                  ),
-                  Text(
-                    "My Location",
-                    style: TextStyle(fontSize: 13, color: Colors.white),
-                  )
-                ],
+          builder: (ctx) => Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              CircleAvatar(
+                backgroundColor: Constants().primary1.withOpacity(0.5),
+                backgroundImage: NetworkImage(
+                    "${(user.value.picture != null) ? user.value.picture : constants.texts['default']}"),
               ),
+              Text(
+                "My Location",
+                style: TextStyle(fontSize: 13, color: Colors.white),
+              )
+            ],
+          ),
         ),
       );
     } catch (e) {
@@ -337,26 +330,25 @@ class MapController extends GetxController {
           width: 80.0,
           height: 80.0,
           point: LatLong.LatLng(_lat, _long),
-          builder: (ctx) =>
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Constants().primary1.withOpacity(0.5),
-                    child: Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Constants().primary1,
-                      ),
-                    ),
+          builder: (ctx) => Stack(
+            alignment: Alignment.center,
+            children: [
+              CircleAvatar(
+                backgroundColor: Constants().primary1.withOpacity(0.5),
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Constants().primary1,
                   ),
-                  Text(
-                    "Destination",
-                    style: TextStyle(fontSize: 13, color: Colors.white),
-                  )
-                ],
+                ),
               ),
+              Text(
+                "Destination",
+                style: TextStyle(fontSize: 13, color: Colors.white),
+              )
+            ],
+          ),
         ),
       );
       getCordinates();
@@ -416,8 +408,9 @@ class MapController extends GetxController {
     }
   }
 
-  void getDriver() async
-  {
+  void getDriver() async {
+    var cpos = await determinePosition();
+
     driverMarkers.value.clear();
     var doc = await FirebaseFirestore.instance.collection('locations');
     await doc
@@ -429,37 +422,36 @@ class MapController extends GetxController {
         var data = travel.data();
         // print("Data Lenght : ${value.docs.length}");
         print("Data ${data['lat']} ${data['long']}");
-        driverMarkers.value.add(
-          Marker(
-            width: 80.0,
-            height: 80.0,
-            point: LatLong.LatLng(data['lat'] ,data['long']),
-            builder: (ctx) =>
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Constants().primary1.withOpacity(0.5),
-                      child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Constants().primary1,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "Destination",
-                      style: TextStyle(fontSize: 13, color: Colors.white),
-                    )
-                  ],
-                ),
-          ),
-        );
+        print("CPOS: ${cpos!.latitude} , ${cpos.longitude}");
+        var test = calculateDistance(
+            cpos!.latitude, cpos.longitude, data['lat'], data['long']);
+        if (test <= 0.2) {
+          driverMarkers.value.add(
+            Marker(
+              width: 80.0,
+              height: 80.0,
+              point: LatLong.LatLng(data['lat'], data['long']),
+              builder: (ctx) => Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Constants().primary1.withOpacity(0.5),
+                    backgroundImage: NetworkImage(
+                        "${(data['user']['picture'] != null) ? data['user']['picture'] : Constants().texts['default']}"),
+                  ),
+                  Text(
+                    "${data['user']['plate'] != null ? data['user']['plate'] : data['user']['name']}",
+                    style: TextStyle(fontSize: 13, color: Colors.white),
+                  )
+                ],
+              ),
+            ),
+          );
+        }
       }).toList();
     });
-
-    }
+    driverMarkers.refresh();
+  }
 
   void getCordinates() async {
     try {
@@ -513,10 +505,10 @@ class MapController extends GetxController {
 
       if (res.routes.isNotEmpty) {
         List<PointLatLng> result =
-        PolylinePoints().decodePolyline(res.routes[0].geometry);
+            PolylinePoints().decodePolyline(res.routes[0].geometry);
 
         final points =
-        result.map((e) => LatLong.LatLng(e.latitude, e.longitude)).toList();
+            result.map((e) => LatLong.LatLng(e.latitude, e.longitude)).toList();
 
         points.insert(0, startPoint);
         points.add(endPoint);
@@ -562,151 +554,150 @@ class MapController extends GetxController {
   void showTransportationDetails() async {
     Get.dialog(Center(
         child: Container(
-          height: 400,
-          width: Get.width - 10,
-          padding: EdgeInsets.all(10),
-          child: Material(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
+      height: 400,
+      width: Get.width - 10,
+      padding: EdgeInsets.all(10),
+      child: Material(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextHeader(
+                  text: "Confirm Book Details",
+                  textColor: Colors.black,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Divider(),
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextHeader(
-                      text: "Confirm Book Details",
-                      textColor: Colors.black,
+                    Text(
+                      "Starting point:",
+                      style: TextStyle(fontSize: 20),
                     ),
                     SizedBox(
-                      height: 10,
-                    ),
-                    Divider(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Starting point:",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          child: Text(
-                            startAddress.value,
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Destination:",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          child: Text(
-                            endAddress.value,
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(),
-                    Row(
-                      children: [
-                        Text(
-                          "Distance: ",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        Text(
-                          Constants().formatNumber(
-                              myRoute.value.routes[0].distance)(',') +
-                              " Kilometer",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Duration: ",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        Text(
-                          (myRoute.value.routes[0].duration / 30)
-                              .round()
-                              .toString() +
-                              ' Minutes',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                     Container(
-                      height: 40,
-                      width: Get.width,
-                      child: Row(
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10),
-                              child: TextNormal(
-                                text: "Cancel",
-                                textColor: Colors.black,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: PrimaryButtonDecorated(
-                                onclick: confirmTravel,
-                                children: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    TextNormal(
-                                      text: "Confirm book",
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: Text(
+                        startAddress.value,
+                        style: TextStyle(fontSize: 15),
                       ),
-                    )
+                    ),
                   ],
                 ),
-              ),
+                SizedBox(
+                  height: 10,
+                ),
+                Divider(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Destination:",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                      child: Text(
+                        endAddress.value,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Divider(),
+                Row(
+                  children: [
+                    Text(
+                      "Distance: ",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      Constants().formatNumber(
+                              myRoute.value.routes[0].distance)(',') +
+                          " Kilometer",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "Duration: ",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      (myRoute.value.routes[0].duration / 30)
+                              .round()
+                              .toString() +
+                          ' Minutes',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                Divider(),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 40,
+                  width: Get.width,
+                  child: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: TextNormal(
+                            text: "Cancel",
+                            textColor: Colors.black,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: PrimaryButtonDecorated(
+                            onclick: confirmTravel,
+                            children: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextNormal(
+                                  text: "Confirm book",
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
-        )));
+        ),
+      ),
+    )));
   }
 
   void confirmTravel() {
@@ -743,5 +734,14 @@ class MapController extends GetxController {
     // TODO: implement onClose
     super.onClose();
     dispose();
+  }
+
+  double calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
   }
 }

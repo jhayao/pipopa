@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:passit/firebase/firestore.dart';
 import 'package:passit/home/travelDetails/driverMap/driverMap.dart';
@@ -228,11 +229,11 @@ class TravelDetails extends StatelessWidget {
             right: 20,
             child: FloatingActionButton(
               onPressed: () async {
-                print("emergency");
-                var cur = await  MapController().determinePosition();
+                var cur = await MapController().determinePosition();
                 if (cur != null) {
                   print(cur.latitude.toString());
-                  var temp = await Requests().SearchLocations2(cur.latitude.toString(),cur.longitude.toString());
+                  var temp = await Requests().SearchLocations2(
+                      cur.latitude.toString(), cur.longitude.toString());
                   // print("Temp ${temp.displayName}");
                   var currentLocation = LocationModel(
                       address: temp.address,
@@ -242,7 +243,7 @@ class TravelDetails extends StatelessWidget {
                       importance: '1');
                   travelHistory.currentLocation = currentLocation;
                   // print(travelHistory.currentLocation!.displayName);
-                  await  Firestore().setEmergency(travelHistory);
+                  await Firestore().setEmergency(travelHistory);
                 }
 
                 // travelHistory.currentLocation =
@@ -250,7 +251,8 @@ class TravelDetails extends StatelessWidget {
               },
               backgroundColor: Colors.red,
               child: Icon(Icons.sos),
-            ))
+            )),
+
       ],
     );
   }
