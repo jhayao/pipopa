@@ -23,6 +23,7 @@ class InputDouble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final constants = Constants();
+    var _passwordVisible = true.obs;
     return Container(
       margin: EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
@@ -49,19 +50,31 @@ class InputDouble extends StatelessWidget {
           Divider(
             height: 1,
           ),
-          TextFormField(
-            obscureText: true,
-            decoration: InputDecoration(
-              icon: icons[1],
-              hintText: labels[1],
-              border: InputBorder.none,
-            ),
-            onChanged: (val) {
-              if (onChange02 != null) {
-                onChange02!(val);
-              }
-            },
-          ),
+          Obx(() => TextFormField(
+                obscureText: _passwordVisible.value,
+                decoration: InputDecoration(
+                  icon: icons[1],
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _passwordVisible.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    onPressed: () {
+                      // Update the state i.e. toogle the state of passwordVisible variable
+                      _passwordVisible.value = !_passwordVisible.value;
+                    },
+                  ),
+                  hintText: labels[1],
+                  border: InputBorder.none,
+                ),
+                onChanged: (val) {
+                  if (onChange02 != null) {
+                    onChange02!(val);
+                  }
+                },
+              )),
         ],
       ),
     );

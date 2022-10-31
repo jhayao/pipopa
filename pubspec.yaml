@@ -67,6 +67,9 @@ dependencies:
   flutter_speed_dial: ^6.2.0
   awesome_dialog: ^3.0.2
   rating_dialog: ^2.0.4
+  date_time_picker: ^2.1.0
+  intl_phone_field: ^3.1.0
+  intl_phone_number_input: ^0.7.1
 
 dependency_overrides:
   flutter_map: ^2.2.0

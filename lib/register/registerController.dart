@@ -12,12 +12,13 @@ import '../models/userModel.dart';
 
 class RegisterController extends GetxController {
   var user = UserModel();
+
   void login() {
     Get.to(const LoginPage());
   }
 
   void phoneConfirmation() async {
-    if (user.name == null) {
+    if (user.fname == null || user.lname == null) {
       Get.snackbar("ERROR!", "Name is mandatory",
           colorText: Colors.black, duration: Duration(seconds: 10));
       return;
@@ -27,11 +28,11 @@ class RegisterController extends GetxController {
           colorText: Colors.black, duration: Duration(seconds: 10));
       return;
     }
-    if (user.numberId == null && user.account_type == 'Passenger') {
-        Get.snackbar("ERROR!", "Identity Card is mandatory",
-            colorText: Colors.black, duration: Duration(seconds: 10));
-      return;
-    }
+    // if (user.numberId == null && user.account_type == 'Passenger') {
+    //     Get.snackbar("ERROR!", "Identity Card is mandatory",
+    //         colorText: Colors.black, duration: Duration(seconds: 10));
+    //   return;
+    // }
     if (user.plate == null && user.account_type == 'Driver') {
       Get.snackbar("ERROR!", "Plate number is mandatory",
           colorText: Colors.black, duration: Duration(seconds: 10));
@@ -50,6 +51,17 @@ class RegisterController extends GetxController {
 
     if (user.password!.length < 6 || user.password!.length > 10) {
       Get.snackbar("ERROR!", "Password must contain 6 to 10 characters.",
+          colorText: Colors.black, duration: Duration(seconds: 10));
+      return;
+    }
+    if (user.gender == null) {
+      Get.snackbar("ERROR!", "Gender is mandatory",
+          colorText: Colors.black, duration: Duration(seconds: 10));
+      return;
+    }
+
+    if (user.bdate == null) {
+      Get.snackbar("ERROR!", "Birthday is mandatory",
           colorText: Colors.black, duration: Duration(seconds: 10));
       return;
     }

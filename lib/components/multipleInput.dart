@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:unicons/unicons.dart';
 
@@ -98,9 +99,11 @@ class MultipleInput extends StatelessWidget {
                     child: Column(
                       children: [
                         TextFormField(
+                          maxLength: 1,
                           decoration: InputDecoration(
                             // icon: icon2,
                             hintText: label3,
+                            counterText: "",
                             border: InputBorder.none,
                           ),
                           keyboardType: TextInputType.name,

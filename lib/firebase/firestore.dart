@@ -19,7 +19,12 @@ class Firestore {
       'picture': user.picture,
       'password': user.password,
       'accountType': user.account_type,
-      'plateNumber': user.plate
+      'plateNumber': user.plate,
+      'gender': user.gender,
+      'bdate' : user.bdate,
+      'fname': user.fname,
+      'lname': user.lname,
+      'mname': user.mname
     });
   }
 
@@ -51,6 +56,11 @@ class Firestore {
       user.phone = value.data()?["phone"];
       user.account_type = value.data()?['accountType'];
       user.plate = value.data()?['plateNumber'];
+      user.mname = value.data()?['mname'];
+      user.lname = value.data()?['lname'];
+      user.fname = value.data()?['fname'];
+      user.bdate = value.data()?['bdate'];
+      user.gender = value.data()?['gender'];
       final box = GetStorage();
       //print(user.toJson().toString());
       box.write("logged_user", user.toJson());

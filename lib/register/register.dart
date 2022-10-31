@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:passit/components/TextButtonDecoratedSecondary.dart';
 import 'package:passit/components/TextNormal.dart';
 import 'package:passit/components/TextSmall.dart';
@@ -15,8 +17,10 @@ import 'package:unicons/unicons.dart';
 
 import '../components/Input.dart';
 import '../components/InputDouble.dart';
+import '../components/Phone.dart';
 import '../components/TextButtonDecorated.dart';
 import '../components/TextHeader.dart';
+import '../components/dropdown.dart';
 import '../components/multipleInput.dart';
 import '../models/userModel.dart';
 
@@ -79,6 +83,22 @@ class RegisterPage extends StatelessWidget {
                       items: _status,
                       itemBuilder: (item) => RadioButtonBuilder(item),
                     )),
+                MultipleInput(
+                  label1: 'Firstname',
+                  icon1: Icon(UniconsLine.user),
+                  onChange1: (String val) {
+                    ctrl.user.fname = val;
+                  },
+                  label2: 'Lastname',
+                  icon2: Icon(UniconsLine.user),
+                  onChange2: (String val) {
+                    ctrl.user.lname = val;
+                  },
+                  label3: 'MI',
+                  onChange3: (String val) {
+                    ctrl.user.mname = val;
+                  },
+                ),
                 InputDouble(
                   icons: [
                     Icon(Icons.mail_outline),
@@ -95,54 +115,47 @@ class RegisterPage extends StatelessWidget {
                     ctrl.user.password = val;
                   },
                 ),
-                Obx(() => Input(
-                      widthSize: 1,
-                      label: type.value.label == null
-                          ? "Plate number"
-                          : type.value.label!,
-                      icon: Icon((type.value.label == null ||
-                              type.value.label == 'Plate number')
-                          ? UniconsLine.car
-                          : UniconsLine.card_atm),
-                      onChange: (String val) {
-                        if (type.value.label == null ||
-                            type.value.label == 'Plate number') {
-                          ctrl.user.account_type = 'Driver';
-                          ctrl.user.plate = val;
-                        } else {
-                          ctrl.user.numberId = val;
-                          ctrl.user.account_type = 'Passenger';
-                        }
-                      },
-                    )),
-                MultipleInput(
-                  label1: 'Firstname',
-                  icon1: Icon(UniconsLine.user),
-                  onChange1: (String val) {
-                    ctrl.user.email = val;
+                Obx(() => Visibility(
+                  visible: type.value.label == null || type.value.label == 'Plate number',
+                  child: Input(
+                        widthSize: 1,
+                        label: type.value.label == null
+                            ? "Plate number"
+                            : type.value.label!,
+                        icon: Icon((type.value.label == null ||
+                                type.value.label == 'Plate number')
+                            ? UniconsLine.car
+                            : UniconsLine.card_atm),
+                        onChange: (String val) {
+                          if (type.value.label == null ||
+                              type.value.label == 'Plate number') {
+                            ctrl.user.account_type = 'Driver';
+                            ctrl.user.plate = val;
+                          } else {
+                            ctrl.user.numberId = val;
+                            ctrl.user.account_type = 'Passenger';
+                          }
+                        },
+                      ),
+                )),
+
+                Dropdown(
+                  widthSize: 1,
+                  label: 'DropDon',
+                  icon: Icon(Icons.mail_outline),
+                  onChange: (String val) {
+                    ctrl.user.gender = val;
                   },
-                  label2: 'Lastname',
-                  icon2: Icon(UniconsLine.user),
+                  label2: 'DropDon',
+                  icon2: Icon(Icons.mail_outline),
                   onChange2: (String val) {
-                    ctrl.user.email = val;
-                  },
-                  label3: 'MI',
-                  onChange3: (String val) {
-                    ctrl.user.email = val;
+                    ctrl.user.bdate = val;
                   },
                 ),
-                Input(
+                InputPhone(
                   widthSize: 1,
                   label: 'Email',
                   icon: Icon(Icons.mail_outline),
-                  onChange: (String val) {
-                    ctrl.user.email = val;
-                  },
-                ),
-                Input(
-                  widthSize: 1,
-                  label: 'Phone number',
-                  icon: Icon(UniconsLine.phone),
                   onChange: (String val) {
                     ctrl.user.phone = val;
                   },
@@ -155,6 +168,7 @@ class RegisterPage extends StatelessWidget {
                 ),
                 TextButtonDecorated(
                   onclick: ctrl.phoneConfirmation,
+                  // onclick: () {print(ctrl.user.toJson());},
                   text: constants.texts['create_acc'],
                 ),
                 SizedBox(

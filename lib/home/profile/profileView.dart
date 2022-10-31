@@ -34,6 +34,7 @@ class ProfileView extends StatelessWidget {
     var users = UserModel().obs;
     final box = GetStorage();
     users.value = UserModel.fromJson(box.read("logged_user"));
+
     //print(users.value.picture);
     return Stack(
       children: [
@@ -116,6 +117,8 @@ class ProfileView extends StatelessWidget {
                                           .getDownloadURL()
                                           .then((downloadUrl) {
                                         users.value.picture = downloadUrl;
+                                        print("Users Data : ${users.value.toJson()}");
+                                        box.write('logged_user', users.value.toJson());
                                         users.update((val) {});
                                         // users.
                                         FirebaseFirestore.instance
@@ -228,78 +231,10 @@ class ProfileView extends StatelessWidget {
             ),
           ),
         ),
-        // Positioned(
-        //   bottom: 0,
-        //   child: Container(
-        //     padding: EdgeInsets.symmetric(
-        //       horizontal: 10,
-        //       vertical: 10,
-        //     ),
-        //     width: Get.width,
-        //     child: TextButton.icon(
-        //       onPressed: () async {
-        //         await Auth().signOut();
-        //         if (Auth().currentuser == null) {
-        //           final box = GetStorage();
-        //           box.remove("logged_user");
-        //           box.erase();
-        //           Get.to(Start());
-        //           Get.deleteAll();
-        //           Get.reset();
-        //
-        //         } else {}
-        //       },
-        //       icon: Icon(
-        //         UniconsLine.trash,
-        //         color: Colors.white,
-        //       ),
-        //       label: Text(
-        //         'Logout',
-        //         style: TextStyle(color: Colors.white),
-        //       ),
-        //       style: TextButton.styleFrom(
-        //         backgroundColor: Colors.red.shade400,
-        //       ),
-        //     ),
-        //   ),
-        // )
+
       ],
     );
   }
 
-  uploadImage() async {
-    final _firebaseStorage = FirebaseStorage.instance;
-    final _imagePicker = ImagePicker();
-    XFile? image;
-    //Check Permissions
-    await Permission.photos.request();
 
-    var permissionStatus = await Permission.photos.status;
-
-    if (permissionStatus.isGranted) {
-      //Select Image
-      image = await _imagePicker.pickImage(source: ImageSource.gallery);
-      var file = File(image!.path);
-      var filename = image.name;
-      if (image != null) {
-        //Upload to Firebase
-        var snapshot = await _firebaseStorage
-            .ref()
-            .child('images/$filename')
-            .putFile(file);
-        var downloadUrl = await snapshot.ref.getDownloadURL();
-        user.picture = downloadUrl;
-
-        // users.
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.id)
-            .update({'picture': '$downloadUrl'});
-      } else {
-        //print('No Image Path Received');
-      }
-    } else {
-      //print('Permission not granted. Try Again with permission access');
-    }
-  }
 }
