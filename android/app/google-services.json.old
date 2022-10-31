@@ -23,14 +23,6 @@
           }
         },
         {
-          "client_id": "332313905355-ud6bbed4vk0hgv28fg9n2ghn0071l0qv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.passit",
-            "certificate_hash": "e84b9acfc726b631972ecf359b8302d3ff84d4e9"
-          }
-        },
-        {
           "client_id": "332313905355-932p51krl8mm5963idjobljugelu6vfq.apps.googleusercontent.com",
           "client_type": 3
         }

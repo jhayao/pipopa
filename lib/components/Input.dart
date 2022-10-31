@@ -11,13 +11,13 @@ class Input extends StatelessWidget {
     Key? key,
     required this.icon,
     required this.label,
-    this.onChange,
+    this.onChange, required this.widthSize,
   }) : super(key: key);
 
   final Icon icon;
   final String label;
   final Function? onChange;
-
+  final int widthSize;
   @override
   Widget build(BuildContext context) {
     final constants = Constants();
@@ -27,7 +27,7 @@ class Input extends StatelessWidget {
         color: Colors.white,
         borderRadius: constants.radousNormal,
       ),
-      width: Get.width,
+      width: Get.width/widthSize,
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
@@ -42,6 +42,7 @@ class Input extends StatelessWidget {
               if (onChange != null) onChange!(val);
             },
           ),
+
         ],
       ),
     );

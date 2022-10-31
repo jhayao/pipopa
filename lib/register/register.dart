@@ -17,6 +17,7 @@ import '../components/Input.dart';
 import '../components/InputDouble.dart';
 import '../components/TextButtonDecorated.dart';
 import '../components/TextHeader.dart';
+import '../components/multipleInput.dart';
 import '../models/userModel.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -60,60 +61,78 @@ class RegisterPage extends StatelessWidget {
                 TextSmall(text: constants.texts['note_reg']),
                 SizedBox(height: 10),
                 TextHeader(text: "Account Type"),
-              Obx (()=>RadioGroup<String>.builder(
-                groupValue: type.value.account_type == null ? 'Driver' : type.value.account_type!,
-                horizontalAlignment: MainAxisAlignment.spaceAround,
-                onChanged: (value) {
-                  type.value.account_type = value;
-                  if (value == 'Driver')
-                    {
-                      type.value.label = "Plate number";
-                    }
-                  else {
-                    type.value.label = "Identity card";
-                  }
-                  // //print(type.value.account_type );
-                  type.update((val) {
-
-                  });
-                } ,
-                items: _status,
-                itemBuilder: (item) => RadioButtonBuilder(
-                  item
-                ),
-              )),
+                Obx(() => RadioGroup<String>.builder(
+                      groupValue: type.value.account_type == null
+                          ? 'Driver'
+                          : type.value.account_type!,
+                      horizontalAlignment: MainAxisAlignment.spaceAround,
+                      onChanged: (value) {
+                        type.value.account_type = value;
+                        if (value == 'Driver') {
+                          type.value.label = "Plate number";
+                        } else {
+                          type.value.label = "Identity card";
+                        }
+                        // //print(type.value.account_type );
+                        type.update((val) {});
+                      },
+                      items: _status,
+                      itemBuilder: (item) => RadioButtonBuilder(item),
+                    )),
                 InputDouble(
                   icons: [
-                    Icon(UniconsLine.user),
+                    Icon(Icons.mail_outline),
                     Icon(UniconsLine.lock),
                   ],
                   labels: [
-                    constants.texts['full_name'],
+                    'Email',
                     constants.texts['Password'],
                   ],
                   onChange01: (String val) {
-                    ctrl.user.name = val;
+                    ctrl.user.email = val;
                   },
                   onChange02: (String val) {
                     ctrl.user.password = val;
                   },
                 ),
-                Obx(()=>Input(
-                  label: type.value.label == null ? "Plate number" : type.value.label!,
-                  icon: Icon((type.value.label == null || type.value.label == 'Plate number')  ? UniconsLine.car :   UniconsLine.card_atm),
-                  onChange: (String val) {
-                    if(type.value.label == null || type.value.label == 'Plate number') {
-                      ctrl.user.account_type = 'Driver';
-                      ctrl.user.plate = val;
-                    }
-                    else {
-                      ctrl.user.numberId = val;
-                      ctrl.user.account_type = 'Passenger';
-                    }
-
+                Obx(() => Input(
+                      widthSize: 1,
+                      label: type.value.label == null
+                          ? "Plate number"
+                          : type.value.label!,
+                      icon: Icon((type.value.label == null ||
+                              type.value.label == 'Plate number')
+                          ? UniconsLine.car
+                          : UniconsLine.card_atm),
+                      onChange: (String val) {
+                        if (type.value.label == null ||
+                            type.value.label == 'Plate number') {
+                          ctrl.user.account_type = 'Driver';
+                          ctrl.user.plate = val;
+                        } else {
+                          ctrl.user.numberId = val;
+                          ctrl.user.account_type = 'Passenger';
+                        }
+                      },
+                    )),
+                MultipleInput(
+                  label1: 'Firstname',
+                  icon1: Icon(UniconsLine.user),
+                  onChange1: (String val) {
+                    ctrl.user.email = val;
                   },
-                )),
+                  label2: 'Lastname',
+                  icon2: Icon(UniconsLine.user),
+                  onChange2: (String val) {
+                    ctrl.user.email = val;
+                  },
+                  label3: 'MI',
+                  onChange3: (String val) {
+                    ctrl.user.email = val;
+                  },
+                ),
                 Input(
+                  widthSize: 1,
                   label: 'Email',
                   icon: Icon(Icons.mail_outline),
                   onChange: (String val) {
@@ -121,6 +140,7 @@ class RegisterPage extends StatelessWidget {
                   },
                 ),
                 Input(
+                  widthSize: 1,
                   label: 'Phone number',
                   icon: Icon(UniconsLine.phone),
                   onChange: (String val) {
