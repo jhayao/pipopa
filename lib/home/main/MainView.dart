@@ -320,7 +320,7 @@ class MainView extends StatelessWidget {
                                               jsonEncode(e.data()));
                                           travel.uid = e.id;
                                           final box = GetStorage();
-                                          String updateDetails = box.read('travelDetails');
+                                          String updateDetails = box.read('travelDetails') == null ? 'false' : box.read('travelDetails');
                                           print("Update Details $updateDetails");
                                           if(updateDetails != 'true')
                                             {
