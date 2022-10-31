@@ -41,26 +41,29 @@ class MapPage extends StatelessWidget {
                     mapPosition.center;
                   },
                   onLongPress: (position, latlng) async {
-                    print("Long press");
+                    //print("Long press");
                     LatLong.LatLng temp = latlng;
                     ctrl.endLocation = await Requests().SearchLocations2(
                         temp.latitude.toString(), temp.longitude.toString());
                     ctrl.setMyDestination(temp.longitude, temp.latitude,
                         ctrl.endLocation.displayName!);
-                    print("My Locations ${ctrl.endLocation.displayName}");
+                    //print("My Locations ${ctrl.endLocation.displayName}");
                   },
                   center: LatLong.LatLng(ctrl.lat.value, ctrl.long.value),
-                  zoom: 13.0,
+                  // zoom: 13.0,
+                  zoom: 13,
                   plugins: [
                     TappablePolylineMapPlugin(),
                   ]),
               layers: [
                 TileLayerOptions(
                     urlTemplate:
-                        'https://api.mapbox.com/styles/v1/luk3dx/cl79r9r3j001814qkhsfk6wne/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVrM2R4IiwiYSI6ImNqbmdlNDh6NzAyMmYzcXRqMzZhYXZ3ZXMifQ._-xyvv2Q9jDLon_J5cYocw',
+                        'https://api.mapbox.com/styles/v1/yusaku04/cl9uxz9gz001r15p6p8z403j0/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoieXVzYWt1MDQiLCJhIjoiY2w5czZ3aGN6MDFkZDNudGF2M2E1eHRwNSJ9.SMKheedlHnFV2YwiQMLfQQ',
+                        // 'https://api.mapbox.com/styles/v1/yusaku04/cl9s7lfqr004b14p75ppm3fz3/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoieXVzYWt1MDQiLCJhIjoiY2w5czZ3aGN6MDFkZDNudGF2M2E1eHRwNSJ9.SMKheedlHnFV2YwiQMLfQQ',
+                    // 'https://api.mapbox.com/styles/v1/luk3dx/cl79r9r3j001814qkhsfk6wne/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVrM2R4IiwiYSI6ImNqbmdlNDh6NzAyMmYzcXRqMzZhYXZ3ZXMifQ._-xyvv2Q9jDLon_J5cYocw',
                     additionalOptions: {
                       'accessToken':
-                          'pk.eyJ1IjoibHVrM2R4IiwiYSI6ImNqbmdlNDh6NzAyMmYzcXRqMzZhYXZ3ZXMifQ._-xyvv2Q9jDLon_J5cYocw',
+                      'pk.eyJ1IjoieXVzYWt1MDQiLCJhIjoiY2w5czZ3aGN6MDFkZDNudGF2M2E1eHRwNSJ9.SMKheedlHnFV2YwiQMLfQQ',
                       'id': 'mapbox.mapbox-streets-v8'
                     }),
                 MarkerLayerOptions(markers: [
@@ -82,7 +85,10 @@ class MapPage extends StatelessWidget {
                     })
               ],
             ),
+
           ),
+
+
           Positioned(
               top: 80,
               child: Container(
@@ -264,7 +270,7 @@ class MapPage extends StatelessWidget {
                                     onTap: () async {
                                       // var result =
                                       //     await Firestore().storeTravel(travel: travelHistory.value[0]);
-                                      // print("ERROR?: $result");
+                                      // //print("ERROR?: $result");
                                     },
                                     child: Row(
                                       mainAxisAlignment:

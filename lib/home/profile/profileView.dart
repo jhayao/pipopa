@@ -34,7 +34,7 @@ class ProfileView extends StatelessWidget {
     var users = UserModel().obs;
     final box = GetStorage();
     users.value = UserModel.fromJson(box.read("logged_user"));
-    print(users.value.picture);
+    //print(users.value.picture);
     return Stack(
       children: [
         Container(
@@ -56,7 +56,7 @@ class ProfileView extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            print("CLICKED");
+                            //print("CLICKED");
                             final _firebaseStorage = FirebaseStorage.instance;
                             final _imagePicker = ImagePicker();
                             XFile? image;
@@ -101,9 +101,9 @@ class ProfileView extends StatelessWidget {
                                       final progress = 100.0 *
                                           (taskSnapshot.bytesTransferred /
                                               taskSnapshot.totalBytes);
-                                      print("Upload is $progress% complete.");
+                                      //print("Upload is $progress% complete.");
                                       users.value.progress = progress;
-                                      users.update((val) { print(val!.progress!.toStringAsExponential(2)); });
+                                      users.update((val) { });
                                       break;
                                     case TaskState.paused:
                                       // ...
@@ -136,7 +136,7 @@ class ProfileView extends StatelessWidget {
                                   }
                                 });
                               } else {
-                                print('No Image Path Received');
+                                //print('No Image Path Received');
                               }
                             } else {
                               print(
@@ -228,41 +228,41 @@ class ProfileView extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
-          bottom: 0,
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 10,
-            ),
-            width: Get.width,
-            child: TextButton.icon(
-              onPressed: () async {
-                await Auth().signOut();
-                if (Auth().currentuser == null) {
-                  final box = GetStorage();
-                  box.remove("logged_user");
-                  box.erase();
-                  Get.to(Start());
-                  Get.deleteAll();
-                  Get.reset();
-
-                } else {}
-              },
-              icon: Icon(
-                UniconsLine.trash,
-                color: Colors.white,
-              ),
-              label: Text(
-                'Logout',
-                style: TextStyle(color: Colors.white),
-              ),
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.red.shade400,
-              ),
-            ),
-          ),
-        )
+        // Positioned(
+        //   bottom: 0,
+        //   child: Container(
+        //     padding: EdgeInsets.symmetric(
+        //       horizontal: 10,
+        //       vertical: 10,
+        //     ),
+        //     width: Get.width,
+        //     child: TextButton.icon(
+        //       onPressed: () async {
+        //         await Auth().signOut();
+        //         if (Auth().currentuser == null) {
+        //           final box = GetStorage();
+        //           box.remove("logged_user");
+        //           box.erase();
+        //           Get.to(Start());
+        //           Get.deleteAll();
+        //           Get.reset();
+        //
+        //         } else {}
+        //       },
+        //       icon: Icon(
+        //         UniconsLine.trash,
+        //         color: Colors.white,
+        //       ),
+        //       label: Text(
+        //         'Logout',
+        //         style: TextStyle(color: Colors.white),
+        //       ),
+        //       style: TextButton.styleFrom(
+        //         backgroundColor: Colors.red.shade400,
+        //       ),
+        //     ),
+        //   ),
+        // )
       ],
     );
   }
@@ -296,10 +296,10 @@ class ProfileView extends StatelessWidget {
             .doc(user.id)
             .update({'picture': '$downloadUrl'});
       } else {
-        print('No Image Path Received');
+        //print('No Image Path Received');
       }
     } else {
-      print('Permission not granted. Try Again with permission access');
+      //print('Permission not granted. Try Again with permission access');
     }
   }
 }

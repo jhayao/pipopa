@@ -72,7 +72,7 @@ class RegisterPage extends StatelessWidget {
                   else {
                     type.value.label = "Identity card";
                   }
-                  // print(type.value.account_type );
+                  // //print(type.value.account_type );
                   type.update((val) {
 
                   });

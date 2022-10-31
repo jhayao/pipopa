@@ -30,7 +30,7 @@ class Requests {
           .map((e) => LocationModel.fromJson(e))
           .toList();
     } catch (e) {
-      print(e);
+      //print(e);
     }
     return locationLists;
   }
@@ -54,16 +54,16 @@ class Requests {
     String toSearch = "lat=$lat&lon=$long";
     // var locationLists = <LocationModel>[];
     LocationModel locationLists = LocationModel();
-    // print("Final String ${baseUrl2.split('###').join(toSearch)}");
+    // //print("Final String ${baseUrl2.split('###').join(toSearch)}");
     try {
       var response = await Dio().get(baseUrl2.split('###').join(toSearch));
-      // print("My Data: ${response.data}");
+      // //print("My Data: ${response.data}");
       // locationLists = List.from(response.data)
       //     .map((e) => LocationModel.fromJson(e))
       //     .toList();
       locationLists = LocationModel.fromJson(response.data);
     } catch (e) {
-      print("Error Found: $e");
+      //print("Error Found: $e");
     }
     return locationLists;
   }

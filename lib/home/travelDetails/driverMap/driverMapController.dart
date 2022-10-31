@@ -134,7 +134,7 @@ class DriverMapController extends GetxController {
       );
       getCordinates();
     } catch (e) {
-      Get.snackbar("Erro ao determinar a posição.",
+      Get.snackbar("Error!.",
           "Please make sure your GPS is active and your internet connection. $e",
           duration: Duration(seconds: 10), colorText: Colors.black);
     }
@@ -255,6 +255,6 @@ class DriverMapController extends GetxController {
         double.parse(travelHistory.endPoint!.lon!),
         double.parse(travelHistory.endPoint!.lat!),
         travelHistory.endPoint!.displayName!);
-    print("LOADING....");
+    //print("LOADING....");
   }
 }

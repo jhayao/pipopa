@@ -30,7 +30,7 @@ class MyLocationsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(user.id);
+    //print(user.id);
     final constants = Constants();
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -81,7 +81,7 @@ class MyLocationsView extends StatelessWidget {
                   if (!snapshot.hasData) {
                     return Text("test");
                   } else {
-                    print(snapshot.data!.docs.length);
+                    //print(snapshot.data!.docs.length);
                     return Column(
                       children: snapshot.data!.docs
                           .map((e) => Padding(
@@ -203,7 +203,7 @@ class MyLocationsView extends StatelessWidget {
                                                   10),
                                             ),
                                             child: Text(
-                                                "${history.status}"),
+                                                "${history.status!.length>=12? history.status!.substring(0, 12) + '....' :history.status }"),
                                           ),
                                         ),
                                         Column(
@@ -309,10 +309,12 @@ class MyLocationsView extends StatelessWidget {
                             TravelHistoryModel travel =
                             TravelHistoryModel.fromRawJson(
                                 jsonEncode(e.data()));
-
+                                travel.uid = e.id;
                             return TravelDetails(
                                 user: user,
-                                travelHistory: travel);
+                                update: false,
+                                travelHistory: travel
+                            );
                           },
                         ),
                       ))

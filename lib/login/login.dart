@@ -26,7 +26,7 @@ class LoginPage extends StatelessWidget {
     final ctrl = Get.put(LoginController());
     final constants = Constants();
     final box = GetStorage();
-    // print("Logged User: ${box.read("logged_user")}");
+    // //print("Logged User: ${box.read("logged_user")}");
 
     return Scaffold(
       body: Container(

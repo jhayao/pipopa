@@ -24,25 +24,30 @@ class LoginController extends GetxController {
   void login() async {
     logginIn.value = true;
     try {
-      var result =
-          await Auth().signInWithEmailAndPassword(email: nome, password: Password);
+      var result = await Auth()
+          .signInWithEmailAndPassword(email: nome, password: Password);
 
       if (Auth().currentuser != null) {
-        // var user = UserModel();
+        UserModel? user2 = UserModel();
         var user = Auth().currentuser;
-
-        // box.write("logged_user", user.);
+        //print("User Phone Number: ${user!.phoneNumber}");
 
         await Firestore().getUser(uid: user!.uid);
-        var users = UserModel();
+        // var users = UserModel();
+        user2 = UserModel.fromJson(box.read("logged_user"));
 
-        // Get.to(const HomePage());
-        Get.to(() => const HomePage());
+        if (user2?.accountStatus != null ) Get.to(() => const HomePage());
+        else {
+          Get.snackbar(
+              "ERROR!", "Phone number not yet verified",
+              colorText: Colors.black);
+          Get.to(const PhoneConfirmationPage());
+        }
       }
     } catch (e) {
-      print("ERROR ${e.toString()}");
-      Get.snackbar("ERROR!",
-          "Username and password do not match. Check and try again",
+      //print("ERRORs ${e.toString()}");
+      Get.snackbar(
+          "ERROR!", "Username and password do not match. Check and try again",
           colorText: Colors.black);
     }
     logginIn.value = false;

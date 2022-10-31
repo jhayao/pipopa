@@ -10,6 +10,8 @@ class PhoneConfirmationController extends GetxController {
   var code = "".obs;
   var verificationId = "";
   late UserModel user;
+  var user2 = UserModel().obs;
+  final box = GetStorage();
 
   void goHome() {
     Get.to(HomePage());
@@ -24,20 +26,24 @@ class PhoneConfirmationController extends GetxController {
 
     if (Auth().currentuser != null) {
       Get.to(HomePage());
+      user2.value = UserModel.fromJson(box.read("logged_user"));
+      await Firestore().updateUser(user: user2.value);
     } else {}
   }
 
-
-
   Future<void> sendValidationCode() async {
-    await Auth().phoneConfirmation(
-        phone: user.phone!,
+    try{
+      await Auth().phoneConfirmation(
+          phone: user.phone!,
+          onCodeSent: (_verificationId, resendToken) {
+            verificationId = _verificationId;
+          });
+    }catch  (e)
+    {
+        //print(e.toString());
+    }
 
-        onCodeSent: (_verificationId, resendToken) {
-          verificationId = _verificationId;
-        });
   }
-
 
   @override
   void onInit() async {

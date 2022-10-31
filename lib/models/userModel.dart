@@ -27,7 +27,7 @@ class UserModel {
   String? phone;
   String? email;
   String? numberId;
-  int? accountStatus;
+  String? accountStatus;
   String? picture;
   String? password;
   String? account_type;

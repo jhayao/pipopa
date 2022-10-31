@@ -65,6 +65,8 @@ dependencies:
   map_launcher: ^2.4.0
   location: ^4.4.0
   flutter_speed_dial: ^6.2.0
+  awesome_dialog: ^3.0.2
+  rating_dialog: ^2.0.4
 
 dependency_overrides:
   flutter_map: ^2.2.0

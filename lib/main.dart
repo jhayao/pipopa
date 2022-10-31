@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final ctrl = Get.put(MainController());
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:passit/home/homeController.dart';
 import 'package:passit/home/travelDetails/travelDetails.dart';
 import 'package:passit/map/mapPage.dart';
@@ -19,10 +20,11 @@ import '../../components/TextNormalTittle.dart';
 import '../../firebase/firestore.dart';
 import '../../models/userModel.dart';
 import '../../utils/constants.dart';
+import '../myLocations/myLocationsView.dart';
 
 class MainView extends StatelessWidget {
   const MainView(
-      {Key? key,
+      {Key? key,this.datas,
       required this.constants,
       required this.travelHistory,
       required this.ctrl,
@@ -35,11 +37,12 @@ class MainView extends StatelessWidget {
   final HomeController ctrl;
   final UserModel user;
   final String uid;
+  final String? datas;
 
   @override
   Widget build(BuildContext context) {
     int counter = 0;
-    // print(user.id);
+    // //print(user.id);
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Obx((() => Container(
@@ -81,7 +84,7 @@ class MainView extends StatelessWidget {
                         if (!snapshot.hasData) {
                           return Text('No Data');
                         } else {
-                          print(snapshot.data!.docs.length);
+                          //print(snapshot.data!.docs.length);
                           return Column(
                             children: snapshot.data!.docs
                                 .map((e) => Padding(
@@ -105,7 +108,7 @@ class MainView extends StatelessWidget {
                                                 children: [
                                                   TextNormalTittle(
                                                     text:
-                                                        "Book Information - ${history.createdAt?.split('T')[0]}",
+                                                        "Book Information - ${history.createdAt?.split('T')[0]} ${history.createdAt?.split('T')[1].split('.')[0]}",
                                                     textColor:
                                                         constants.primary2,
                                                   ),
@@ -307,16 +310,31 @@ class MainView extends StatelessWidget {
                                           );
                                         },
                                         openBuilder: (context, action) {
-                                          TravelHistoryModel travel =
-                                              TravelHistoryModel.fromRawJson(
-                                                  jsonEncode(e.data()));
-                                          // print(e.id);
-                                          Firestore().updateTravel(
-                                              userModel: user, uid: e.id);
+
+                                          print("Datas $datas");
+                                          // print("Action $context");
+
+
+                                           TravelHistoryModel travel =
+                                          TravelHistoryModel.fromRawJson(
+                                              jsonEncode(e.data()));
+                                          travel.uid = e.id;
+                                          final box = GetStorage();
+                                          String updateDetails = box.read('travelDetails');
+                                          print("Update Details $updateDetails");
+                                          if(updateDetails != 'true')
+                                            {
+                                              Firestore().updateTravel(
+                                                  userModel: user, uid: e.id,status: 'The driver is on the way');
+                                              box.write('travelDetails', 'true');
+                                            }
+
                                           return TravelDetails(
                                             user: user,
+                                            update: true,
                                             travelHistory: travel,
                                           );
+
                                         },
                                       ),
                                     ))
@@ -334,7 +352,7 @@ class MainView extends StatelessWidget {
                             if (!snapshot.hasData) {
                               return Text('No Data');
                             } else {
-                              print(snapshot.data!.docs.length);
+                              //print(snapshot.data!.docs.length);
                               return Column(
                                 children: snapshot.data!.docs
                                     .map((e) => Padding(
@@ -346,7 +364,7 @@ class MainView extends StatelessWidget {
                                                   TravelHistoryModel
                                                       .fromRawJson(
                                                           jsonEncode(e.data()));
-                                              // print(history.status);
+
                                               return Container(
                                                 padding: EdgeInsets.symmetric(
                                                     vertical: 10,
@@ -362,7 +380,7 @@ class MainView extends StatelessWidget {
                                                     children: [
                                                       TextNormalTittle(
                                                         text:
-                                                            "Book Information - ${history.createdAt?.split('T')[0]}",
+                                                            "Book Information - ${history.createdAt?.split('T')[0]} ${history.createdAt?.split('T')[1].split('.')[0]}",
                                                         textColor:
                                                             constants.primary2,
                                                       ),
@@ -464,7 +482,7 @@ class MainView extends StatelessWidget {
                                                                             10),
                                                               ),
                                                               child: Text(
-                                                                  "${history.status!.substring(0, 12)}...."),
+                                                                  "${history.status!.length > 12 ? history.status!.substring(0, 12) + '....' : history.status!}"),
                                                             ),
                                                           ),
                                                           Column(
@@ -579,9 +597,10 @@ class MainView extends StatelessWidget {
                                                   TravelHistoryModel
                                                       .fromRawJson(
                                                           jsonEncode(e.data()));
-
+                                              travel.uid= e.id;
                                               return TravelDetails(
                                                   user: user,
+                                                  update: false,
                                                   travelHistory: travel);
                                             },
                                           ),
@@ -599,7 +618,7 @@ class MainView extends StatelessWidget {
                             if (!snapshot.hasData) {
                               return Text('No Data');
                             } else {
-                              print(snapshot.data!.docs.length);
+                              //print(snapshot.data!.docs.length);
                               return Column(
                                 children: snapshot.data!.docs
                                     .map((e) => Padding(
@@ -611,7 +630,7 @@ class MainView extends StatelessWidget {
                                                   TravelHistoryModel
                                                       .fromRawJson(
                                                           jsonEncode(e.data()));
-                                              // print(history.status);
+                                              // //print(history.status);
                                               return Container(
                                                 padding: EdgeInsets.symmetric(
                                                     vertical: 10,
@@ -847,6 +866,7 @@ class MainView extends StatelessWidget {
 
                                               return TravelDetails(
                                                   user: user,
+                                                  update: false,
                                                   travelHistory: travel);
                                             },
                                           ),
@@ -860,7 +880,4 @@ class MainView extends StatelessWidget {
     );
   }
 
-  void updateTravel(UserModel userModel, String? uid) async {
-    await Firestore().updateTravel(userModel: userModel, uid: uid!);
-  }
 }

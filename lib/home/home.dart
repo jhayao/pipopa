@@ -16,6 +16,7 @@ import 'package:passit/firebase/auth.dart';
 import 'package:passit/login/login.dart';
 import '../components/PrimaryMainButtonDecorated.dart';
 import '../components/RouteStartEnd.dart';
+import '../start.dart';
 import 'main/MainView.dart';
 import 'profile/profileView.dart';
 
@@ -27,8 +28,8 @@ class HomePage extends StatelessWidget {
     final constants = Constants();
     final ctrl = Get.put(HomeController());
     final box = GetStorage();
-    // print("Logged User: ${box.read("logged_user")}");
-    // print('History : ${ctrl.travelHistory.value.}');
+    // //print("Logged User: ${box.read("logged_user")}");
+    // //print('History : ${ctrl.travelHistory.value.}');
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
@@ -47,7 +48,12 @@ class HomePage extends StatelessWidget {
             onPressed: () async {
               await Auth().signOut();
               if (Auth().currentuser == null) {
-                Get.to(LoginPage());
+                final box = GetStorage();
+                box.remove("logged_user");
+                box.erase();
+                Get.to(Start());
+                Get.deleteAll();
+                Get.reset();
               } else {}
               // do something
             },

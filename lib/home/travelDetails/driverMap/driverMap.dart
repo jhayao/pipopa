@@ -27,7 +27,7 @@ class DriverMapPage extends StatelessWidget {
     final constants = Constants();
 
     final ctrl = Get.put(controller.DriverMapController(travelHistory));
-    print(travelHistory.startPoint!.displayName);
+    //print(travelHistory.startPoint!.displayName);
     return Scaffold(
       body: Stack(
         children: [

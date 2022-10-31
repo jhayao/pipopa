@@ -239,8 +239,8 @@ class MapController extends GetxController {
                             lat.value.toString(), long.value.toString());
                         // placemarks[0].
 
-                        // print("Address : ${add.country} ${add.city}");
-                        print(temp.address!.toJson());
+                        // //print("Address : ${add.country} ${add.city}");
+                        //print(temp.address!.toJson());
                         startLocation = LocationModel(
                             address: temp.address,
                             displayName: temp.displayName!,
@@ -321,7 +321,7 @@ class MapController extends GetxController {
 
   void setMyDestination(double _long, double _lat, String address) {
     try {
-      // print("Address $address");
+      // //print("Address $address");
       endPoint = LatLong.LatLng(_lat, _long);
       endAddress.value = address;
       destinationMarkers.value.clear();
@@ -420,9 +420,9 @@ class MapController extends GetxController {
         .then((value) {
       value.docs.map((travel) {
         var data = travel.data();
-        // print("Data Lenght : ${value.docs.length}");
-        print("Data ${data['lat']} ${data['long']}");
-        print("CPOS: ${cpos!.latitude} , ${cpos.longitude}");
+        // //print("Data Lenght : ${value.docs.length}");
+        //print("Data ${data['lat']} ${data['long']}");
+        //print("CPOS: ${cpos!.latitude} , ${cpos.longitude}");
         var test = calculateDistance(
             cpos!.latitude, cpos.longitude, data['lat'], data['long']);
         if (test <= 0.2) {
@@ -710,7 +710,7 @@ class MapController extends GetxController {
             endPoint: endLocation,
             routes: myRoute.value,
             status: "Pending Ride"));
-    // print("Travel History : ${travelHistory.value.first.status}");
+    // //print("Travel History : ${travelHistory.value.first.status}");
     Get.back();
     Get.back();
   }
