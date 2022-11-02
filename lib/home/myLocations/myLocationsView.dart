@@ -46,9 +46,9 @@ class MyLocationsView extends StatelessWidget {
               height: 20,
             ),
             user.account_type == 'Driver'
-                ? TextNormal(text: "My Passenger:", textColor: Colors.grey)
+                ? TextNormal(text: "Travel Logs:", textColor: Colors.grey)
                 : TextNormal(
-                    text: "My favorite locations:", textColor: Colors.grey),
+                    text: "Travel Logs:", textColor: Colors.grey),
             SizedBox(
               height: 20,
             ),
