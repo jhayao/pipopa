@@ -10,6 +10,10 @@ import '../utils/constants.dart';
 class Firestore {
   Future<void> createUser({required UserModel user}) async {
     final userDoc = FirebaseFirestore.instance.collection('users').doc(user.id);
+    if (user.name == null)
+      {
+        user.name = user.fname! + ' ' + user.mname! + '' + user.lname!;
+      }
     return await userDoc.set({
       "name": user.name,
       'phone': user.phone,
@@ -45,7 +49,7 @@ class Firestore {
         .doc(uid)
         .get()
         .then((value) {
-      //print("VALUE GETUSER ${value.data()?["accountStatus"]}");
+      print("VALUE GETUSER ${value.data()?["plateNumber"]}");
       var user = UserModel();
       user.id = value.id;
       user.email = value.data()?["email"];
@@ -61,8 +65,12 @@ class Firestore {
       user.fname = value.data()?['fname'];
       user.bdate = value.data()?['bdate'];
       user.gender = value.data()?['gender'];
+      print("Plate Number: ${user.plate}");
       final box = GetStorage();
-      //print(user.toJson().toString());
+      print(user.toJson().toString());
+      box.write("plate", user.plate);
+      box.write("bday", user.bdate);
+      box.write('gender', user.gender);
       box.write("logged_user", user.toJson());
       //print("plate: ${user.plate}");
     });

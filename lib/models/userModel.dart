@@ -73,13 +73,14 @@ class UserModel {
         "email": email,
         "numberId": numberId,
         "accountStatus": accountStatus,
-        "picture": picture,
         "password": password,
         "accountType": account_type,
         "plate": plate,
         "gender": gender,
         "fname": fname,
         "mname": mname,
-        "lname": lname
+        "lname": lname,
+        'bdate': bdate,
+        "picture": picture,
       };
 }

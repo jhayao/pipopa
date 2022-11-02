@@ -35,7 +35,7 @@ class LoginController extends GetxController {
         await Firestore().getUser(uid: user!.uid);
         // var users = UserModel();
         user2 = UserModel.fromJson(box.read("logged_user"));
-
+        print("user model: ${user2.toJson()}");
         if (user2?.accountStatus != null ) Get.to(() => const HomePage());
         else {
           Get.snackbar(

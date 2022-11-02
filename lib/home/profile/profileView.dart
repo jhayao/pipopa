@@ -9,6 +9,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:passit/components/TextHeader.dart';
 import 'package:passit/components/TextNormal.dart';
 import 'package:passit/components/TextNormalTittle.dart';
@@ -33,8 +34,11 @@ class ProfileView extends StatelessWidget {
     final constants = Constants();
     var users = UserModel().obs;
     final box = GetStorage();
+    final plate = box.read("plate");
+    final bday = box.read("bday");
+    final gender = box.read("gender");
     users.value = UserModel.fromJson(box.read("logged_user"));
-
+    print("users.value.plate : ${users.value.toJson()}");
     //print(users.value.picture);
     return Stack(
       children: [
@@ -75,28 +79,31 @@ class ProfileView extends StatelessWidget {
                               var filename = image.name;
                               if (image != null) {
                                 //Upload to Firebase
-                                Get.dialog(
-                                  Padding(
+                                Get.dialog(Padding(
                                     padding: const EdgeInsets.all(15.0),
-                                    child: Obx(() => new LinearPercentIndicator(
-                                      width: MediaQuery.of(context).size.width - 50,
-                                      animation: true,
-                                      lineHeight: 30.0,
-                                      animationDuration: 1000,
-                                      percent: users.value.progress==null ? 0 : users.value.progress!/100,
-                                      center:  Obx(() =>Text("${users.value.progress != null ? users.value.progress!.toStringAsFixed(0) : '0'}%")),
-                                      barRadius: const Radius.circular(16),
-                                      progressColor: Colors.purpleAccent,
-                                    ),
-                                  ))
-                                    );
+                                    child: Obx(
+                                      () => new LinearPercentIndicator(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                50,
+                                        animation: true,
+                                        lineHeight: 30.0,
+                                        animationDuration: 1000,
+                                        percent: users.value.progress == null
+                                            ? 0
+                                            : users.value.progress! / 100,
+                                        center: Obx(() => Text(
+                                            "${users.value.progress != null ? users.value.progress!.toStringAsFixed(0) : '0'}%")),
+                                        barRadius: const Radius.circular(16),
+                                        progressColor: Colors.purpleAccent,
+                                      ),
+                                    )));
                                 var snapshot = await _firebaseStorage
                                     .ref()
                                     .child('images/$filename')
                                     .putFile(file)
                                     .snapshotEvents
                                     .listen((taskSnapshot) {
-
                                   switch (taskSnapshot.state) {
                                     case TaskState.running:
                                       final progress = 100.0 *
@@ -104,7 +111,7 @@ class ProfileView extends StatelessWidget {
                                               taskSnapshot.totalBytes);
                                       //print("Upload is $progress% complete.");
                                       users.value.progress = progress;
-                                      users.update((val) { });
+                                      users.update((val) {});
                                       break;
                                     case TaskState.paused:
                                       // ...
@@ -117,10 +124,11 @@ class ProfileView extends StatelessWidget {
                                           .getDownloadURL()
                                           .then((downloadUrl) {
                                         users.value.picture = downloadUrl;
-                                        print("Users Data : ${users.value.toJson()}");
-                                        box.write('logged_user', users.value.toJson());
+
+                                        box.write('logged_user',
+                                            users.value.toJson());
                                         users.update((val) {});
-                                        // users.
+                                        print("User ID: ${users.value.id}");
                                         FirebaseFirestore.instance
                                             .collection('users')
                                             .doc(user.id)
@@ -160,7 +168,16 @@ class ProfileView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TextHeader(text: user.name ?? ''),
+                            TextHeader(
+                                text: user.lname!=null? (toBeginningOfSentenceCase(user.lname!)! +
+                                            ' ' +
+                                            toBeginningOfSentenceCase(
+                                                user.fname!)! +
+                                            ' ' +
+                                            toBeginningOfSentenceCase(
+                                                user.mname!)!) +
+                                        '.' : user.name != null ? user.name! :
+                                    ''),
                             SizedBox(
                               height: 5,
                             ),
@@ -210,31 +227,65 @@ class ProfileView extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 15),
-                        // TextNormal(
-                        //   text: users.value.account_type != 'Driver' ? 'Identity card' : 'Plate number',
-                        //   textColor: Colors.grey,
-                        // ),
-                        // SizedBox(height: 5),
-                        // Row(
-                        //   children: [
-                        //     Icon(users.value.account_type != 'Driver' ? UniconsLine.user_square : UniconsLine.car),
-                        //     SizedBox(width: 5),
-                        //     TextNormalTittle(
-                        //       text: users.value.plate == null ? '' : users.value.plate!,
-                        //       textColor: Colors.black,
-                        //     )
-                        //   ],
-                        // ),
+                        Visibility(
+                          visible: user.account_type == 'Driver',
+                          child: TextNormal(
+                            text: 'Plate number',
+                            textColor: Colors.grey,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Icon(UniconsLine.car),
+                            SizedBox(width: 5),
+                            TextNormalTittle(
+                              text: plate == null
+                                  ? ''
+                                  : plate!,
+                              textColor: Colors.black,
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        TextNormal(
+                          text: "Birthday",
+                          textColor: Colors.grey,
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Icon(Icons.calendar_month),
+                            SizedBox(width: 5),
+                            TextNormalTittle(
+                              text: bday ?? '',
+                              textColor: Colors.black,
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        TextNormal(
+                          text: "Gender",
+                          textColor: Colors.grey,
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Icon(Icons.people),
+                            SizedBox(width: 5),
+                            TextNormalTittle(
+                              text: gender ?? '',
+                              textColor: Colors.black,
+                            )
+                          ],
+                        ),
                       ],
                     ))
               ],
             ),
           ),
         ),
-
       ],
     );
   }
-
-
 }
