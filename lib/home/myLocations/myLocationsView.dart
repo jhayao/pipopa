@@ -105,7 +105,7 @@ class MyLocationsView extends StatelessWidget {
                                   children: [
                                     TextNormalTittle(
                                       text:
-                                      "Book Information - ${history.createdAt?.split('T')[0]}",
+                                      "Book Information - ${history.createdAt?.split('T')[0]} ${history.createdAt?.split('T')[1].split('.')[0]}",
                                       textColor:
                                       constants.primary2,
                                     ),
@@ -138,17 +138,17 @@ class MyLocationsView extends StatelessWidget {
                                                 margin: EdgeInsets
                                                     .only(
                                                     right: 5),
-                                                child: ExtendedImage.network(
-                                                    (history.driver ==
-                                                        null &&
-                                                        history.driver!.picture ==
-                                                            null)
-                                                        ? "https://images.pexels.com/photos/428361/pexels-photo-428361.jpeg?auto=compress&cs=tinysrgb&w=600"
-                                                        : history
-                                                        .driver!
-                                                        .picture!,
-                                                    fit: BoxFit
-                                                        .cover),
+                                                // child: ExtendedImage.network(
+                                                //     (history.driver ==
+                                                //         null &&
+                                                //         history.driver!.picture.isNull)
+                                                //         ? "https://images.pexels.com/photos/428361/pexels-photo-428361.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                                //         : history
+                                                //         .driver!
+                                                //         .picture!,
+                                                //     fit: BoxFit
+                                                //         .cover),
+                                                child: ExtendedImage.network(history.driver!.picture ?? 'https://images.pexels.com/photos/428361/pexels-photo-428361.jpeg?auto=compress&cs=tinysrgb&w=600'),
                                               ),
                                               Column(
                                                 crossAxisAlignment:
