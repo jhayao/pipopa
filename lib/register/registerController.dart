@@ -73,10 +73,19 @@ class RegisterController extends GetxController {
       if (Auth().currentuser != null) {
         try {
           user.id = Auth().currentuser!.uid;
+          if (user.account_type == null)
+            {
+              user.account_type = "Driver";
+            }
           await Firestore().createUser(user: user);
 
           final box = GetStorage();
           box.write("logged_user", user.toJson());
+          box.write("plate", user.plate);
+          box.write("bday", user.bdate);
+          box.write('gender', user.gender);
+          // box.write("logged_user", user.toJson());
+          box.write('travelDetails', 'false');
           Get.to(const PhoneConfirmationPage());
         } catch (e) {
           //print("Error while trying to register the user $e");
