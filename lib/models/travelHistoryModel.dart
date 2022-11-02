@@ -34,6 +34,9 @@ class TravelHistoryModel {
 
   factory TravelHistoryModel.fromJson(Map<String, dynamic> json) =>
       TravelHistoryModel(
+        currentLocation: json["endPoint"] == null
+      ? null
+              : LocationModel.fromJson(json["endPoint"]),
         driver:
             json["driver"] == null ? null : UserModel.fromJson(json["driver"]),
         passenger: json["passenger"] == null

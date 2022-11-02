@@ -7,8 +7,8 @@ import '../utils/constants.dart';
 import 'TextNormal.dart';
 import 'TextNormalTittle.dart';
 
-class RouteStartEnd extends StatelessWidget {
-  const RouteStartEnd({
+class RouteStartEnd2 extends StatefulWidget {
+  const RouteStartEnd2({
     Key? key,
     required this.constants,
     this.start,
@@ -18,6 +18,17 @@ class RouteStartEnd extends StatelessWidget {
   final Constants constants;
   final LocationModel? start;
   final LocationModel? end;
+
+  @override
+  State<RouteStartEnd2> createState() => _RouteStartEnd2State();
+}
+
+class _RouteStartEnd2State extends State<RouteStartEnd2> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +43,7 @@ class RouteStartEnd extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: CircleAvatar(
-                  backgroundColor: constants.primary2,
+                  backgroundColor: widget.constants.primary2,
                 ),
               ),
             ),
@@ -56,7 +67,7 @@ class RouteStartEnd extends StatelessWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: TextNormalTittle(
-                    text: start?.displayName ?? "Current Location",
+                    text: widget.start?.displayName ?? "Current Location",
                     textColor: Colors.black.withOpacity(0.8)),
               ),
             ),
@@ -72,7 +83,7 @@ class RouteStartEnd extends StatelessWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: TextNormalTittle(
-                    text: end?.displayName ?? "Cacuaco - Luanda - Angola",
+                    text: widget.end?.displayName ?? "Cacuaco - Luanda - Angola",
                     textColor: Colors.black.withOpacity(0.8)),
               ),
             ),

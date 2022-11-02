@@ -164,7 +164,7 @@ class DriverMapController extends GetxController {
                 ),
                 TextButton.icon(
                   onPressed: () {
-                    if (Get.isDialogOpen ?? false) {
+                    if (Get.isDialogOpen ?? false ) {
                       Get.back();
                     }
                   },
@@ -183,12 +183,16 @@ class DriverMapController extends GetxController {
         ),
       );
 
-      var res = await Requests().GetRoutes(startPoint, endPoint);
+      var res = await Requests().GetRoutes(startPoint, endPoint).then((value) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+      });
       myRoute.value = res;
-
       if (Get.isDialogOpen ?? false) {
         Get.back();
       }
+
 
       if (res.routes.isNotEmpty) {
         List<PointLatLng> result =

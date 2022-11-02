@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:passit/home/homeController.dart';
+import 'package:passit/home/travelDetails/accidentDetails.dart';
 import 'package:passit/home/travelDetails/travelDetails.dart';
 import 'package:passit/map/mapPage.dart';
 import 'package:passit/models/travelHistoryModel.dart';
@@ -18,7 +19,10 @@ import '../../components/TextNormal.dart';
 import '../../components/TextNormalBolded.dart';
 import '../../components/TextNormalTittle.dart';
 import '../../firebase/firestore.dart';
+import '../../map/mapController.dart';
+import '../../models/locationModels.dart';
 import '../../models/userModel.dart';
+import '../../server/requests.dart';
 import '../../utils/constants.dart';
 import '../myLocations/myLocationsView.dart';
 
@@ -311,9 +315,6 @@ class MainView extends StatelessWidget {
                                         },
                                         openBuilder: (context, action) {
 
-                                          print("Datas $datas");
-                                          // print("Action $context");
-
 
                                            TravelHistoryModel travel =
                                           TravelHistoryModel.fromRawJson(
@@ -321,16 +322,12 @@ class MainView extends StatelessWidget {
                                           travel.uid = e.id;
                                           final box = GetStorage();
                                           String updateDetails = box.read('travelDetails') == null ? 'false' : box.read('travelDetails');
-                                          print("Update Details $updateDetails");
-                                          if(updateDetails != 'true')
-                                            {
-                                              Firestore().updateTravel(
-                                                  userModel: user, uid: e.id,status: 'The driver is on the way');
-                                              box.write('travelDetails', 'true');
-                                            }
 
+                                           Firestore().updateTravel(
+                                               userModel: user, uid: e.id,status: 'The driver is on the way');
                                           return TravelDetails(
                                             user: user,
+                                            catchs: true,
                                             update: true,
                                             travelHistory: travel,
                                           );
@@ -347,6 +344,7 @@ class MainView extends StatelessWidget {
                           stream: FirebaseFirestore.instance
                               .collection('travel_history')
                               .where('passenger.id', isEqualTo: user.id)
+                              .where('status', isNotEqualTo: 'Completed')
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
@@ -598,10 +596,12 @@ class MainView extends StatelessWidget {
                                                       .fromRawJson(
                                                           jsonEncode(e.data()));
                                               travel.uid= e.id;
+                                              print("UID: ${e.id}");
                                               return TravelDetails(
                                                   user: user,
                                                   update: false,
-                                                  travelHistory: travel);
+                                                  travelHistory: travel,
+                                              catchs: false,);
                                             },
                                           ),
                                         ))
@@ -864,7 +864,9 @@ class MainView extends StatelessWidget {
                                                       .fromRawJson(
                                                           jsonEncode(e.data()));
 
-                                              return TravelDetails(
+                                               print("Travel Details start: ${travel.startPoint}");
+                                               travel.uid = e.id;
+                                              return AccidentDetails(
                                                   user: user,
                                                   update: false,
                                                   travelHistory: travel);
@@ -879,5 +881,7 @@ class MainView extends StatelessWidget {
           ))),
     );
   }
+
+
 
 }

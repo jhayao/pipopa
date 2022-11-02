@@ -21,11 +21,19 @@ import '../home.dart';
 
 class TravelDetails extends StatelessWidget {
   const TravelDetails(
-      {super.key, required this.travelHistory, required this.user, required this.update});
+      {super.key,
+      required this.travelHistory,
+      required this.user,
+      required this.update, required this.catchs});
 
   final TravelHistoryModel travelHistory;
   final UserModel user;
   final bool update;
+  final bool catchs;
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -355,22 +363,40 @@ class TravelDetails extends StatelessWidget {
                                 btnCancelOnPress: () {},
                                 dismissOnTouchOutside: true,
                                 btnOkOnPress: () async {
-                                  await Firestore()
-                                      .cancelBooking(travelHistory.uid)
-                                      .then((value) => AwesomeDialog(
+                                  if (catchs != 'True')
+                                    {
+                                      await Firestore()
+                                          .cancelBooking(travelHistory.uid)
+                                          .then((value) => AwesomeDialog(
                                           context: context,
                                           dialogType: DialogType.success,
                                           animType: AnimType.bottomSlide,
                                           title: 'Success',
                                           desc:
-                                              'Booking successfully cancelled',
+                                          'Booking successfully cancelled',
                                           btnCancelOnPress: () {},
                                           dismissOnTouchOutside: true,
                                           btnOkOnPress: () async {},
                                           onDismissCallback: (type) {
+                                            Firestore().updateTravel2(uid: travelHistory.uid!, status: 'Pending');
                                             Get.back();
                                           })
                                         ..show());
+                                    }
+                                  else
+                                    {
+                                      AwesomeDialog(
+                                          context: context,
+                                          dialogType: DialogType.info,
+                                          animType: AnimType.bottomSlide,
+                                          title: 'Information',
+                                          desc: "Can't cancelled booking here try again on Travel Logs",
+                                          btnCancelOnPress: () {},
+                                          dismissOnTouchOutside: true,
+                                          btnOkOnPress: () async {},
+                                          onDismissCallback: (type) {})
+                                        ..show();
+                                    }
                                 },
                                 onDismissCallback: (type) {})
                               ..show();
@@ -501,63 +527,78 @@ class TravelDetails extends StatelessWidget {
                       importance: '1');
                   travelHistory.currentLocation = currentLocation;
                   // //print(travelHistory.currentLocation!.displayName);
-                  await Firestore().setEmergency(travelHistory);
+                  await Firestore()
+                      .setEmergency(travelHistory)
+                      .then((value) => AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.success,
+                          animType: AnimType.bottomSlide,
+                          title: 'Success',
+                          desc: 'SOS Request have sent',
+                          // btnCancelOnPress: () {},
+                          dismissOnTouchOutside: true,
+                          btnOkOnPress: () async {},
+                          onDismissCallback: (type) {
+                            Get.back();
+                          })
+                        ..show());
                 }
-
-                // travelHistory.currentLocation =
-                //
               },
               backgroundColor: Colors.red,
               child: Icon(Icons.sos),
             )),
-        Positioned(
-            top: Get.height / 14,
-            right: 20,
-            child: FloatingActionButton(
-              onPressed: () async {
-                //print("Cancel");
-                AwesomeDialog(
-                    context: context,
-                    dialogType: DialogType.warning,
-                    animType: AnimType.bottomSlide,
-                    title: 'Warning',
-                    btnOkText: 'Confirm',
-                    desc:
-                        'This will cancel the booking and will affect your rating',
-                    btnCancelOnPress: () {},
-                    dismissOnTouchOutside: true,
-                    btnOkOnPress: () async {
-                      var result = await Firestore().cancelDriver(travelHistory.uid).whenComplete(() => AwesomeDialog(
-                          context: context,
-                          dialogType: DialogType.warning,
-                          animType: AnimType.bottomSlide,
-                          title: 'Success',
-                          desc:
-                          'We have notified the passenger for the cancellation',
-                          // btnCancelOnPress: () {},
-                          dismissOnTouchOutside: true,
-                          btnOkOnPress: () async {},
-
-                          onDismissCallback: (type) {
-                            box.write('travelDetails', 'true');
-                            Get.back();
-                            // Get.to(() => const HomePage());
-                            // Get.to(Start());
-                          })
-                        ..show());
-                      //print('result $result');
-                    },
-                    onDismissCallback: (type) {
-                      // Get.back();
-                    })
-                  ..show();
-                // travelHistory.currentLocation =
-                //
-              },
-              backgroundColor: Colors.red,
-              tooltip: "Cancel Booking",
-              child: Icon(Icons.cancel),
-            )),
+        Visibility(
+          visible: !catchs,
+          child: Positioned(
+              top: Get.height / 14,
+              right: 20,
+              child: FloatingActionButton(
+                onPressed: () async {
+                  //print("Cancel");
+                  AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.warning,
+                      animType: AnimType.bottomSlide,
+                      title: 'Warning',
+                      btnOkText: 'Confirm',
+                      desc:
+                          'This will cancel the booking and will affect your rating',
+                      btnCancelOnPress: () {},
+                      dismissOnTouchOutside: true,
+                      btnOkOnPress: () async {
+                        var result = await Firestore()
+                            .cancelDriver(travelHistory.uid)
+                            .whenComplete(() => AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.warning,
+                                animType: AnimType.bottomSlide,
+                                title: 'Success',
+                                desc:
+                                    'We have notified the passenger for the cancellation',
+                                // btnCancelOnPress: () {},
+                                dismissOnTouchOutside: true,
+                                btnOkOnPress: () async {},
+                                onDismissCallback: (type) {
+                                  box.write('travelDetails', 'true');
+                                  Get.back();
+                                  // Get.to(() => const HomePage());
+                                  // Get.to(Start());
+                                })
+                              ..show());
+                        //print('result $result');
+                      },
+                      onDismissCallback: (type) {
+                        // Get.back();
+                      })
+                    ..show();
+                  // travelHistory.currentLocation =
+                  //
+                },
+                backgroundColor: Colors.red,
+                tooltip: "Cancel Booking",
+                child: Icon(Icons.cancel),
+              )),
+        ),
       ],
     );
   }

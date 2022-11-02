@@ -72,6 +72,7 @@ class Firestore {
       box.write("bday", user.bdate);
       box.write('gender', user.gender);
       box.write("logged_user", user.toJson());
+      box.write('travelDetails', 'false');
       //print("plate: ${user.plate}");
     });
   }
@@ -295,10 +296,26 @@ class Firestore {
   Future<void> setEmergency(TravelHistoryModel travel) async {
     try {
       var doc = await FirebaseFirestore.instance.collection('accidents');
-      var json = travel.toJson();
       travel.status = "Active";
+      var json = travel.toJson();
+
       //print(travel.currentLocation!.displayName);
-      doc.add(json).then((value) {});
+      // doc.add(json).then((value) {});
+      doc.doc(travel.uid).set(json,SetOptions(merge:true));
+    } catch (e) {
+      // return e.toString();
+      //print(e.toString());
+    }
+  }
+
+  Future<void> updateEmergency(TravelHistoryModel travel) async {
+    try {
+      var doc = await FirebaseFirestore.instance.collection('accidents');
+      // var json = travel.toJson();
+      // travel.status = "Rescued";
+      //print(travel.currentLocation!.displayName);
+      // doc.add(json).then((value) {});
+      doc.doc(travel.uid).update({'status' : 'Rescued'});
     } catch (e) {
       // return e.toString();
       //print(e.toString());
