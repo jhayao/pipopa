@@ -41,7 +41,6 @@ class _AccidentDetailsState extends State<AccidentDetails> {
   void initState() {
     super.initState();
     // print("INIT");
-
   }
 
   Future<LocationModel> setStartLocation() async {
@@ -80,7 +79,8 @@ class _AccidentDetailsState extends State<AccidentDetails> {
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               }
-              print("travel history endpoint : ${widget.travelHistory.endPoint!.toJson()}");
+              print(
+                  "travel history endpoint : ${widget.travelHistory.endPoint!.toJson()}");
               start = snapshot.data;
               hist.startPoint = start;
               hist.endPoint = widget.travelHistory.endPoint;
@@ -96,7 +96,8 @@ class _AccidentDetailsState extends State<AccidentDetails> {
                     width: Get.width,
                     height: Get.height,
                     color: Colors.grey.shade100,
-                    child: DriverMapPage(travelHistory: widget.travelHistory,user: widget.user),
+                    child: DriverMapPage(
+                        travelHistory: widget.travelHistory, user: widget.user),
                   ),
                   Positioned(
                       bottom: 0,
@@ -212,6 +213,90 @@ class _AccidentDetailsState extends State<AccidentDetails> {
                                             ),
                                           )
                                         ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: SizedBox(
+                                          width: Get.width / 2 - 20,
+                                          child: Material(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Colors.red,
+                                            child: InkWell(
+                                              onTap: () async {
+                                                AwesomeDialog(
+                                                  context: context,
+                                                  animType: AnimType.scale,
+                                                  dialogType: DialogType.info,
+                                                  body: Center(
+                                                    child: Column(
+                                                        children: <Widget>[
+                                                          Text(
+                                                            'Passenger name : ${widget.travelHistory.passenger!.name ?? widget.travelHistory.passenger!.lname! + ' ' + widget.travelHistory.passenger!.fname! + ' ' + widget.travelHistory.passenger!.mname!}',
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .normal),
+                                                          ),
+                                                          SizedBox(height: 10,),
+                                                          Text(
+                                                            'Passenger contact : ${widget.travelHistory.passenger!.phone ?? 'NA'}',
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontStyle:
+                                                                FontStyle
+                                                                    .normal),
+                                                          ),
+                                                          SizedBox(height: 10,),
+                                                          Text(
+                                                            'Driver name : ${widget.travelHistory.driver != null ? widget.travelHistory.driver!.name ?? widget.travelHistory.driver!.lname! + ' ' + widget.travelHistory.driver!.fname! + ' ' + widget.travelHistory.driver!.mname! : 'Not available'}',
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .normal),
+                                                          ),
+                                                          SizedBox(height: 10,),
+                                                          Text(
+                                                            'Driver contact : ${widget.travelHistory.driver != null ? widget.travelHistory.driver!.phone ?? 'NA' : 'NA'}',
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontStyle:
+                                                                FontStyle
+                                                                    .normal),
+                                                          ),
+                                                          SizedBox(height: 10,),
+                                                        ]),
+                                                  ),
+                                                  title: 'This is Ignored',
+                                                  desc: 'This is also Ignored',
+                                                  btnOkOnPress: () {},
+                                                )..show();
+                                              },
+                                              child: Visibility(
+                                                visible: true,
+                                                // visible: true,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(17),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        "Victims",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 15),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),

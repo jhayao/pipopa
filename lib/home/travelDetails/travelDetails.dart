@@ -552,7 +552,7 @@ class TravelDetails extends StatelessWidget {
               )),
         ),
         Visibility(
-          visible: !catchs && travelHistory.status != 'Completed',
+          visible: (!catchs && travelHistory.status != 'Completed') || user.account_type == 'Driver',
           child: Positioned(
               top: Get.height / 14,
               right: 20,
