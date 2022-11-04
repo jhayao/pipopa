@@ -303,9 +303,8 @@ class MainView extends StatelessWidget {
                                                   TravelHistoryModel
                                                       .fromRawJson(
                                                           jsonEncode(e.data()));
-                                              print("DRIVER DETAILS : ${e.get('driver')}");
-                                              UserModel driver = UserModel.fromJson(e.get('driver'));
-                                              print("DRIVER: ${driver.plate}");
+
+
                                               return Container(
                                                 padding: EdgeInsets.symmetric(
                                                     vertical: 10,
