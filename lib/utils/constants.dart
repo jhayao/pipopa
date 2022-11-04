@@ -68,13 +68,13 @@ class Constants {
   {
     double fare = 0;
 
-    if(number < 2)
+    if(number <= 2.5)
       {
         fare = 15;
       }
     else
       {
-        fare = number * 7.5;
+        fare = (number-2.5) * 5 + 15;
       }
     return fare;
   }

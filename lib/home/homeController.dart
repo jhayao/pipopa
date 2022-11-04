@@ -112,21 +112,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void getCurrentLocation() async {
-    ////print("User Details : ${user.value.id}");
     final userLocation = FirebaseFirestore.instance.collection('locations').doc(user.value.id);
-  ////print("USER DETAILS ${user.value.account_type}");
     await MapController().determinePosition();
     streamSubcrition =
         Geolocator.getPositionStream().listen((Position cur) async {
-      // var temp = await Requests()
-      //     .SearchLocations2(cur.latitude.toString(), cur.longitude.toString());
-      // var currentLocations = LocationModel(
-      //     address: temp.address,
-      //     displayName: temp.displayName!,
-      //     lat: cur.latitude.toString(),
-      //     lon: cur.longitude.toString(),
-      //     importance: '1');
-      // myLocation = currentLocations;
       await userLocation.set({
         'lat' : cur.latitude,
         'long' : cur.longitude,

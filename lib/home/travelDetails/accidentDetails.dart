@@ -321,7 +321,7 @@ class _AccidentDetailsState extends State<AccidentDetails> {
                                 child: InkWell(
                                   onTap: () async {
                                     await Requests().launchURL(start,
-                                        widget.travelHistory.currentLocation);
+                                        widget.travelHistory.endPoint);
                                   },
                                   child: Visibility(
                                     visible: true,
