@@ -73,7 +73,7 @@ class RegisterPage extends StatelessWidget {
                       onChanged: (value) {
                         ctrl.user.account_type = value;
                         type.value.account_type = value;
-                        print("ctrl.user")
+                        print("ctrl.user");
                         if (value == 'Driver') {
                           type.value.label = "Plate number";
                         } else {
