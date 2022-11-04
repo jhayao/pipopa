@@ -41,13 +41,13 @@ class MapPage extends StatelessWidget {
                     mapPosition.center;
                   },
                   onLongPress: (position, latlng) async {
-                    //print("Long press");
+                    ////print("Long press");
                     LatLong.LatLng temp = latlng;
                     ctrl.endLocation = await Requests().SearchLocations2(
                         temp.latitude.toString(), temp.longitude.toString());
                     ctrl.setMyDestination(temp.longitude, temp.latitude,
                         ctrl.endLocation.displayName!);
-                    //print("My Locations ${ctrl.endLocation.displayName}");
+                    ////print("My Locations ${ctrl.endLocation.displayName}");
                   },
                   center: LatLong.LatLng(ctrl.lat.value, ctrl.long.value),
                   // zoom: 13.0,
@@ -270,7 +270,7 @@ class MapPage extends StatelessWidget {
                                     onTap: () async {
                                       // var result =
                                       //     await Firestore().storeTravel(travel: travelHistory.value[0]);
-                                      // //print("ERROR?: $result");
+                                      // ////print("ERROR?: $result");
                                     },
                                     child: Row(
                                       mainAxisAlignment:
@@ -421,8 +421,9 @@ class MapPage extends StatelessWidget {
       ),
       floatingActionButton:
       Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
+          mainAxisAlignment: MainAxisAlignment.center,
+        // crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
             FloatingActionButton(
               backgroundColor: constants.primary1,
               child: Icon(
@@ -442,11 +443,14 @@ class MapPage extends StatelessWidget {
             FloatingActionButton(
               backgroundColor: constants.primary1,
               onPressed: ctrl.showDialog,
+              elevation: 6.0,
               heroTag: null,
+
               child: Icon(UniconsLine.location_pin_alt),
             ),
+
           ]
-      )
+      ),
 
 
     );

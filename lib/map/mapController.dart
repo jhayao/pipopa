@@ -115,6 +115,7 @@ class MapController extends GetxController {
       // continue accessing the position of the device.
       return await Geolocator.getCurrentPosition();
     } catch (e) {
+      //print("Error: ${e.toString()}");
       Get.snackbar("Error determining position.",
           "Please make sure your GPS is active and your internet connection. $e",
           duration: Duration(seconds: 10), colorText: Colors.black);
@@ -239,8 +240,8 @@ class MapController extends GetxController {
                             lat.value.toString(), long.value.toString());
                         // placemarks[0].
 
-                        // //print("Address : ${add.country} ${add.city}");
-                        //print(temp.address!.toJson());
+                        // ////print("Address : ${add.country} ${add.city}");
+                        ////print(temp.address!.toJson());
                         startLocation = LocationModel(
                             address: temp.address,
                             displayName: temp.displayName!,
@@ -321,7 +322,7 @@ class MapController extends GetxController {
 
   void setMyDestination(double _long, double _lat, String address) {
     try {
-      // //print("Address $address");
+      // ////print("Address $address");
       endPoint = LatLong.LatLng(_lat, _long);
       endAddress.value = address;
       destinationMarkers.value.clear();
@@ -420,9 +421,9 @@ class MapController extends GetxController {
         .then((value) {
       value.docs.map((travel) {
         var data = travel.data();
-        // //print("Data Lenght : ${value.docs.length}");
-        //print("Data ${data['lat']} ${data['long']}");
-        //print("CPOS: ${cpos!.latitude} , ${cpos.longitude}");
+        // ////print("Data Lenght : ${value.docs.length}");
+        ////print("Data ${data['lat']} ${data['long']}");
+        ////print("CPOS: ${cpos!.latitude} , ${cpos.longitude}");
         var test = calculateDistance(
             cpos!.latitude, cpos.longitude, data['lat'], data['long']);
         if (test <= 0.2) {
@@ -455,46 +456,7 @@ class MapController extends GetxController {
 
   void getCordinates() async {
     try {
-      Get.dialog(
-        Container(
-          width: Get.width,
-          height: Get.height,
-          child: Material(
-            color: Colors.transparent,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Loading Locations",
-                  style: TextStyle(color: Colors.white),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                TextButton.icon(
-                  onPressed: () {
-                    if (Get.isDialogOpen ?? false) {
-                      Get.back();
-                    }
-                  },
-                  icon: Icon(Icons.cancel_outlined),
-                  label: Text(
-                    "Cancel",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  style: TextButton.styleFrom(
-                      surfaceTintColor: Colors.red,
-                      foregroundColor: Colors.red),
-                )
-              ],
-            ),
-          ),
-        ),
-      );
+
 
       var res = await Requests().GetRoutes(startPoint, endPoint);
       myRoute.value = res;
@@ -710,7 +672,7 @@ class MapController extends GetxController {
             endPoint: endLocation,
             routes: myRoute.value,
             status: "Pending Ride"));
-    // //print("Travel History : ${travelHistory.value.first.status}");
+    // ////print("Travel History : ${travelHistory.value.first.status}");
     Get.back();
     Get.back();
   }

@@ -71,13 +71,15 @@ class RegisterPage extends StatelessWidget {
                           : type.value.account_type!,
                       horizontalAlignment: MainAxisAlignment.spaceAround,
                       onChanged: (value) {
+                        ctrl.user.account_type = value;
                         type.value.account_type = value;
+                        print("ctrl.user")
                         if (value == 'Driver') {
                           type.value.label = "Plate number";
                         } else {
                           type.value.label = "Identity card";
                         }
-                        // //print(type.value.account_type );
+                        // ////print(type.value.account_type );
                         type.update((val) {});
                       },
                       items: _status,
@@ -168,7 +170,7 @@ class RegisterPage extends StatelessWidget {
                 ),
                 TextButtonDecorated(
                   onclick: ctrl.phoneConfirmation,
-                  // onclick: () {print(ctrl.user.toJson());},
+                  // onclick: () {//print(ctrl.user.toJson());},
                   text: constants.texts['create_acc'],
                 ),
                 SizedBox(

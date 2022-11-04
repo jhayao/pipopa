@@ -88,13 +88,13 @@ class RegisterController extends GetxController {
           box.write('travelDetails', 'false');
           Get.to(const PhoneConfirmationPage());
         } catch (e) {
-          //print("Error while trying to register the user $e");
+          ////print("Error while trying to register the user $e");
         }
       } else {
-        //print("Could not log in...");
+        ////print("Could not log in...");
       }
     } on FirebaseAuthException catch (e) {
-      //print("Couldn't log in to catch... ${e.code}");
+      ////print("Couldn't log in to catch... ${e.code}");
       Get.snackbar("ERROR!", "${e.message}",
           colorText: Colors.black, duration: Duration(seconds: 10));
       return;

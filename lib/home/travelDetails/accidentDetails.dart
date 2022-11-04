@@ -40,6 +40,8 @@ class _AccidentDetailsState extends State<AccidentDetails> {
   @override
   void initState() {
     super.initState();
+    // print("INIT");
+
   }
 
   Future<LocationModel> setStartLocation() async {
@@ -53,7 +55,7 @@ class _AccidentDetailsState extends State<AccidentDetails> {
           lat: cur.latitude.toString(),
           lon: cur.longitude.toString(),
           importance: '1');
-      print("Current Location ${currentLocation.displayName}");
+      // print("Current Location ${currentLocation.displayName}");
       return currentLocation;
     }
     return LocationModel();
@@ -78,20 +80,23 @@ class _AccidentDetailsState extends State<AccidentDetails> {
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               }
+              print("travel history endpoint : ${widget.travelHistory.endPoint!.toJson()}");
               start = snapshot.data;
               hist.startPoint = start;
-              hist.endPoint = widget.travelHistory.currentLocation;
-              print(
-                  "Travel History StartPoint : ${widget.travelHistory.startPoint!.toJson()}");
-              print(
-                  "Travel History Endpoint : ${widget.travelHistory.endPoint!.toJson()}");
+              hist.endPoint = widget.travelHistory.endPoint;
+              // print(
+              //     "Travel History StartPoint : ${widget.travelHistory.startPoint!.toJson()}");
+              // print(
+              //     "Travel History Endpoint : ${widget.travelHistory.endPoint!.toJson()}");
+              // // print("HIST DATA = ${widget.travelHistory.driver!.toJson()}");
+              // print("hist id ${hist.uid}");
               return Stack(
                 children: [
                   Container(
                     width: Get.width,
                     height: Get.height,
                     color: Colors.grey.shade100,
-                    child: DriverMapPage(travelHistory: hist),
+                    child: DriverMapPage(travelHistory: widget.travelHistory,user: widget.user),
                   ),
                   Positioned(
                       bottom: 0,
@@ -128,8 +133,9 @@ class _AccidentDetailsState extends State<AccidentDetails> {
                                   ),
                                   RouteStartEnd(
                                     constants: constants,
+                                    test: true,
                                     start: start,
-                                    end: widget.travelHistory.currentLocation,
+                                    end: widget.travelHistory.endPoint,
                                   ),
                                   Divider(),
                                   Row(

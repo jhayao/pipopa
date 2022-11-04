@@ -33,17 +33,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   void openMap() async {
     lastTravelLegnth = travelHistory.length;
-    // //print(lastTravelLegnth);
-    //print("Last Travel Lenght : $lastTravelLegnth");
+    // ////print(lastTravelLegnth);
+    ////print("Last Travel Lenght : $lastTravelLegnth");
 
     await Get.to(() => MapPage(), arguments: [travelHistory]);
     updater.value = updater.value + 1;
-    // //print("travelHistory : ${travelHistory.length}");
+    // ////print("travelHistory : ${travelHistory.length}");
     if (lastTravelLegnth < travelHistory.length) {
-      // //print("Travel History : ${travelHistory.value[0].status}");
+      // ////print("Travel History : ${travelHistory.value[0].status}");
       var result =
           await Firestore().storeTravel(travel: travelHistory.value.first);
-      //print("ERROR?: $result");
+      ////print("ERROR?: $result");
 
       // save();
     }
@@ -60,7 +60,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void save() async {
     box.write("myFavs",
         jsonEncode(favTravelHistory.value.map((e) => e.toJson()).toList()));
-    // //print("MYFAVS : ${box.read("myFavs")}");
+    // ////print("MYFAVS : ${box.read("myFavs")}");
     await Firestore().storeFav(travel: favTravelHistory.last);
   }
 
@@ -68,7 +68,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void onInit() async {
     tabController = TabController(length: 3, vsync: this);
     tabController.addListener(navigate);
-    //print("CurrentTab: ${currentTab.toString()}");
+    ////print("CurrentTab: ${currentTab.toString()}");
     super.onInit();
 
     final mainCtrl = Get.put(MainController());
@@ -76,16 +76,16 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     mainCtrl.showNotifications();
 
     user.value = UserModel.fromJson(box.read("logged_user"));
-    //print("LOGGED USER HOME CONTROLLER: ${box.read("logged_user")}");
-    //print("User Value ${user.value.plate}");
+    ////print("LOGGED USER HOME CONTROLLER: ${box.read("logged_user")}");
+    ////print("User Value ${user.value.plate}");
     // travelHistory.value.clear();
     if (user.value.account_type != 'Driver') {
       travelHistory.value = await Firestore().getTravels(user.value, (error) {
-        //print("HISTORY ERROR $error");
+        ////print("HISTORY ERROR $error");
       });
     } else {
       travelHistory.value = await Firestore().getBooking(user.value, (error) {
-        //print("Get Booking ERROR $error");
+        ////print("Get Booking ERROR $error");
       });
     }
 
@@ -99,7 +99,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           .toList();
     }
     favTravelHistory.value = await Firestore().getTravels(user.value, (error) {
-      //print("HISTORY ERROR $error");
+      ////print("HISTORY ERROR $error");
     });
     getCurrentLocation();
   }
@@ -112,9 +112,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void getCurrentLocation() async {
-    //print("User Details : ${user.value.id}");
+    ////print("User Details : ${user.value.id}");
     final userLocation = FirebaseFirestore.instance.collection('locations').doc(user.value.id);
-  //print("USER DETAILS ${user.value.account_type}");
+  ////print("USER DETAILS ${user.value.account_type}");
     await MapController().determinePosition();
     streamSubcrition =
         Geolocator.getPositionStream().listen((Position cur) async {

@@ -20,6 +20,7 @@ class Start extends StatelessWidget {
   Widget build(BuildContext context) {
     final ctrl = Get.put(MainController());
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Pipopa',
       theme: ThemeData(
         primarySwatch: Colors.green,

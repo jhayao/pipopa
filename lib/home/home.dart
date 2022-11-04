@@ -28,8 +28,8 @@ class HomePage extends StatelessWidget {
     final constants = Constants();
     final ctrl = Get.put(HomeController());
     final box = GetStorage();
-    // //print("Logged User: ${box.read("logged_user")}");
-    // //print('History : ${ctrl.travelHistory.value.}');
+    // ////print("Logged User: ${box.read("logged_user")}");
+    // ////print('History : ${ctrl.travelHistory.value.}');
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(

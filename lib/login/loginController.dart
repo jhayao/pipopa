@@ -30,12 +30,12 @@ class LoginController extends GetxController {
       if (Auth().currentuser != null) {
         UserModel? user2 = UserModel();
         var user = Auth().currentuser;
-        //print("User Phone Number: ${user!.phoneNumber}");
+        ////print("User Phone Number: ${user!.phoneNumber}");
 
         await Firestore().getUser(uid: user!.uid);
         // var users = UserModel();
         user2 = UserModel.fromJson(box.read("logged_user"));
-        print("user model: ${user2.toJson()}");
+        //print("user model: ${user2.toJson()}");
         if (user2?.accountStatus != null ) Get.to(() => const HomePage());
         else {
           Get.snackbar(
@@ -45,7 +45,7 @@ class LoginController extends GetxController {
         }
       }
     } catch (e) {
-      //print("ERRORs ${e.toString()}");
+      ////print("ERRORs ${e.toString()}");
       Get.snackbar(
           "ERROR!", "Username and password do not match. Check and try again",
           colorText: Colors.black);

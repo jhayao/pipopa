@@ -12,15 +12,17 @@ class RouteStartEnd extends StatelessWidget {
     Key? key,
     required this.constants,
     this.start,
-    this.end,
+    this.end, this.test,
   }) : super(key: key);
 
   final Constants constants;
   final LocationModel? start;
   final LocationModel? end;
+  final bool? test;
 
   @override
   Widget build(BuildContext context) {
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -56,7 +58,7 @@ class RouteStartEnd extends StatelessWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: TextNormalTittle(
-                    text: start?.displayName ?? "Current Location",
+                    text: test==null ? (start?.displayName ?? "Current Location") : "Current Location" ,
                     textColor: Colors.black.withOpacity(0.8)),
               ),
             ),

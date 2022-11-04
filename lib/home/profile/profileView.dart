@@ -38,8 +38,8 @@ class ProfileView extends StatelessWidget {
     final bday = box.read("bday");
     final gender = box.read("gender");
     users.value = UserModel.fromJson(box.read("logged_user"));
-    print("users.value.plate : ${users.value.toJson()}");
-    //print(users.value.picture);
+    //print("users.value.plate : ${users.value.toJson()}");
+    ////print(users.value.picture);
     return Stack(
       children: [
         Container(
@@ -61,7 +61,7 @@ class ProfileView extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            //print("CLICKED");
+                            ////print("CLICKED");
                             final _firebaseStorage = FirebaseStorage.instance;
                             final _imagePicker = ImagePicker();
                             XFile? image;
@@ -109,7 +109,7 @@ class ProfileView extends StatelessWidget {
                                       final progress = 100.0 *
                                           (taskSnapshot.bytesTransferred /
                                               taskSnapshot.totalBytes);
-                                      //print("Upload is $progress% complete.");
+                                      ////print("Upload is $progress% complete.");
                                       users.value.progress = progress;
                                       users.update((val) {});
                                       break;
@@ -128,7 +128,7 @@ class ProfileView extends StatelessWidget {
                                         box.write('logged_user',
                                             users.value.toJson());
                                         users.update((val) {});
-                                        print("User ID: ${users.value.id}");
+                                        //print("User ID: ${users.value.id}");
                                         FirebaseFirestore.instance
                                             .collection('users')
                                             .doc(user.id)
@@ -147,7 +147,7 @@ class ProfileView extends StatelessWidget {
                                   }
                                 });
                               } else {
-                                //print('No Image Path Received');
+                                ////print('No Image Path Received');
                               }
                             } else {
                               print(

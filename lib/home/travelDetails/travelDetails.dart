@@ -38,7 +38,7 @@ class TravelDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final constants = Constants();
-    // //print(travelHistory.startPoint!.displayName);
+    // ////print(travelHistory.startPoint!.displayName);
     final box = GetStorage();
 
     return Stack(
@@ -47,7 +47,7 @@ class TravelDetails extends StatelessWidget {
           width: Get.width,
           height: Get.height,
           color: Colors.grey.shade100,
-          child: DriverMapPage(travelHistory: travelHistory),
+          child: DriverMapPage(travelHistory: travelHistory,user: user,),
         ),
         Positioned(
             bottom: 0,
@@ -205,7 +205,7 @@ class TravelDetails extends StatelessWidget {
               ),
             )),
         Visibility(
-          visible: user.account_type == 'Driver',
+          visible: user.account_type == 'Driver' && travelHistory.status != 'Completed',
           child: Positioned(
               bottom: 0,
               child: Row(children: <Widget>[
@@ -254,7 +254,7 @@ class TravelDetails extends StatelessWidget {
                       color: Colors.green,
                       child: InkWell(
                         onTap: () async {
-                          //print("travelHistory.uid ${travelHistory.status}");
+                          ////print("travelHistory.uid ${travelHistory.status}");
                           if (travelHistory.status != "Completed")
                             AwesomeDialog(
                               context: context,
@@ -352,7 +352,7 @@ class TravelDetails extends StatelessWidget {
                       child: InkWell(
                         onTap: () async {
                           if (travelHistory.driver == null) {
-                            // //print(travelHistory.uid);
+                            // ////print(travelHistory.uid);
                             AwesomeDialog(
                                 context: context,
                                 dialogType: DialogType.warning,
@@ -444,7 +444,7 @@ class TravelDetails extends StatelessWidget {
                       color: Colors.green,
                       child: InkWell(
                         onTap: () async {
-                          //print("Rate");
+                          ////print("Rate");
                           Get.dialog(RatingDialog(
                             initialRating: 1.0,
                             // your app's name?
@@ -471,10 +471,10 @@ class TravelDetails extends StatelessWidget {
                             submitButtonText: 'Submit',
                             commentHint: 'Set your custom comment hint',
                             onCancelled: () => print('cancelled'),
-                            onSubmitted: (response) {
+                            onSubmitted: (response) async{
                               print(
                                   'rating: ${response.rating}, comment: ${response.comment}');
-
+                              await Firestore().storeRate(travelHistory.uid!, response.rating.toString(), response.comment);
                               // TODO: add your own logic
                               if (response.rating < 3.0) {
                                 // send their comments to your email or anywhere you wish
@@ -508,53 +508,56 @@ class TravelDetails extends StatelessWidget {
                 ),
               ])),
         ),
-        Positioned(
-            top: (Get.height / 2) - 100,
-            right: 20,
-            child: FloatingActionButton(
-              onPressed: () async {
-                var cur = await MapController().determinePosition();
-                if (cur != null) {
-                  //print(cur.latitude.toString());
-                  var temp = await Requests().SearchLocations2(
-                      cur.latitude.toString(), cur.longitude.toString());
-                  // //print("Temp ${temp.displayName}");
-                  var currentLocation = LocationModel(
-                      address: temp.address,
-                      displayName: temp.displayName!,
-                      lat: cur.latitude.toString(),
-                      lon: cur.longitude.toString(),
-                      importance: '1');
-                  travelHistory.currentLocation = currentLocation;
-                  // //print(travelHistory.currentLocation!.displayName);
-                  await Firestore()
-                      .setEmergency(travelHistory)
-                      .then((value) => AwesomeDialog(
-                          context: context,
-                          dialogType: DialogType.success,
-                          animType: AnimType.bottomSlide,
-                          title: 'Success',
-                          desc: 'SOS Request have sent',
-                          // btnCancelOnPress: () {},
-                          dismissOnTouchOutside: true,
-                          btnOkOnPress: () async {},
-                          onDismissCallback: (type) {
-                            Get.back();
-                          })
-                        ..show());
-                }
-              },
-              backgroundColor: Colors.red,
-              child: Icon(Icons.sos),
-            )),
         Visibility(
-          visible: !catchs,
+          visible: travelHistory.status != 'Completed',
+          child: Positioned(
+              top: (Get.height / 2) - 100,
+              right: 20,
+              child: FloatingActionButton(
+                onPressed: () async {
+                  var cur = await MapController().determinePosition();
+                  if (cur != null) {
+                    ////print(cur.latitude.toString());
+                    var temp = await Requests().SearchLocations2(
+                        cur.latitude.toString(), cur.longitude.toString());
+                    // ////print("Temp ${temp.displayName}");
+                    var currentLocation = LocationModel(
+                        address: temp.address,
+                        displayName: temp.displayName!,
+                        lat: cur.latitude.toString(),
+                        lon: cur.longitude.toString(),
+                        importance: '1');
+                    travelHistory.currentLocation = currentLocation;
+                    // ////print(travelHistory.currentLocation!.displayName);
+                    await Firestore()
+                        .setEmergency(travelHistory)
+                        .then((value) => AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.success,
+                            animType: AnimType.bottomSlide,
+                            title: 'Success',
+                            desc: 'SOS Request have sent',
+                            // btnCancelOnPress: () {},
+                            dismissOnTouchOutside: true,
+                            btnOkOnPress: () async {},
+                            onDismissCallback: (type) {
+                              Get.back();
+                            })
+                          ..show());
+                  }
+                },
+                backgroundColor: Colors.red,
+                child: Icon(Icons.sos),
+              )),
+        ),
+        Visibility(
+          visible: !catchs && travelHistory.status != 'Completed',
           child: Positioned(
               top: Get.height / 14,
               right: 20,
               child: FloatingActionButton(
                 onPressed: () async {
-                  //print("Cancel");
+                  //print("Cancel ${catchs}  ${user.account_type}");
                   AwesomeDialog(
                       context: context,
                       dialogType: DialogType.warning,
@@ -585,7 +588,7 @@ class TravelDetails extends StatelessWidget {
                                   // Get.to(Start());
                                 })
                               ..show());
-                        //print('result $result');
+                        ////print('result $result');
                       },
                       onDismissCallback: (type) {
                         // Get.back();

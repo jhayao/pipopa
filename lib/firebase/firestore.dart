@@ -49,7 +49,7 @@ class Firestore {
         .doc(uid)
         .get()
         .then((value) {
-      print("VALUE GETUSER ${value.data()?["plateNumber"]}");
+      //print("VALUE GETUSER ${value.data()?["plateNumber"]}");
       var user = UserModel();
       user.id = value.id;
       user.email = value.data()?["email"];
@@ -65,24 +65,24 @@ class Firestore {
       user.fname = value.data()?['fname'];
       user.bdate = value.data()?['bdate'];
       user.gender = value.data()?['gender'];
-      print("Plate Number: ${user.plate}");
+      //print("Plate Number: ${user.plate}");
       final box = GetStorage();
-      print(user.toJson().toString());
+      //print(user.toJson().toString());
       box.write("plate", user.plate);
       box.write("bday", user.bdate);
       box.write('gender', user.gender);
       box.write("logged_user", user.toJson());
       box.write('travelDetails', 'false');
-      //print("plate: ${user.plate}");
+      ////print("plate: ${user.plate}");
     });
   }
 
   Future<String?> storeTravel({required TravelHistoryModel travel}) async {
     try {
       var doc = await FirebaseFirestore.instance.collection('travel_history');
-      //print(travel.status);
+      ////print(travel.status);
       var json = travel.toJson();
-      // //print(json)
+      // ////print(json)
       doc.add(json).then((value) {});
     } catch (e) {
       return e.toString();
@@ -133,6 +133,22 @@ class Firestore {
           .then((value) => mail(payment));
     } catch (e) {
       return e.toString();
+    }
+  }
+
+  Future<String?> storeRate(String uids, String rating, String comment) async {
+
+  print("UID:$uids");
+    try {
+    var doc = await FirebaseFirestore.instance.collection('travel_history');
+    doc
+        .doc(uids)
+        .set({'star' : rating, 'comment' : comment},SetOptions(merge: true))
+        .then((value) => print("Success"))
+        .onError((error, stackTrace) => print(error));
+    // doc.add(json).then((value) {});
+    } catch (e) {
+    return e.toString();
     }
   }
 
@@ -192,7 +208,7 @@ class Firestore {
     List<TravelHistoryModel> travels = [];
     try {
       var doc = await FirebaseFirestore.instance.collection('travel_history');
-      //print("Get Travel ${user.email} ${user.phone}");
+      ////print("Get Travel ${user.email} ${user.phone}");
       await doc
           .orderBy('createdAt', descending: true)
           .where('passenger.email', isEqualTo: user.email)
@@ -210,7 +226,7 @@ class Firestore {
         onError(e.toString());
       }
     }
-    // //print("Travel Data : ${travels.first.toString()}");
+    // ////print("Travel Data : ${travels.first.toString()}");
     return travels;
   }
 
@@ -226,14 +242,14 @@ class Firestore {
           .where('driver', isNull: true)
           .get()
           .then((value) {
-        //print(value.docs.length);
+        ////print(value.docs.length);
         travels = value.docs.map((travel) {
           var data = travel.data();
-          // //print(data.toString());
+          // ////print(data.toString());
 
           data['uid'] = travel.id;
-          // //print("Data String: ${data.toString()}");
-          //print('Data UID: ${data.runtimeType}');
+          // ////print("Data String: ${data.toString()}");
+          ////print('Data UID: ${data.runtimeType}');
           //   //
           return TravelHistoryModel.fromJson2(data, travel.id);
           //   // return null;
@@ -244,7 +260,7 @@ class Firestore {
         onError(e.toString());
       }
     }
-    // //print("Travel Data : ${travels.first.uid.toString()}");
+    // ////print("Travel Data : ${travels.first.uid.toString()}");
     return travels;
   }
 
@@ -255,7 +271,7 @@ class Firestore {
     List<TravelHistoryModel> travels = [];
     try {
       var doc = await FirebaseFirestore.instance.collection('favTravel');
-      //print("Get Travel ${user.email} ${user.phone}");
+      ////print("Get Travel ${user.email} ${user.phone}");
       await doc
           .orderBy('createdAt', descending: true)
           .where('passenger.email', isEqualTo: user.email)
@@ -273,7 +289,7 @@ class Firestore {
         onError(e.toString());
       }
     }
-    //print("Travel Data : ${travels.first.toString()}");
+    ////print("Travel Data : ${travels.first.toString()}");
     return travels;
   }
 
@@ -287,9 +303,9 @@ class Firestore {
         'userid': user.id,
         'userEmail': user.email
       }).then((value) => print(value));
-      //print("ADDED");
+      ////print("ADDED");
     } catch (e) {
-      //print("${e.toString()}");
+      ////print("${e.toString()}");
     }
   }
 
@@ -299,12 +315,12 @@ class Firestore {
       travel.status = "Active";
       var json = travel.toJson();
 
-      //print(travel.currentLocation!.displayName);
+      ////print(travel.currentLocation!.displayName);
       // doc.add(json).then((value) {});
       doc.doc(travel.uid).set(json,SetOptions(merge:true));
     } catch (e) {
       // return e.toString();
-      //print(e.toString());
+      ////print(e.toString());
     }
   }
 
@@ -313,12 +329,12 @@ class Firestore {
       var doc = await FirebaseFirestore.instance.collection('accidents');
       // var json = travel.toJson();
       // travel.status = "Rescued";
-      //print(travel.currentLocation!.displayName);
+      ////print(travel.currentLocation!.displayName);
       // doc.add(json).then((value) {});
       doc.doc(travel.uid).update({'status' : 'Rescued'});
     } catch (e) {
       // return e.toString();
-      //print(e.toString());
+      ////print(e.toString());
     }
   }
 }

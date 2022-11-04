@@ -46,7 +46,7 @@ class MainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int counter = 0;
-    // //print(user.id);
+    // ////print(user.id);
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Obx((() => Container(
@@ -70,7 +70,7 @@ class MainView extends StatelessWidget {
                   ),
                   TextNormal(
                     text:
-                        "${user.account_type == 'cdrrmo' ? "Active Accidents" : ' Booking History:'}",
+                        "${user.account_type == 'cdrrmo' ? "Active Accidents" : ' Booking:'}",
                     textColor: Colors.grey,
                   ),
                   SizedBox(
@@ -88,7 +88,7 @@ class MainView extends StatelessWidget {
                         if (!snapshot.hasData) {
                           return Text('No Data');
                         } else {
-                          //print(snapshot.data!.docs.length);
+                          ////print(snapshot.data!.docs.length);
                           return Column(
                             children: snapshot.data!.docs
                                 .map((e) => Padding(
@@ -99,6 +99,8 @@ class MainView extends StatelessWidget {
                                           TravelHistoryModel history =
                                               TravelHistoryModel.fromRawJson(
                                                   jsonEncode(e.data()));
+
+
                                           return Container(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 10, horizontal: 2),
@@ -246,68 +248,7 @@ class MainView extends StatelessWidget {
                                                   SizedBox(
                                                     height: 10,
                                                   ),
-                                                  user.account_type == 'Diver'
-                                                      ? Row(
-                                                          children: [
-                                                            Expanded(
-                                                              flex: 8,
-                                                              child: SizedBox(
-                                                                child: Material(
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .primaryColor
-                                                                      .withOpacity(
-                                                                          0.5),
-                                                                  elevation: 0,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              5),
-                                                                  child:
-                                                                      InkWell(
-                                                                    onTap: () {
-                                                                      ctrl.favTravelHistory
-                                                                          .add(
-                                                                              history);
 
-                                                                      ctrl.currentTab
-                                                                          .value = 1;
-
-                                                                      ctrl.save();
-                                                                    },
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: EdgeInsets.symmetric(
-                                                                          horizontal:
-                                                                              10,
-                                                                          vertical:
-                                                                              10),
-                                                                      child:
-                                                                          Row(
-                                                                        children: [
-                                                                          Icon(
-                                                                            Icons.star,
-                                                                            color:
-                                                                                Colors.green,
-                                                                          ),
-                                                                          SizedBox(
-                                                                            width:
-                                                                                10,
-                                                                          ),
-                                                                          Text(
-                                                                            "Pick up passenger",
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            // Expanded( flex : 1,child: SizedBox( width: 10,)),
-                                                          ],
-                                                        )
-                                                      : SizedBox.shrink()
                                                 ],
                                               ),
                                             ),
@@ -350,7 +291,7 @@ class MainView extends StatelessWidget {
                             if (!snapshot.hasData) {
                               return Text('No Data');
                             } else {
-                              //print(snapshot.data!.docs.length);
+                              ////print(snapshot.data!.docs.length);
                               return Column(
                                 children: snapshot.data!.docs
                                     .map((e) => Padding(
@@ -362,7 +303,9 @@ class MainView extends StatelessWidget {
                                                   TravelHistoryModel
                                                       .fromRawJson(
                                                           jsonEncode(e.data()));
-
+                                              print("DRIVER DETAILS : ${e.get('driver')}");
+                                              UserModel driver = UserModel.fromJson(e.get('driver'));
+                                              print("DRIVER: ${driver.plate}");
                                               return Container(
                                                 padding: EdgeInsets.symmetric(
                                                     vertical: 10,
@@ -436,7 +379,7 @@ class MainView extends StatelessWidget {
                                                                       text: history
                                                                               .driver
                                                                               ?.name ??
-                                                                          'ad',
+                                                                          '',
                                                                       textColor: Colors
                                                                           .black
                                                                           .withOpacity(
@@ -449,10 +392,22 @@ class MainView extends StatelessWidget {
                                                                       text: history.driver != null &&
                                                                               history.driver!.plate != null
                                                                           ? "Plate number: ${history.driver!.plate!}"
-                                                                          : '',
+                                                                          : 'aaa',
                                                                       textColor:
                                                                           constants
                                                                               .primary2,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 5,
+                                                                    ),
+                                                                    TextNormal(
+                                                                      text: history.driver != null &&
+                                                                          history.driver!.phone != null
+                                                                          ? "Phone: ${history.driver!.phone!}"
+                                                                          : 'aaa',
+                                                                      textColor:
+                                                                      constants
+                                                                          .primary2,
                                                                     ),
                                                                   ],
                                                                 )
@@ -525,7 +480,7 @@ class MainView extends StatelessWidget {
                                                         height: 10,
                                                       ),
                                                       user.account_type ==
-                                                              'Diver'
+                                                              'Driver'
                                                           ? Row(
                                                               children: [
                                                                 Expanded(
@@ -596,12 +551,12 @@ class MainView extends StatelessWidget {
                                                       .fromRawJson(
                                                           jsonEncode(e.data()));
                                               travel.uid= e.id;
-                                              print("UID: ${e.id}");
+                                              //print("UID: ${e.id}");
                                               return TravelDetails(
                                                   user: user,
                                                   update: false,
                                                   travelHistory: travel,
-                                              catchs: false,);
+                                              catchs: true,);
                                             },
                                           ),
                                         ))
@@ -618,7 +573,7 @@ class MainView extends StatelessWidget {
                             if (!snapshot.hasData) {
                               return Text('No Data');
                             } else {
-                              //print(snapshot.data!.docs.length);
+                              ////print(snapshot.data!.docs.length);
                               return Column(
                                 children: snapshot.data!.docs
                                     .map((e) => Padding(
@@ -630,7 +585,9 @@ class MainView extends StatelessWidget {
                                                   TravelHistoryModel
                                                       .fromRawJson(
                                                           jsonEncode(e.data()));
-                                              // //print(history.status);
+                                              //print(history.currentLocation!.displayName);
+                                              LocationModel cur = LocationModel.fromJson(e.get('currentLocation'));
+
                                               return Container(
                                                 padding: EdgeInsets.symmetric(
                                                     vertical: 10,
@@ -646,7 +603,7 @@ class MainView extends StatelessWidget {
                                                     children: [
                                                       TextNormalTittle(
                                                         text:
-                                                            "Book Information - ${history.createdAt?.split('T')[0]}",
+                                                            "Accident Information - ${history.createdAt?.split('T')[0]}",
                                                         textColor:
                                                             constants.primary2,
                                                       ),
@@ -682,48 +639,11 @@ class MainView extends StatelessWidget {
                                                                           right:
                                                                               5),
                                                                   child: ExtendedImage.network(
-                                                                      (history.driver == null ||
-                                                                              history.driver!.picture ==
-                                                                                  null)
-                                                                          ? "https://images.pexels.com/photos/428361/pexels-photo-428361.jpeg?auto=compress&cs=tinysrgb&w=600"
-                                                                          : history
-                                                                              .driver!
-                                                                              .picture!,
+                                                                      "https://e7.pngegg.com/pngimages/361/318/png-clipart-traffic-collision-bicycle-accident-bicycle-car-accident-car-accident-fitness.png",
                                                                       fit: BoxFit
                                                                           .cover),
                                                                 ),
-                                                                Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    TextNormalBolded(
-                                                                      text: history
-                                                                              .driver
-                                                                              ?.name ??
-                                                                          'ad',
-                                                                      textColor: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              0.8),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: 5,
-                                                                    ),
-                                                                    TextNormal(
-                                                                      text: history.driver != null &&
-                                                                              history.driver!.plate != null
-                                                                          ? "Plate number: ${history.driver!.plate!}"
-                                                                          : '',
-                                                                      textColor:
-                                                                          constants
-                                                                              .primary2,
-                                                                    ),
-                                                                  ],
-                                                                )
+
                                                               ],
                                                             ),
                                                           ),
@@ -784,75 +704,16 @@ class MainView extends StatelessWidget {
                                                         height: 10,
                                                       ),
                                                       RouteStartEnd(
+                                                        test: true,
                                                         constants: constants,
                                                         start:
                                                             history.startPoint,
-                                                        end: history.endPoint,
+                                                        end: cur,
                                                       ),
                                                       SizedBox(
                                                         height: 10,
                                                       ),
-                                                      user.account_type ==
-                                                              'Diver'
-                                                          ? Row(
-                                                              children: [
-                                                                Expanded(
-                                                                  flex: 8,
-                                                                  child:
-                                                                      SizedBox(
-                                                                    child:
-                                                                        Material(
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .primaryColor
-                                                                          .withOpacity(
-                                                                              0.5),
-                                                                      elevation:
-                                                                          0,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              5),
-                                                                      child:
-                                                                          InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          ctrl.favTravelHistory
-                                                                              .add(history);
 
-                                                                          ctrl.currentTab.value =
-                                                                              1;
-
-                                                                          ctrl.save();
-                                                                        },
-                                                                        child:
-                                                                            Padding(
-                                                                          padding: EdgeInsets.symmetric(
-                                                                              horizontal: 10,
-                                                                              vertical: 10),
-                                                                          child:
-                                                                              Row(
-                                                                            children: [
-                                                                              Icon(
-                                                                                Icons.star,
-                                                                                color: Colors.green,
-                                                                              ),
-                                                                              SizedBox(
-                                                                                width: 10,
-                                                                              ),
-                                                                              Text(
-                                                                                "Pick up passenger",
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                // Expanded( flex : 1,child: SizedBox( width: 10,)),
-                                                              ],
-                                                            )
-                                                          : SizedBox.shrink()
                                                     ],
                                                   ),
                                                 ),
@@ -864,8 +725,10 @@ class MainView extends StatelessWidget {
                                                       .fromRawJson(
                                                           jsonEncode(e.data()));
 
-                                               print("Travel Details start: ${travel.startPoint}");
+                                               // //print("Travel Details start: ${travel.startPoint}");
                                                travel.uid = e.id;
+                                               travel.endPoint = LocationModel.fromJson(e.get('currentLocation'));
+
                                               return AccidentDetails(
                                                   user: user,
                                                   update: false,

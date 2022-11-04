@@ -95,6 +95,7 @@ class DriverMapController extends GetxController {
         ),
       );
     } catch (e) {
+      //print("ERROR E1: ${e.toString()}");
       Get.snackbar("Erro ao determinar a posição.",
           "Please make sure your GPS is active and your internet connection. $e",
           duration: Duration(seconds: 10), colorText: Colors.black);
@@ -132,6 +133,8 @@ class DriverMapController extends GetxController {
           ),
         ),
       );
+
+
       getCordinates();
     } catch (e) {
       Get.snackbar("Error!.",
@@ -141,110 +144,94 @@ class DriverMapController extends GetxController {
   }
 
   void getCordinates() async {
+
+
     try {
-      Get.dialog(
-        Container(
-          width: Get.width,
-          height: Get.height,
-          child: Material(
-            color: Colors.transparent,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Loading Locations...",
-                  style: TextStyle(color: Colors.white),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                TextButton.icon(
-                  onPressed: () {
-                    if (Get.isDialogOpen ?? false ) {
-                      Get.back();
-                    }
-                  },
-                  icon: Icon(Icons.cancel_outlined),
-                  label: Text(
-                    "Cancel",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  style: TextButton.styleFrom(
-                      surfaceTintColor: Colors.red,
-                      foregroundColor: Colors.red),
-                )
-              ],
-            ),
-          ),
-        ),
-      );
+
+      
 
       var res = await Requests().GetRoutes(startPoint, endPoint).then((value) {
-        if (Get.isDialogOpen ?? false) {
-          Get.back();
-        }
-      });
-      myRoute.value = res;
-      if (Get.isDialogOpen ?? false) {
-        Get.back();
-      }
+
+        myRoute.value = value;
+        print("asddajdgd ${endPoint.toString()}");
+        if (value.routes.isNotEmpty) {
 
 
-      if (res.routes.isNotEmpty) {
-        List<PointLatLng> result =
-            PolylinePoints().decodePolyline(res.routes[0].geometry);
+          List<PointLatLng> result =
+          PolylinePoints().decodePolyline(value.routes[0].geometry);
+          print("Result ${result.first.toString()}");
+          final points =
+          result.map((e) => LatLong.LatLng(e.latitude, e.longitude)).toList();
+          print("POINTS: ${points.toString()}");
+          points.insert(0, startPoint);
+          points.add(endPoint);
 
-        final points =
-            result.map((e) => LatLong.LatLng(e.latitude, e.longitude)).toList();
+          polylines.value = [
+            TaggedPolyline(
+              tag: 'My Polyline',
+              // An optional tag to distinguish polylines in callback
+              points: points,
+              color: Constants().primary1.withOpacity(0.5),
+              strokeWidth: 6.0,
+            )
+          ];
 
-        points.insert(0, startPoint);
-        points.add(endPoint);
-
-        polylines.value = [
-          TaggedPolyline(
-            tag: 'My Polyline',
-            // An optional tag to distinguish polylines in callback
-            points: points,
-            color: Constants().primary1.withOpacity(0.5),
-            strokeWidth: 6.0,
-          )
-        ];
-      } else {
-        Get.dialog(Center(
-          child: Container(
-            child: Material(
-              child: Column(
-                children: [
-                  Text(
-                      "Ups! Houve um erro ao carregar as informações da rota.\n Verifique o estado da sua internet e tente novamente."),
-                  TextButton.icon(
-                    onPressed: getCordinates,
-                    icon: Icon(Icons.refresh),
-                    label: Text(
-                      "Tentar Novamente",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  )
-                ],
+        } else {
+          //print("NE DIALOG");
+          Get.dialog(Center(
+            child: Container(
+              child: Material(
+                child: Column(
+                  children: [
+                    Text(
+                        "Oops! There was an error loading the route information.\n Please check your internet status and try again."),
+                    TextButton.icon(
+                      onPressed: getCordinates,
+                      icon: Icon(Icons.refresh),
+                      label: Text(
+                        "Try again",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ));
-      }
+          ));
+        }
+
+
+
+
+      });
+      // //print("res ${startPoint()}  ${endPoint.toJson()} ");
+
+
+      //print("Testing");
+
+
+
+
     } catch (e) {
+      //print("ERROR E: ${e.toString()}");
       Get.snackbar("Erro ao determinar a posição.",
           "Please make sure your GPS is active and your internet connection. ",
           duration: Duration(seconds: 10), colorText: Colors.black);
     }
+    finally
+        {
+          //print("DIALOG IS OPEN? ${Get.isDialogOpen}");
+          if(Get.isDialogOpen ?? false)
+            {
+              // Get.back();
+            }
+        }
   }
 
   @override
   void onInit() async {
     super.onInit();
+    //print("RUNNED");
     await Future.delayed(const Duration(seconds: 3), () {
 //do something
     });
@@ -252,13 +239,23 @@ class DriverMapController extends GetxController {
         double.parse(travelHistory.startPoint!.lon!),
         double.parse(travelHistory.startPoint!.lat!),
         travelHistory.startPoint!.displayName!);
-
-    printError(info: "TESTE BSICO");
+    //printError(info: "TESTE BSICO");
 
     setMyDestination(
         double.parse(travelHistory.endPoint!.lon!),
         double.parse(travelHistory.endPoint!.lat!),
         travelHistory.endPoint!.displayName!);
-    //print("LOADING....");
+    ////print("LOADING....");
   }
+
+  @override
+  void onClose() async {
+    print("Close");
+    // Get.delete<DriverMapController>();
+  }
+  // @override
+  // void dispose() {
+  //   //print("Dispose");
+  //   Get.delete<DriverMapController>();
+  // }
 }

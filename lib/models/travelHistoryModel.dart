@@ -5,17 +5,17 @@ import 'package:passit/models/routesModel.dart';
 import 'package:passit/models/userModel.dart';
 
 class TravelHistoryModel {
-  TravelHistoryModel({
-    this.createdAt,
-    this.driver,
-    this.passenger,
-    this.startPoint,
-    this.endPoint,
-    this.routes,
-    this.status,
-    this.uid,
-    this.currentLocation
-  });
+  TravelHistoryModel(
+      {this.createdAt,
+      this.driver,
+      this.passenger,
+      this.startPoint,
+      this.endPoint,
+      this.routes,
+      this.status,
+      this.uid,
+      this.rate,
+      this.currentLocation});
 
   UserModel? driver;
   UserModel? passenger;
@@ -25,6 +25,7 @@ class TravelHistoryModel {
   String? createdAt;
   String? status;
   String? uid;
+  String? rate;
   LocationModel? currentLocation;
 
   factory TravelHistoryModel.fromRawJson(String str) =>
@@ -35,8 +36,8 @@ class TravelHistoryModel {
   factory TravelHistoryModel.fromJson(Map<String, dynamic> json) =>
       TravelHistoryModel(
         currentLocation: json["endPoint"] == null
-      ? null
-              : LocationModel.fromJson(json["endPoint"]),
+            ? null
+            : LocationModel.fromJson(json["endPoint"]),
         driver:
             json["driver"] == null ? null : UserModel.fromJson(json["driver"]),
         passenger: json["passenger"] == null
@@ -53,15 +54,16 @@ class TravelHistoryModel {
             : RoutesModel.fromJson(json["routes"]),
         createdAt:
             json["createdAt"] == null ? null : (json["createdAt"]).toString(),
-        status:
-          json["status"] == null ? null : (json["status"]).toString(),
+        status: json["status"] == null ? null : (json["status"]).toString(),
+        rate: json["star"] == null ? null : (json["star"]).toString(),
       );
 
-  factory TravelHistoryModel.fromJson2(Map<String, dynamic> json,String uids) =>
+  factory TravelHistoryModel.fromJson2(
+          Map<String, dynamic> json, String uids) =>
       TravelHistoryModel(
         uid: uids,
         driver:
-        json["driver"] == null ? null : UserModel.fromJson(json["driver"]),
+            json["driver"] == null ? null : UserModel.fromJson(json["driver"]),
         passenger: json["passenger"] == null
             ? null
             : UserModel.fromJson(json["passenger"]),
@@ -75,9 +77,8 @@ class TravelHistoryModel {
             ? null
             : RoutesModel.fromJson(json["routes"]),
         createdAt:
-        json["createdAt"] == null ? null : (json["createdAt"]).toString(),
-        status:
-        json["status"] == null ? null : (json["status"]).toString(),
+            json["createdAt"] == null ? null : (json["createdAt"]).toString(),
+        status: json["status"] == null ? null : (json["status"]).toString(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -87,7 +88,8 @@ class TravelHistoryModel {
         "endPoint": endPoint?.toJson(),
         "routes": routes?.toJson(),
         "createdAt": createdAt.toString(),
-        "status" : status.toString(),
-        "currentLocation" : currentLocation?.toJson()
+        "status": status.toString(),
+        "currentLocation": currentLocation?.toJson(),
+        "rate": rate.toString()
       };
 }

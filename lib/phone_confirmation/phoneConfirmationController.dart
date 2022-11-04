@@ -40,7 +40,7 @@ class PhoneConfirmationController extends GetxController {
           });
     }catch  (e)
     {
-        //print(e.toString());
+        ////print(e.toString());
     }
 
   }

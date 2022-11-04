@@ -59,7 +59,7 @@ class UserModel {
           picture: json["picture"],
           password: json["password"],
           account_type: json['accountType'],
-          plate: json['plateNumber'],
+          plate: json['plate'] ?? json['plateNumber'],
           gender: json['gender'],
           fname: json['fname'],
           mname: json['mname'],

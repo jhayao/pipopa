@@ -14,20 +14,20 @@ import 'package:latlong2/latlong.dart' as LatLong;
 import '../../../components/TextHeader.dart';
 import '../../../components/TextNormalBolded.dart';
 import '../../../models/travelHistoryModel.dart';
+import '../../../models/userModel.dart';
 import '../../../utils/constants.dart';
 import 'driverMapController.dart' as controller;
 
 class DriverMapPage extends StatelessWidget {
-  const DriverMapPage({Key? key, required this.travelHistory})
+  const DriverMapPage({Key? key, required this.travelHistory, required this.user})
       : super(key: key);
   final TravelHistoryModel travelHistory;
-
+  final UserModel user;
   @override
   Widget build(BuildContext context) {
     final constants = Constants();
-
+    Get.delete<controller.DriverMapController>();
     final ctrl = Get.put(controller.DriverMapController(travelHistory));
-    //print(travelHistory.startPoint!.displayName);
     return Scaffold(
       body: Stack(
         children: [
@@ -60,11 +60,18 @@ class DriverMapPage extends StatelessWidget {
                           double.parse(ctrl.travelHistory.startPoint!.lon!)),
                       builder: (ctx) => CircleAvatar(
                             backgroundColor:
-                                Constants().primary1.withOpacity(0.5),
+                            Constants().primary1.withOpacity(0.5),
                             child: Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: CircleAvatar(
-                                backgroundColor: Constants().primary1,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage:
+                                    user.account_type == 'cdrrmo' ?
+                                NetworkImage(
+                                    "https://firebasestorage.googleapis.com/v0/b/ustpthesis.appspot.com/o/images%2Fweb-161067659-removebg-preview.png?alt=media&token=80d7029b-b310-4af5-95c0-fc44ed5fc922")
+                                : NetworkImage(
+                                    "${travelHistory.driver!.picture == null ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Man_Driving_Car_Cartoon_Vector.svg/2560px-Man_Driving_Car_Cartoon_Vector.svg.png' : travelHistory.driver!.picture}"),
+                                  // radius: 50,
                               ),
                             ),
                           )),
@@ -81,6 +88,14 @@ class DriverMapPage extends StatelessWidget {
                               padding: const EdgeInsets.all(2.0),
                               child: CircleAvatar(
                                 backgroundColor: Constants().primary1,
+                                // radius: 50,
+                                backgroundImage:
+                                user.account_type == 'cdrrmo' ?
+                                    NetworkImage('https://e7.pngegg.com/pngimages/361/318/png-clipart-traffic-collision-bicycle-accident-bicycle-car-accident-car-accident-fitness.png')
+                                    : NetworkImage(
+                                    "${travelHistory.passenger!.picture == null ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Man_Driving_Car_Cartoon_Vector.svg/2560px-Man_Driving_Car_Cartoon_Vector.svg.png' : travelHistory.passenger!.picture}"),
+                                // radius: 50,
+
                               ),
                             ),
                           )),
