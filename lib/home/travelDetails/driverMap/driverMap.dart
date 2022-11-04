@@ -70,7 +70,7 @@ class DriverMapPage extends StatelessWidget {
                                 NetworkImage(
                                     "https://firebasestorage.googleapis.com/v0/b/ustpthesis.appspot.com/o/images%2Fweb-161067659-removebg-preview.png?alt=media&token=80d7029b-b310-4af5-95c0-fc44ed5fc922")
                                 : NetworkImage(
-                                    "${travelHistory.driver!.picture == null ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Man_Driving_Car_Cartoon_Vector.svg/2560px-Man_Driving_Car_Cartoon_Vector.svg.png' : travelHistory.driver!.picture}"),
+                                    "${ travelHistory.driver !=null ? travelHistory.driver!.picture == null ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Man_Driving_Car_Cartoon_Vector.svg/2560px-Man_Driving_Car_Cartoon_Vector.svg.png' : travelHistory.driver!.picture : 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Man_Driving_Car_Cartoon_Vector.svg/2560px-Man_Driving_Car_Cartoon_Vector.svg.png'}"),
                                   // radius: 50,
                               ),
                             ),

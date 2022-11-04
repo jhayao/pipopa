@@ -40,7 +40,8 @@ class TravelDetails extends StatelessWidget {
     final constants = Constants();
     // ////print(travelHistory.startPoint!.displayName);
     final box = GetStorage();
-
+    Future.delayed(const Duration(milliseconds: 500), () {
+    });
     return Stack(
       children: [
         Container(

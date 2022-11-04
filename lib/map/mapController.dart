@@ -461,9 +461,6 @@ class MapController extends GetxController {
       var res = await Requests().GetRoutes(startPoint, endPoint);
       myRoute.value = res;
 
-      if (Get.isDialogOpen ?? false) {
-        Get.back();
-      }
 
       if (res.routes.isNotEmpty) {
         List<PointLatLng> result =
@@ -673,7 +670,10 @@ class MapController extends GetxController {
             routes: myRoute.value,
             status: "Pending Ride"));
     // ////print("Travel History : ${travelHistory.value.first.status}");
-    Get.back();
+    if(Get.isDialogOpen ?? false)
+      {
+        Get.back();
+      }
     Get.back();
   }
 

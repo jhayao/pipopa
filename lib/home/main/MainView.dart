@@ -265,7 +265,7 @@ class MainView extends StatelessWidget {
                                           String updateDetails = box.read('travelDetails') == null ? 'false' : box.read('travelDetails');
 
                                            Firestore().updateTravel(
-                                               userModel: user, uid: e.id,status: 'The driver is on the way');
+                                               userModel: user, uid: e.id,status: 'The driver is on the way').then((value) => null);
                                           return TravelDetails(
                                             user: user,
                                             catchs: true,
