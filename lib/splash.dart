@@ -13,7 +13,8 @@ class Splash extends StatelessWidget {
       splash: Lottie.asset('assets/json/tri.json'),
       nextScreen: LoginPage(),
       duration: 3000,
-      splashIconSize: 700,
+      splashIconSize: double.maxFinite,
+
       splashTransition: SplashTransition.slideTransition,
     );
   }
