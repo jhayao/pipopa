@@ -84,7 +84,7 @@ class MyLocationsView extends StatelessWidget {
                                               children: [
                                                 TextNormalTittle(
                                                   text:
-                                                      "Book Information - ${history.createdAt?.split('T')[0]} ${history.createdAt?.split('T')[1].split('.')[0]}",
+                                                  "Book Information - ${history.createdAt?.split('T')[0]} ${history.createdAt?.split('T')[1].split('.')[0]}    ${history.status == 'Completed' || history.rate !=null ? 'Ratings: ${history.rate}' : ''} ",
                                                   textColor: constants.primary2,
                                                 ),
                                                 SizedBox(
@@ -325,7 +325,7 @@ class MyLocationsView extends StatelessWidget {
                                                   children: [
                                                     TextNormalTittle(
                                                       text:
-                                                          "Book Information - ${history.createdAt?.split('T')[0]} ${history.createdAt?.split('T')[1].split('.')[0]}    ${history.status == 'Completed' ? 'Ratings: ${history.rate}' : ''} ",
+                                                          "Book Information - ${history.createdAt?.split('T')[0]} ${history.createdAt?.split('T')[1].split('.')[0]}    ${history.status == 'Completed' || history.rate !=null ? 'Ratings: ${history.rate}' : ''} ",
                                                       textColor:
                                                           constants.primary2,
                                                     ),
