@@ -405,8 +405,8 @@ class _AccidentDetailsState extends State<AccidentDetails> {
                                         animType: AnimType.bottomSlide,
                                         title: 'Warning',
                                         desc:
-                                            'This Booking was already completed',
-                                        btnCancelOnPress: () {},
+                                            'This accident was already been rescued',
+
                                         btnOkOnPress: () {},
                                       )..show();
                                     }

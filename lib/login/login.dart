@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = Get.put(LoginController());
+    final ctrl = Get.put(LoginController(),permanent: true);
     final constants = Constants();
     final box = GetStorage();
     // ////print("Logged User: ${box.read("logged_user")}");

@@ -169,15 +169,18 @@ class ProfileView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextHeader(
-                                text: user.lname!=null? (toBeginningOfSentenceCase(user.lname!)! +
+                                text: user.lname != null
+                                    ? (toBeginningOfSentenceCase(user.lname!)! +
                                             ' ' +
                                             toBeginningOfSentenceCase(
                                                 user.fname!)! +
                                             ' ' +
                                             toBeginningOfSentenceCase(
                                                 user.mname!)!) +
-                                        '.' : user.name != null ? user.name! :
-                                    ''),
+                                        '.'
+                                    : user.name != null
+                                        ? user.name!
+                                        : ''),
                             SizedBox(
                               height: 5,
                             ),
@@ -210,6 +213,56 @@ class ProfileView extends StatelessWidget {
                             )
                           ],
                         ),
+                        Visibility(
+                            visible: user.account_type == 'cdrrmo',child: SizedBox(height: 15)),
+                        Visibility(
+                          visible: user.account_type == 'cdrrmo',
+                          child: TextNormal(
+                            text: "PNP",
+                            textColor: Colors.grey,
+                          ),
+                        ),
+                        Visibility(
+                            visible: user.account_type == 'cdrrmo',
+                            child: SizedBox(height: 5)),
+                        Visibility(
+                          visible: user.account_type == 'cdrrmo',
+                          child: Row(
+                            children: [
+                              Icon(UniconsLine.phone),
+                              SizedBox(width: 5),
+                              TextNormalTittle(
+                                text: '088-531-2077',
+                                textColor: Colors.black,
+                              )
+                            ],
+                          ),
+                        ),
+                        Visibility(
+                            visible: user.account_type == 'cdrrmo',child: SizedBox(height: 15)),
+                        Visibility(
+                          visible: user.account_type == 'cdrrmo',
+                          child: TextNormal(
+                            text: "BFP",
+                            textColor: Colors.grey,
+                          ),
+                        ),
+                        Visibility(
+                            visible: user.account_type == 'cdrrmo',
+                            child: SizedBox(height: 5)),
+                        Visibility(
+                          visible: user.account_type == 'cdrrmo',
+                          child: Row(
+                            children: [
+                              Icon(UniconsLine.phone),
+                              SizedBox(width: 5),
+                              TextNormalTittle(
+                                text: '088-545-2155',
+                                textColor: Colors.black,
+                              )
+                            ],
+                          ),
+                        ),
                         SizedBox(height: 15),
                         TextNormal(
                           text: "Email",
@@ -234,20 +287,25 @@ class ProfileView extends StatelessWidget {
                             textColor: Colors.grey,
                           ),
                         ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Icon(UniconsLine.car),
-                            SizedBox(width: 5),
-                            TextNormalTittle(
-                              text: plate == null
-                                  ? ''
-                                  : plate!,
-                              textColor: Colors.black,
-                            )
-                          ],
+                        Visibility(
+                            visible: user.account_type == 'Driver',
+                            child: SizedBox(height: 5)),
+                        Visibility(
+                          visible: user.account_type == 'Driver',
+                          child: Row(
+                            children: [
+                              Icon(UniconsLine.car),
+                              SizedBox(width: 5),
+                              TextNormalTittle(
+                                text: plate == null ? '' : plate!,
+                                textColor: Colors.black,
+                              )
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 10),
+                        Visibility(
+                            visible: user.account_type == 'Driver',
+                            child: SizedBox(height: 10)),
                         TextNormal(
                           text: "Birthday",
                           textColor: Colors.grey,

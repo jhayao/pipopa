@@ -11,12 +11,14 @@ import 'package:passit/components/TextSmall.dart';
 import 'package:passit/home/homeController.dart';
 import 'package:passit/home/myLocations/myLocationsView.dart';
 import 'package:passit/utils/constants.dart';
+import 'package:provider/provider.dart%20';
 import 'package:unicons/unicons.dart';
 import 'package:passit/firebase/auth.dart';
 import 'package:passit/login/login.dart';
 import '../components/PrimaryMainButtonDecorated.dart';
 import '../components/RouteStartEnd.dart';
 import '../start.dart';
+import '../utils/LocationService.dart';
 import 'main/MainView.dart';
 import 'profile/profileView.dart';
 
@@ -70,28 +72,32 @@ class HomePage extends StatelessWidget {
 
         ),
       ),
-      body: Container(
-        width: Get.width,
-        height: Get.height,
-        child: TabBarView(
-          children: [
-            Obx(() => MainView(
-                  key: Key("locations_list_${ctrl.updater.value}"),
-                  ctrl: ctrl,
-                  constants: constants,
-                  user: ctrl.user.value,
-                  uid: 'test',
-                  travelHistory: ctrl.travelHistory,
-                )),
-            MyLocationsView(
-              controller: ctrl,
-              user: ctrl.user.value,
-            ),
-            ProfileView(
-              user: ctrl.user.value,
-            ),
-          ],
-          controller: ctrl.tabController,
+      body: StreamProvider<UserLocation>(
+        initialData: UserLocation(latitude: 8.485774650813763,longitude: 123.80719541063236),
+        create: (context) => LocationService().locationStream,
+        child: Container(
+          width: Get.width,
+          height: Get.height,
+          child: TabBarView(
+            children: [
+              Obx(() => MainView(
+                    key: Key("locations_list_${ctrl.updater.value}"),
+                    ctrl: ctrl,
+                    constants: constants,
+                    user: ctrl.user.value,
+                    uid: 'test',
+                    travelHistory: ctrl.travelHistory,
+                  )),
+              MyLocationsView(
+                controller: ctrl,
+                user: ctrl.user.value,
+              ),
+              ProfileView(
+                user: ctrl.user.value,
+              ),
+            ],
+            controller: ctrl.tabController,
+          ),
         ),
       ),
       bottomNavigationBar: Obx(

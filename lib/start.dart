@@ -18,7 +18,7 @@ class Start extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final ctrl = Get.put(MainController());
+    final ctrl = Get.put(MainController(),permanent: true);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Pipopa',

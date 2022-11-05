@@ -162,7 +162,7 @@ class DriverMapController extends GetxController {
           print("Result ${result.first.toString()}");
           final points =
           result.map((e) => LatLong.LatLng(e.latitude, e.longitude)).toList();
-          print("POINTS: ${points.toString()}");
+          // print("POINTS: ${points.toString()}");
           points.insert(0, startPoint);
           points.add(endPoint);
 
