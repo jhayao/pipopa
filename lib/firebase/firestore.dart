@@ -12,7 +12,7 @@ class Firestore {
     final userDoc = FirebaseFirestore.instance.collection('users').doc(user.id);
     if (user.name == null)
       {
-        user.name = user.fname! + ' ' + user.mname! + '' + user.lname!;
+        user.name = user.fname! + ' ' + user.mname! + ' ' + user.lname!;
       }
     return await userDoc.set({
       "name": user.name,
