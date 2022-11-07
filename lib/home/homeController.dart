@@ -68,7 +68,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void onInit() async {
     tabController = TabController(length: 3, vsync: this);
     tabController.addListener(navigate);
-    ////print("CurrentTab: ${currentTab.toString()}");
+    print("CurrentTab: ${currentTab.toString()}");
     super.onInit();
 
     final mainCtrl = Get.put(MainController());

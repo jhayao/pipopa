@@ -232,7 +232,7 @@ class _AccidentDetailsState extends State<AccidentDetails> {
                                                     child: Column(
                                                         children: <Widget>[
                                                           Text(
-                                                            'Passenger name : ${widget.travelHistory.passenger!.name ?? widget.travelHistory.passenger!.lname! + ' ' + widget.travelHistory.passenger!.fname! + ' ' + widget.travelHistory.passenger!.mname!}',
+                                                            'Passenger name : ${widget.travelHistory.passenger != null ? widget.travelHistory.passenger!.name ?? widget.travelHistory.passenger!.lname! + ' ' + widget.travelHistory.passenger!.fname! + ' ' + widget.travelHistory.passenger!.mname! : 'Not Available'}',
                                                             style: TextStyle(
                                                                 fontSize: 18,
                                                                 fontStyle:
@@ -241,7 +241,7 @@ class _AccidentDetailsState extends State<AccidentDetails> {
                                                           ),
                                                           SizedBox(height: 10,),
                                                           Text(
-                                                            'Passenger contact : ${widget.travelHistory.passenger!.phone ?? 'NA'}',
+                                                            'Passenger contact : ${widget.travelHistory.passenger != null ? widget.travelHistory.passenger!.phone ?? 'NA': 'NA'}',
                                                             style: TextStyle(
                                                                 fontSize: 18,
                                                                 fontStyle:
