@@ -68,6 +68,7 @@ class MapPage extends StatelessWidget {
                       'pk.eyJ1IjoieXVzYWt1MDQiLCJhIjoiY2w5czZ3aGN6MDFkZDNudGF2M2E1eHRwNSJ9.SMKheedlHnFV2YwiQMLfQQ',
                       'id': 'mapbox.mapbox-streets-v8'
                     }),
+
                 MarkerLayerOptions(markers: [
                   ...ctrl.markers.value,
                   ...ctrl.destinationMarkers.value,

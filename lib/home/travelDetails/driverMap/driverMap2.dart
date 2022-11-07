@@ -48,7 +48,7 @@ class DriverMapPage2 extends StatelessWidget {
                 layers: [
                   TileLayerOptions(
                       urlTemplate:
-                      'https://api.mapbox.com/styles/v1/yusaku04/cl9s75qms00bo14o2xcywmhr5/tiles/256/{z}/{x}/{y}@2x',
+                      'https://api.mapbox.com/styles/v1/yusaku04/cl9s75qms00bo14o2xcywmhr5/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoieXVzYWt1MDQiLCJhIjoiY2w5czZ3aGN6MDFkZDNudGF2M2E1eHRwNSJ9.SMKheedlHnFV2YwiQMLfQQ',
                       additionalOptions: {
                         'accessToken':
                             'pk.eyJ1IjoibHVrM2R4IiwiYSI6ImNqbmdlNDh6NzAyMmYzcXRqMzZhYXZ3ZXMifQ._-xyvv2Q9jDLon_J5cYocw',
