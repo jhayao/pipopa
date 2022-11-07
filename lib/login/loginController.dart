@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,20 +29,26 @@ class LoginController extends GetxController {
           .signInWithEmailAndPassword(email: nome, password: Password);
 
       if (Auth().currentuser != null) {
-        UserModel? user2 = UserModel();
-        var user = Auth().currentuser;
-        ////print("User Phone Number: ${user!.phoneNumber}");
+        if (Auth().currentuser!.emailVerified) {
+          UserModel? user2 = UserModel();
+          var user = Auth().currentuser;
+          ////print("User Phone Number: ${user!.phoneNumber}");
 
-        await Firestore().getUser(uid: user!.uid);
-        // var users = UserModel();
-        user2 = UserModel.fromJson(box.read("logged_user"));
-        //print("user model: ${user2.toJson()}");
-        if (user2?.accountStatus != null ) Get.to(() => const HomePage());
-        else {
-          Get.snackbar(
-              "ERROR!", "Phone number not yet verified",
+          await Firestore().getUser(uid: user!.uid);
+          // var users = UserModel();
+          user2 = UserModel.fromJson(box.read("logged_user"));
+          //print("user model: ${user2.toJson()}");
+          if (user2?.accountStatus != null)
+            Get.to(() => const HomePage());
+          else {
+            Get.snackbar("ERROR!", "Phone number not yet verified",
+                colorText: Colors.black);
+            Get.to(const PhoneConfirmationPage());
+          }
+        } else {
+          Auth().currentuser!.sendEmailVerification();
+          Get.snackbar("ERROR!", "Email not yet verified. Check and try again",
               colorText: Colors.black);
-          Get.to(const PhoneConfirmationPage());
         }
       }
     } catch (e) {

@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:passit/firebase/auth.dart';
 import 'package:passit/firebase/firestore.dart';
 import 'package:passit/home/home.dart';
+import 'package:passit/login/login.dart';
 import 'package:passit/models/userModel.dart';
 
 class PhoneConfirmationController extends GetxController {
@@ -25,9 +27,21 @@ class PhoneConfirmationController extends GetxController {
     // );
 
     if (Auth().currentuser != null) {
-      Get.to(HomePage());
-      user2.value = UserModel.fromJson(box.read("logged_user"));
-      await Firestore().updateUser(user: user2.value);
+      if(Auth().currentuser!.emailVerified)
+        {
+          Get.to(HomePage());
+          user2.value = UserModel.fromJson(box.read("logged_user"));
+          await Firestore().updateUser(user: user2.value);
+        }
+
+      else
+        {
+          Get.to(() => LoginPage());
+          Get.snackbar("Error!", "Email not yet Verified",
+              colorText: Colors.black, duration: Duration(seconds: 10));
+        }
+
+
     } else {}
   }
 

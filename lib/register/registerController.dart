@@ -72,6 +72,8 @@ class RegisterController extends GetxController {
 
       if (Auth().currentuser != null) {
         try {
+          var user1 = Auth().currentuser;
+          Auth().currentuser!.sendEmailVerification();
           user.id = Auth().currentuser!.uid;
           if (user.account_type == null)
             {
