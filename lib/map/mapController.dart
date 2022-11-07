@@ -32,7 +32,8 @@ class MapController extends GetxController {
   // final Set<Marker> markers = new Set();
   var choosen_location = ''.obs;
   var searchWorld = ''.obs;
-
+  var clicked = false.obs;
+  var onced = true;
   // late StreamSubscription<Position> streamSubcrition;
   var polylines = <TaggedPolyline>[
     TaggedPolyline(
@@ -224,8 +225,19 @@ class MapController extends GetxController {
                 Container(
                   height: 40,
                   child: PrimaryButtonDecorated(
+                    
                     onclick: () async {
-                      var cpos = await determinePosition();
+
+                      var cpos = await determinePosition().then((value){
+
+                        clicked.value = true;
+                        if(clicked.value == true && onced)
+                        {
+                          Get.back();
+                          onced = false;
+                        }
+                        return value;
+                      });
                       if (cpos != null) {
                         long.value = cpos.longitude;
                         lat.value = cpos.latitude;
@@ -249,11 +261,12 @@ class MapController extends GetxController {
                             lon: cpos.longitude.toString(),
                             importance: '1');
                       } else {
+                        print("CPOS : ${cpos.toString()}");
                         Get.snackbar("Error determining position",
                             "Make sure your GPS is on and try again");
                       }
 
-                      Get.back();
+
                     },
                     children: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

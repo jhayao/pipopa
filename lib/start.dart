@@ -21,6 +21,7 @@ class Start extends StatelessWidget {
     final ctrl = Get.put(MainController(),permanent: true);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      smartManagement: SmartManagement.keepFactory,
       title: 'Pipopa',
       theme: ThemeData(
         primarySwatch: Colors.green,

@@ -58,8 +58,10 @@ class MapPage extends StatelessWidget {
               layers: [
                 TileLayerOptions(
                     urlTemplate:
-                        'https://api.mapbox.com/styles/v1/yusaku04/cl9uxz9gz001r15p6p8z403j0/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoieXVzYWt1MDQiLCJhIjoiY2w5czZ3aGN6MDFkZDNudGF2M2E1eHRwNSJ9.SMKheedlHnFV2YwiQMLfQQ',
-                        // 'https://api.mapbox.com/styles/v1/yusaku04/cl9s7lfqr004b14p75ppm3fz3/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoieXVzYWt1MDQiLCJhIjoiY2w5czZ3aGN6MDFkZDNudGF2M2E1eHRwNSJ9.SMKheedlHnFV2YwiQMLfQQ',
+
+                        'https://api.mapbox.com/styles/v1/yusaku04/cl9s75qms00bo14o2xcywmhr5/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoieXVzYWt1MDQiLCJhIjoiY2w5czZ3aGN6MDFkZDNudGF2M2E1eHRwNSJ9.SMKheedlHnFV2YwiQMLfQQ',
+                        // 'https://api.mapbox.com/styles/v1/yusaku04/cl9uxz9gz001r15p6p8z403j0/tiles/256/{z}/{x}/{y}@2x',
+                        // 'https://api.mapbox.com/styles/v1/yusaku04/cl9s7lfqr004b14p75ppm3fz3/tiles/256/{z}/{x}/{y}@2x',
                     // 'https://api.mapbox.com/styles/v1/luk3dx/cl79r9r3j001814qkhsfk6wne/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVrM2R4IiwiYSI6ImNqbmdlNDh6NzAyMmYzcXRqMzZhYXZ3ZXMifQ._-xyvv2Q9jDLon_J5cYocw',
                     additionalOptions: {
                       'accessToken':

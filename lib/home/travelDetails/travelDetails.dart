@@ -566,7 +566,7 @@ class TravelDetails extends StatelessWidget {
           Visibility(
             visible: travelHistory.status != 'Completed',
             child: Positioned(
-                top: (Get.height / 2) - 225,
+                top: (Get.height / 2) - 200,
                 right: 20,
                 child: FloatingActionButton(
                   onPressed: () async {
@@ -838,6 +838,47 @@ class TravelDetails extends StatelessWidget {
                   backgroundColor: Colors.red,
                   tooltip: "Cancel Booking",
                   child: Icon(Icons.cancel),
+                )),
+          ),
+          Visibility(
+            visible: true,
+            child: Positioned(
+                top: (Get.height / 2) - 275,
+                right: 20,
+                child: FloatingActionButton(
+                  onPressed: () async {
+                    AwesomeDialog(
+                      context: context,
+                      animType: AnimType.scale,
+                      dialogType: DialogType.info,
+                      body: Align(
+                        child: Text("""
+CDRRMO:
+    Hotline Number: 09093478433 / 09700489700
+    TEL. No. : 586-0246 / 564-0611
+                          
+PNP
+    Hotline Number: 09985986919 / 09073021414
+                          
+BFP
+    Hotline Number: 09187138509 / 09778097114
+    Tel No. : 545-2155
+                        """
+
+
+                         ,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(fontStyle: FontStyle.normal,),
+                        ),
+                      ),
+                      title: 'RULES and REGULATION',
+                      desc: 'TRULES and REGULATION',
+                      btnOkOnPress: () {},
+                    )..show();
+                  },
+                  backgroundColor: Colors.blue,
+                  tooltip: "Rescue Details",
+                  child: Icon(UniconsLine.phone),
                 )),
           ),
         ],

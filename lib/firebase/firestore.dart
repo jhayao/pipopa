@@ -167,7 +167,7 @@ class Firestore {
     try {
       var doc = await FirebaseFirestore.instance.collection('travel_history');
       // doc.add(json).then((value) {});
-       doc.doc(uid).update({'driver': null});
+       doc.doc(uid).update({'driver': null,'status' : 'Pending Ride'});
     } catch (e) {
       return e.toString();
     }
