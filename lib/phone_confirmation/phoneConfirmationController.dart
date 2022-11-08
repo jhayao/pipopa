@@ -27,11 +27,12 @@ class PhoneConfirmationController extends GetxController {
     // );
 
     if (Auth().currentuser != null) {
+      user2.value = UserModel.fromJson(box.read("logged_user"));
+      await Firestore().updateUser(user: user2.value);
       if(Auth().currentuser!.emailVerified)
         {
           Get.to(HomePage());
-          user2.value = UserModel.fromJson(box.read("logged_user"));
-          await Firestore().updateUser(user: user2.value);
+
         }
 
       else
