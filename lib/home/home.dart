@@ -182,7 +182,7 @@ class HomePage extends StatelessWidget {
                       ? "Travel Logs"
                       : ctrl.user.value.account_type == 'Passenger'
                       ? "Travel Logs"
-                      : "ACCIDENT LOG",
+                      : "Accident Log",
                 ),
 
                 BottomNavigationBarItem(

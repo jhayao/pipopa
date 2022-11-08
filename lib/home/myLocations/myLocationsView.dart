@@ -48,6 +48,8 @@ class MyLocationsView extends StatelessWidget {
             ),
             user.account_type == 'Driver'
                 ? TextNormal(text: "Travel Logs:", textColor: Colors.grey)
+                : user.account_type == 'cdrrmo'
+                ? TextNormal(text: "Accident Logs",textColor: Colors.grey,)
                 : TextNormal(text: "Travel Logs:", textColor: Colors.grey),
             SizedBox(
               height: 20,

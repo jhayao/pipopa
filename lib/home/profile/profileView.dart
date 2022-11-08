@@ -306,36 +306,52 @@ class ProfileView extends StatelessWidget {
                         Visibility(
                             visible: user.account_type == 'Driver',
                             child: SizedBox(height: 10)),
-                        TextNormal(
-                          text: "Birthday",
-                          textColor: Colors.grey,
+                        Visibility(
+                          visible: user.account_type != 'cdrrmo',
+                          child: TextNormal(
+                            text: "Birthday",
+                            textColor: Colors.grey,
+                          ),
                         ),
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Icon(Icons.calendar_month),
-                            SizedBox(width: 5),
-                            TextNormalTittle(
-                              text: bday ?? '',
-                              textColor: Colors.black,
-                            )
-                          ],
+                        Visibility(
+                            visible: user.account_type != 'cdrrmo',
+                            child: SizedBox(height: 10)),
+                        Visibility(
+                          visible: user.account_type != 'cdrrmo',
+                          child: Row(
+                            children: [
+                              Icon(Icons.calendar_month),
+                              SizedBox(width: 5),
+                              TextNormalTittle(
+                                text: bday ?? '',
+                                textColor: Colors.black,
+                              )
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 10),
-                        TextNormal(
-                          text: "Gender",
-                          textColor: Colors.grey,
+                        Visibility(
+                            visible: user.account_type != 'cdrrmo',
+                            child: SizedBox(height: 10)),
+                        Visibility(
+                          visible: user.account_type != 'cdrrmo',
+                          child: TextNormal(
+                            text: "Gender",
+                            textColor: Colors.grey,
+                          ),
                         ),
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Icon(Icons.people),
-                            SizedBox(width: 5),
-                            TextNormalTittle(
-                              text: gender ?? '',
-                              textColor: Colors.black,
-                            )
-                          ],
+                        Visibility(visible: user.account_type != 'cdrrmo',child: SizedBox(height: 10)),
+                        Visibility(
+                            visible: user.account_type != 'cdrrmo',
+                          child: Row(
+                            children: [
+                              Icon(Icons.people),
+                              SizedBox(width: 5),
+                              TextNormalTittle(
+                                text: gender ?? '',
+                                textColor: Colors.black,
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ))
