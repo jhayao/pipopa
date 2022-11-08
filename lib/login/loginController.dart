@@ -27,7 +27,7 @@ class LoginController extends GetxController {
     try {
       var result = await Auth()
           .signInWithEmailAndPassword(email: nome, password: Password);
-      print("result ${result.user!.email}");
+
       if (Auth().currentuser != null) {
 
         print("Auth().currentuser!.email : ${Auth().currentuser!.email}");
