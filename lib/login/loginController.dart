@@ -27,18 +27,19 @@ class LoginController extends GetxController {
     try {
       var result = await Auth()
           .signInWithEmailAndPassword(email: nome, password: Password);
-
+      print("result ${result.user!.email}");
       if (Auth().currentuser != null) {
-        print("Auth().currentuser!.email : ${Auth().currentuser!.email}");
-        if (Auth().currentuser!.emailVerified || Auth().currentuser!.email == 'rescue1@cdrrmo.com') {
-          UserModel? user2 = UserModel();
-          var user = Auth().currentuser;
-          ////print("User Phone Number: ${user!.phoneNumber}");
 
-          await Firestore().getUser(uid: user!.uid);
-          // var users = UserModel();
-          user2 = UserModel.fromJson(box.read("logged_user"));
-          //print("user model: ${user2.toJson()}");
+        print("Auth().currentuser!.email : ${Auth().currentuser!.email}");
+        UserModel? user2 = UserModel();
+        var user = Auth().currentuser;
+        ////print("User Phone Number: ${user!.phoneNumber}");
+        await Firestore().getUser(uid: user!.uid);
+        // var users = UserModel();
+        user2 = UserModel.fromJson(box.read("logged_user"));
+        //print("user model: ${user2.toJson()}");
+        if (Auth().currentuser!.emailVerified) {
+
           if (user2?.accountStatus != null)
             Get.to(() => const HomePage());
           else {
@@ -46,14 +47,22 @@ class LoginController extends GetxController {
                 colorText: Colors.black);
             Get.to(const PhoneConfirmationPage());
           }
-        } else {
-          Auth().currentuser!.sendEmailVerification();
-          Get.snackbar("ERROR!", "Email not yet verified. Check and try again",
-              colorText: Colors.black);
+        }
+        else {
+          if(user2.account_type == 'cdrrmo') {
+            Get.to(() => const HomePage());
+          }
+          else
+            {
+              Auth().currentuser!.sendEmailVerification();
+              Get.snackbar("ERROR!", "Email not yet verified. Check and try again",
+                  colorText: Colors.black);
+            }
+
         }
       }
     } catch (e) {
-      ////print("ERRORs ${e.toString()}");
+      print("ERRORs ${e.toString()}");
       Get.snackbar(
           "ERROR!", "Username and password do not match. Check and try again",
           colorText: Colors.black);
