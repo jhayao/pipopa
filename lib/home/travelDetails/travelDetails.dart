@@ -348,7 +348,73 @@ class TravelDetails extends StatelessWidget {
                 ])),
           ),
           Visibility(
-            visible: user.account_type == 'Passenger',
+            visible: travelHistory.status == 'Completed',
+            child: Positioned(
+                bottom: 0,
+                child: Row(children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: SizedBox(
+                      width: Get.width - 20,
+                      child: Material(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.green,
+                        child: InkWell(
+                          onTap: () async {
+                            print("Rating Details : ${travelHistory.rate}");
+                            Get.dialog(RatingDialog(
+                              initialRating: double.parse(travelHistory.rate!),
+                              // your app's name?
+                              title: Text(
+                                'Customer Rating',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              // encourage your user to leave a high rating?
+                              message: Text(
+                                '${travelHistory.comment=="" ? 'No comment' : travelHistory.comment}',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                              enableComment: false,
+                              // your app's logo?
+                              image: ExtendedImage.asset(
+                                constants.logoImage,
+                                width: 50,
+                                height: 125,
+                              ),
+                              submitButtonText: 'Okay',
+                              commentHint: 'Set your custom comment hint',
+                              onCancelled: () => print('cancelled'),
+                              onSubmitted: (response) async {
+
+                              },
+                            ));
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(17),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Rating Details",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ])),
+          ),
+          Visibility(
+            visible: user.account_type == 'Passenger' || travelHistory.status != 'Completed',
             child: Positioned(
                 bottom: 0,
                 child: Row(children: <Widget>[
@@ -852,7 +918,8 @@ class TravelDetails extends StatelessWidget {
                       animType: AnimType.scale,
                       dialogType: DialogType.info,
                       body: Align(
-                        child: Text("""
+                        child: Text(
+                          """
 CDRRMO:
     Hotline Number: 09093478433 / 09700489700
     TEL. No. : 586-0246 / 564-0611
@@ -863,12 +930,11 @@ PNP
 BFP
     Hotline Number: 09187138509 / 09778097114
     Tel No. : 545-2155
-                        """
-
-
-                         ,
+                        """,
                           textAlign: TextAlign.left,
-                          style: TextStyle(fontStyle: FontStyle.normal,),
+                          style: TextStyle(
+                            fontStyle: FontStyle.normal,
+                          ),
                         ),
                       ),
                       title: 'RULES and REGULATION',
