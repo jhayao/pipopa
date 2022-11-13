@@ -162,12 +162,12 @@ class Firestore {
     }
   }
 
-  Future<String?> cancelDriver(String? uid) async {
+  Future<String?> cancelDriver(String? uid,String email) async {
 
     try {
       var doc = await FirebaseFirestore.instance.collection('travel_history');
       // doc.add(json).then((value) {});
-       doc.doc(uid).update({'driver': null,'status' : 'Pending Ride'});
+       doc.doc(uid).update({'driver': null,'status' : 'Pending Ride'}).then((value) => cancelMail(email));
     } catch (e) {
       return e.toString();
     }
@@ -184,6 +184,22 @@ class Firestore {
           'subject': "Invoice for ${payment.uid}",
           'text': "This is the plaintext section of the email body.",
           'html': Constants().emailTemplate(payment),
+        },
+      }).then((val) => print("Queued email for delivery!"));
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String?> cancelMail(String email) async {
+    try {
+      var doc = await FirebaseFirestore.instance.collection('mail');
+
+      doc.add({
+        'to': "${email}",
+        'message': {
+          'subject': "Booking Cancellation",
+          'html': 'Your Booking have been cancelled by Driver',
         },
       }).then((val) => print("Queued email for delivery!"));
     } catch (e) {

@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:passit/map/mapPage.dart';
 
@@ -29,7 +33,7 @@ class MainController extends GetxController {
         id: 10,
         channelKey: 'basic_channel',
         category: NotificationCategory.Promo,
-        title: 'Passit! Ready to ride 😉',
+        title: 'Hello Po',
         body:
             'This month, we have reduced prices for our races. Now it''s all free!!',
       ),
@@ -46,6 +50,14 @@ class MainController extends GetxController {
     super.onInit();
     checkNotifPermissions().then((e) {
       initializeNotifListener();
+      showNotifications();
     });
+    FirebaseMessaging.onMessage.listen(
+          (RemoteMessage message) {
+        debugPrint("onMessage:");
+        log("onMessage: ${message.data}");
+
+      },
+    );
   }
 }

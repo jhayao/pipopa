@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:animations/animations.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -293,6 +294,7 @@ class MainView extends StatelessWidget {
                               return Text('No Data');
                             } else {
                               ////print(snapshot.data!.docs.length);
+                              showNotifications();
                               return Column(
                                 children: snapshot.data!.docs
                                     .map((e) => Padding(
@@ -756,5 +758,22 @@ class MainView extends StatelessWidget {
         c((lat2 - lat1) * p) / 2 +
         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
     return 12742 * asin(sqrt(a));
+  }
+  void showNotifications() {
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 10,
+        channelKey: 'basic_channel',
+        category: NotificationCategory.Promo,
+        title: 'Hello Po',
+        body:
+        'This month, we have reduced prices for our races. Now it''s all free!!',
+      ),
+      schedule: NotificationCalendar.fromDate(
+        date: DateTime.now().add(
+          Duration(seconds: 6),
+        ),
+      ),
+    );
   }
 }

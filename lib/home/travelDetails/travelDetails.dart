@@ -565,7 +565,7 @@ class TravelDetails extends StatelessWidget {
                             ));
                           },
                           child: Visibility(
-                            visible: true,
+                            visible: user.account_type == 'Passenger',
                             // visible: true,
                             child: Padding(
                               padding: EdgeInsets.all(17),
@@ -874,7 +874,7 @@ class TravelDetails extends StatelessWidget {
                         dismissOnTouchOutside: true,
                         btnOkOnPress: () async {
                           var result = await Firestore()
-                              .cancelDriver(travelHistory.uid)
+                              .cancelDriver(travelHistory.uid,travelHistory.passenger!.email!)
                               .whenComplete(() => AwesomeDialog(
                                   context: context,
                                   dialogType: DialogType.warning,
