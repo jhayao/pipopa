@@ -453,9 +453,9 @@ class TravelDetails extends StatelessWidget {
                                               dismissOnTouchOutside: true,
                                               btnOkOnPress: () async {},
                                               onDismissCallback: (type) {
-                                                Firestore().updateTravel2(
-                                                    uid: travelHistory.uid!,
-                                                    status: 'Pending');
+                                                // Firestore().updateTravel2(
+                                                //     uid: travelHistory.uid!,
+                                                //     status: 'Pending');
                                                 Get.back();
                                               })
                                             ..show());
@@ -491,7 +491,7 @@ class TravelDetails extends StatelessWidget {
                             }
                           },
                           child: Visibility(
-                            visible: user.account_type == 'Passenger',
+                            visible: user.account_type == 'Passenger' && travelHistory.driver == null,
                             // visible: true,
                             child: Padding(
                               padding: EdgeInsets.all(17),
@@ -565,7 +565,7 @@ class TravelDetails extends StatelessWidget {
                             ));
                           },
                           child: Visibility(
-                            visible: user.account_type == 'Passenger',
+                            visible: user.account_type == 'Passenger' && travelHistory.driver == null,
                             // visible: true,
                             child: Padding(
                               padding: EdgeInsets.all(17),

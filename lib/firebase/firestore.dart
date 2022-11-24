@@ -328,12 +328,13 @@ class Firestore {
   Future<void> setEmergency(TravelHistoryModel travel) async {
     try {
       var doc = await FirebaseFirestore.instance.collection('accidents');
+      var doc2 = await FirebaseFirestore.instance.collection('travel_history');
       travel.status = "Active";
       var json = travel.toJson();
 
       ////print(travel.currentLocation!.displayName);
       // doc.add(json).then((value) {});
-      doc.doc(travel.uid).set(json,SetOptions(merge:true));
+      doc.doc(travel.uid).set(json,SetOptions(merge:true)).then((value) => doc2.doc(travel.uid).update({'status' : 'Accident happen'}));
     } catch (e) {
       // return e.toString();
       ////print(e.toString());

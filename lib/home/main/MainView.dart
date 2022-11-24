@@ -102,13 +102,13 @@ class MainView extends StatelessWidget {
                               TravelHistoryModel history =
                               TravelHistoryModel.fromRawJson(
                                   jsonEncode(e.data()));
-                              print("history ${history.startPoint!.lon} , ${history.startPoint!.lat}");
-                              print("Current Location :${userLocation.latitude} , ${userLocation.longitude}");
+                              // print("history ${history.startPoint!.lon} , ${history.startPoint!.lat}");
+                              // print("Current Location :${userLocation.latitude} , ${userLocation.longitude}");
 
 
                               // String distance = calculateDistance(userLocation.latitude!.toDouble(), userLocation.longitude!.toDouble(), history.startPoint!.lat!, history.startPoint!.lon).toString();
                               double distance = calculateDistance(userLocation.latitude!.toDouble(), userLocation.longitude!.toDouble(),double.parse(history.startPoint!.lat!) , double.parse(history.startPoint!.lon!));
-                              print("Calculated Distance: ${calculateDistance(userLocation.latitude!.toDouble(), userLocation.longitude!.toDouble(),double.parse(history.startPoint!.lat!) , double.parse(history.startPoint!.lon!)).toString()}");
+                              // print("Calculated Distance: ${calculateDistance(userLocation.latitude!.toDouble(), userLocation.longitude!.toDouble(),double.parse(history.startPoint!.lat!) , double.parse(history.startPoint!.lon!)).toString()}");
                               return Visibility(
                                 visible: distance<=0.2,
                                 child: Padding(
