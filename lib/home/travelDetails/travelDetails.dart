@@ -418,92 +418,95 @@ class TravelDetails extends StatelessWidget {
             child: Positioned(
                 bottom: 0,
                 child: Row(children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: SizedBox(
-                      width: Get.width / 1.5 - 20,
-                      child: Material(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.black,
-                        child: InkWell(
-                          onTap: () async {
-                            if (travelHistory.driver == null) {
-                              // ////print(travelHistory.uid);
-                              AwesomeDialog(
-                                  context: context,
-                                  dialogType: DialogType.warning,
-                                  animType: AnimType.bottomSlide,
-                                  title: 'Warning',
-                                  desc:
-                                      'This will permanently delete this booking',
-                                  btnCancelOnPress: () {},
-                                  dismissOnTouchOutside: true,
-                                  btnOkOnPress: () async {
-                                    if (catchs != 'True') {
-                                      await Firestore()
-                                          .cancelBooking(travelHistory.uid)
-                                          .then((value) => AwesomeDialog(
-                                              context: context,
-                                              dialogType: DialogType.success,
-                                              animType: AnimType.bottomSlide,
-                                              title: 'Success',
-                                              desc:
-                                                  'Booking successfully cancelled',
-                                              btnCancelOnPress: () {},
-                                              dismissOnTouchOutside: true,
-                                              btnOkOnPress: () async {},
-                                              onDismissCallback: (type) {
-                                                // Firestore().updateTravel2(
-                                                //     uid: travelHistory.uid!,
-                                                //     status: 'Pending');
-                                                Get.back();
-                                              })
-                                            ..show());
-                                    } else {
-                                      AwesomeDialog(
-                                          context: context,
-                                          dialogType: DialogType.info,
-                                          animType: AnimType.bottomSlide,
-                                          title: 'Information',
-                                          desc:
-                                              "Can't cancelled booking here try again on Travel Logs",
-                                          btnCancelOnPress: () {},
-                                          dismissOnTouchOutside: true,
-                                          btnOkOnPress: () async {},
-                                          onDismissCallback: (type) {})
-                                        ..show();
-                                    }
-                                  },
-                                  onDismissCallback: (type) {})
-                                ..show();
-                            } else {
-                              AwesomeDialog(
-                                  context: context,
-                                  dialogType: DialogType.info,
-                                  animType: AnimType.bottomSlide,
-                                  title: 'Information',
-                                  desc: 'Booking already confirmed',
-                                  btnCancelOnPress: () {},
-                                  dismissOnTouchOutside: true,
-                                  btnOkOnPress: () async {},
-                                  onDismissCallback: (type) {})
-                                ..show();
-                            }
-                          },
-                          child: Visibility(
-                            visible: user.account_type == 'Passenger' && travelHistory.driver == null,
-                            // visible: true,
-                            child: Padding(
-                              padding: EdgeInsets.all(17),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "${'Cancel booking'}",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15),
-                                  )
-                                ],
+                  Visibility(
+                    visible: user.account_type == 'Passenger' && travelHistory.driver == null,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: SizedBox(
+                        width: Get.width - 20,
+                        child: Material(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.black,
+                          child: InkWell(
+                            onTap: () async {
+                              if (travelHistory.driver == null) {
+                                // ////print(travelHistory.uid);
+                                AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.warning,
+                                    animType: AnimType.bottomSlide,
+                                    title: 'Warning',
+                                    desc:
+                                        'This will permanently delete this booking',
+                                    btnCancelOnPress: () {},
+                                    dismissOnTouchOutside: true,
+                                    btnOkOnPress: () async {
+                                      if (catchs != 'True') {
+                                        await Firestore()
+                                            .cancelBooking(travelHistory.uid)
+                                            .then((value) => AwesomeDialog(
+                                                context: context,
+                                                dialogType: DialogType.success,
+                                                animType: AnimType.bottomSlide,
+                                                title: 'Success',
+                                                desc:
+                                                    'Booking successfully cancelled',
+                                                btnCancelOnPress: () {},
+                                                dismissOnTouchOutside: true,
+                                                btnOkOnPress: () async {},
+                                                onDismissCallback: (type) {
+                                                  // Firestore().updateTravel2(
+                                                  //     uid: travelHistory.uid!,
+                                                  //     status: 'Pending');
+                                                  Get.back();
+                                                })
+                                              ..show());
+                                      } else {
+                                        AwesomeDialog(
+                                            context: context,
+                                            dialogType: DialogType.info,
+                                            animType: AnimType.bottomSlide,
+                                            title: 'Information',
+                                            desc:
+                                                "Can't cancelled booking here try again on Travel Logs",
+                                            btnCancelOnPress: () {},
+                                            dismissOnTouchOutside: true,
+                                            btnOkOnPress: () async {},
+                                            onDismissCallback: (type) {})
+                                          ..show();
+                                      }
+                                    },
+                                    onDismissCallback: (type) {})
+                                  ..show();
+                              } else {
+                                AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.info,
+                                    animType: AnimType.bottomSlide,
+                                    title: 'Information',
+                                    desc: 'Booking already confirmed',
+                                    btnCancelOnPress: () {},
+                                    dismissOnTouchOutside: true,
+                                    btnOkOnPress: () async {},
+                                    onDismissCallback: (type) {})
+                                  ..show();
+                              }
+                            },
+                            child: Visibility(
+                              visible: user.account_type == 'Passenger' && travelHistory.driver == null,
+                              // visible: true,
+                              child: Padding(
+                                padding: EdgeInsets.all(17),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "${'Cancel booking'}",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 15),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -514,7 +517,7 @@ class TravelDetails extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: SizedBox(
-                      width: Get.width / 3 - 20,
+                      width: Get.width - 20,
                       child: Material(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.green,
@@ -565,7 +568,7 @@ class TravelDetails extends StatelessWidget {
                             ));
                           },
                           child: Visibility(
-                            visible: user.account_type == 'Passenger' && travelHistory.driver != null,
+                            visible: user.account_type == 'Passenger' && travelHistory.driver != null && travelHistory.status !='Completed',
                             // visible: true,
                             child: Padding(
                               padding: EdgeInsets.all(17),
