@@ -287,7 +287,7 @@ class MainView extends StatelessWidget {
                           stream: FirebaseFirestore.instance
                               .collection('travel_history')
                               .where('passenger.id', isEqualTo: user.id)
-                              .where('status', isNotEqualTo: 'Completed')
+                              .where('status', whereNotIn: ['Completed','Accident happen'])
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
