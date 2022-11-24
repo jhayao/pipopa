@@ -565,7 +565,7 @@ class TravelDetails extends StatelessWidget {
                             ));
                           },
                           child: Visibility(
-                            visible: user.account_type == 'Passenger' && travelHistory.driver == null,
+                            visible: user.account_type == 'Passenger' && travelHistory.driver != null,
                             // visible: true,
                             child: Padding(
                               padding: EdgeInsets.all(17),
