@@ -348,7 +348,7 @@ class TravelDetails extends StatelessWidget {
                 ])),
           ),
           Visibility(
-            visible: travelHistory.status == 'Completed',
+            visible: travelHistory.status == 'Completed' && travelHistory.rate != null,
             child: Positioned(
                 bottom: 0,
                 child: Row(children: <Widget>[
@@ -568,7 +568,7 @@ class TravelDetails extends StatelessWidget {
                             ));
                           },
                           child: Visibility(
-                            visible: user.account_type == 'Passenger' && travelHistory.driver != null && travelHistory.status !='Completed' && travelHistory.status !='Accident happen',
+                            visible: user.account_type == 'Passenger' && travelHistory.driver != null && travelHistory.rate == null&& travelHistory.status !='Accident happen',
                             // visible: true,
                             child: Padding(
                               padding: EdgeInsets.all(17),
