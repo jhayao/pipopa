@@ -11,6 +11,7 @@ import 'package:passit/home/travelDetails/driverMap/driverMap2.dart';
 import 'package:passit/models/locationModels.dart';
 import 'package:passit/models/paymentModel.dart';
 import 'package:passit/models/userModel.dart';
+import 'package:passit/pdf/app.dart';
 import 'package:passit/utils/LocationService.dart';
 import 'package:passit/utils/constants.dart';
 import 'package:latlong2/latlong.dart' as LatLong;
@@ -857,7 +858,7 @@ class TravelDetails extends StatelessWidget {
                 )),
           ),
           Visibility(
-            visible: (!catchs && travelHistory.status != 'Completed') ||
+            visible: (travelHistory.status != 'Completed') &&
                 user.account_type == 'Driver',
             child: Positioned(
                 top: Get.height / 14,
@@ -907,6 +908,23 @@ class TravelDetails extends StatelessWidget {
                   backgroundColor: Colors.red,
                   tooltip: "Cancel Booking",
                   child: Icon(Icons.cancel),
+                )),
+          ),
+          Visibility(
+            visible: (travelHistory.status == 'Completed') &&
+                user.account_type != 'cdrrmo',
+            child: Positioned(
+                top: Get.height / 14,
+                right: 20,
+                child: FloatingActionButton(
+                  onPressed: () async {
+                    //print("Cancel ${catchs}  ${user.account_type}");
+                    print(travelHistory.uid);
+                    Get.to(MyApp(travel: travelHistory));
+                  },
+                  backgroundColor: Colors.blue,
+                  tooltip: "Cancel Booking",
+                  child: Icon(UniconsLine.invoice),
                 )),
           ),
           Visibility(
