@@ -288,6 +288,7 @@ class MainView extends StatelessWidget {
                               .collection('travel_history')
                               .where('passenger.id', isEqualTo: user.id)
                               .where('status', whereNotIn: ['Completed','Accident happen'])
+                              .where('star', isNull: true)
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {

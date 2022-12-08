@@ -69,7 +69,6 @@ class MyLocationsView extends StatelessWidget {
                     stream: FirebaseFirestore.instance
                         .collection('travel_history')
                         .where('driver.id', isEqualTo: user.id)
-                        .orderBy('createdAt', descending: true)
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
@@ -309,8 +308,7 @@ class MyLocationsView extends StatelessWidget {
                             .collection('travel_history')
                             .where('passenger.id', isEqualTo: user.id)
                             .where('status', whereIn: ['Completed','Accident happen'])
-
-
+                            .where('star', isNull: true)
                             .orderBy('createdAt', descending: true)
                             .snapshots(),
                         builder: (context, snapshot) {
