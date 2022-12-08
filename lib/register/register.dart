@@ -33,7 +33,7 @@ class RegisterPage extends StatelessWidget {
     final ctrl = Get.put(RegisterController());
     var type = UserModel().obs;
     var ident = "Identity card".obs;
-    var _status = ["Driver", "Passenger"];
+    var _status = ["Driver", "Passenger","Cdrrmo"];
 
     return Scaffold(
       body: Container(
