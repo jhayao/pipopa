@@ -1,5 +1,5 @@
 class CustomData {
-  const CustomData({this.name = '[your name]'});
-
-  final String name;
+  const CustomData({this.initialDate, this.finalDate} );
+  final String ? initialDate;
+  final String ? finalDate;
 }

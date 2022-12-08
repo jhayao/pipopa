@@ -920,7 +920,7 @@ class TravelDetails extends StatelessWidget {
                   onPressed: () async {
                     //print("Cancel ${catchs}  ${user.account_type}");
                     print(travelHistory.uid);
-                    Get.to(MyApp(travel: travelHistory));
+                    Get.to(MyApp(travel: travelHistory,reportType: 'Invoice',));
                   },
                   backgroundColor: Colors.blue,
                   tooltip: "Cancel Booking",

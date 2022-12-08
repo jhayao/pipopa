@@ -16,6 +16,7 @@ import '../../components/TextHeader.dart';
 import '../../components/TextNormal.dart';
 import '../../components/TextNormalBolded.dart';
 import '../../components/TextNormalTittle.dart';
+import '../../components/reportButton.dart';
 import '../../models/travelHistoryModel.dart';
 import '../../utils/constants.dart';
 import '../travelDetails/accidentDetails.dart';
@@ -43,6 +44,15 @@ class MyLocationsView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // PrimaryMainButtonDecorated(),
+            Visibility(
+                visible: user.account_type == 'Driver',
+                child: ReportButtonDecorated(
+                  onclick: () async {
+                      print("Clicked");
+
+                      controller.showDialog(context);
+                  },
+                )),
             SizedBox(
               height: 20,
             ),

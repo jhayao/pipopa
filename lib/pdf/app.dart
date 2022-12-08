@@ -21,18 +21,22 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:passit/models/travelHistoryModel.dart';
+import 'package:passit/pdf/reportPage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-
 import 'data.dart';
 import 'example.dart';
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key, required this.travel }) : super(key: key);
-  final TravelHistoryModel travel;
+  const MyApp({Key? key, this.travel,this.data, required this.reportType })
+      : super(key: key);
+  final TravelHistoryModel ? travel;
+  final String reportType;
+  final List<TravelHistoryModel> ? data;
+
   @override
   MyAppState createState() {
     return MyAppState();
@@ -46,12 +50,14 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   PrintingInfo? printingInfo;
 
   var _data = TravelHistoryModel();
+  var _data2 =  CustomData();
   var _hasData = false;
   var _pending = false;
 
   @override
   void initState() {
     super.initState();
+    print("TEST DATA" + widget.data.toString());
     _init();
   }
 
@@ -75,7 +81,7 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         });
       }
       setState(() {
-        _data = widget.travel;
+        _data = widget.travel!;
         _hasData = true;
         _pending = false;
       });
@@ -103,10 +109,10 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   }
 
   Future<void> _saveAsFile(
-      BuildContext context,
-      LayoutCallback build,
-      PdfPageFormat pageFormat,
-      ) async {
+    BuildContext context,
+    LayoutCallback build,
+    PdfPageFormat pageFormat,
+  ) async {
     final bytes = await build(pageFormat);
 
     final appDocDir = await getApplicationDocumentsDirectory();
@@ -120,7 +126,7 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     pw.RichText.debug = true;
-    var travelHistory  = widget.travel ;
+    var travelHistory = widget.travel;
     if (_tabController == null) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -133,20 +139,24 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       //   )
     ];
 
+    print("${widget.reportType}");
     return Scaffold(
       appBar: AppBar(
         title: const Text('Invoice '),
       ),
-      body: PdfPreview(
+      body: widget.reportType == 'Invoice' ? PdfPreview(
+            maxPageWidth: 700,
+            build: (format) => examples[_tab].builder(format, widget.travel!),
+            actions: actions,
+            onPrinted: _showPrintedToast,
+            onShared: _showSharedToast,
+        ) : PdfPreview(
         maxPageWidth: 700,
-        build: (format) => examples[_tab].builder(format, widget.travel),
+        build: (format) => reports[_tab].builder(format, widget.data!),
         actions: actions,
         onPrinted: _showPrintedToast,
         onShared: _showSharedToast,
       ),
     );
   }
-
-
-
 }
