@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:animations/animations.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:empty_widget/empty_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -93,30 +94,44 @@ class MainView extends StatelessWidget {
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return Text('No Data');
+                          return EmptyWidget(
+                                  image: "assets/images/im_emptyIcon_2.png",
+                                  packageImage: PackageImage.Image_1,
+                                  title: 'No Booking',
+                                  subTitle: 'No  Booking available yet',
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 22,
+                                    color: Color(0xff9da9c7),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  subtitleTextStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xffabb8d6),
+                                  ));
                         } else {
                           // print(snapshot.data!.docs.);
 
                           return Column(
                             children: snapshot.data!.docs.map((e) {
                               TravelHistoryModel history =
-                              TravelHistoryModel.fromRawJson(
-                                  jsonEncode(e.data()));
+                                  TravelHistoryModel.fromRawJson(
+                                      jsonEncode(e.data()));
                               // print("history ${history.startPoint!.lon} , ${history.startPoint!.lat}");
                               // print("Current Location :${userLocation.latitude} , ${userLocation.longitude}");
 
-
                               // String distance = calculateDistance(userLocation.latitude!.toDouble(), userLocation.longitude!.toDouble(), history.startPoint!.lat!, history.startPoint!.lon).toString();
-                              double distance = calculateDistance(userLocation.latitude!.toDouble(), userLocation.longitude!.toDouble(),double.parse(history.startPoint!.lat!) , double.parse(history.startPoint!.lon!));
+                              double distance = calculateDistance(
+                                  userLocation.latitude!.toDouble(),
+                                  userLocation.longitude!.toDouble(),
+                                  double.parse(history.startPoint!.lat!),
+                                  double.parse(history.startPoint!.lon!));
                               // print("Calculated Distance: ${calculateDistance(userLocation.latitude!.toDouble(), userLocation.longitude!.toDouble(),double.parse(history.startPoint!.lat!) , double.parse(history.startPoint!.lon!)).toString()}");
                               return Visibility(
-                                visible: distance<=0.2,
+                                visible: distance <= 0.2,
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 10),
                                   child: OpenContainer(
                                     closedBuilder: (context, action) {
-
-
                                       return Container(
                                         padding: EdgeInsets.symmetric(
                                             vertical: 10, horizontal: 2),
@@ -155,8 +170,9 @@ class MainView extends StatelessWidget {
                                                           height: 50,
                                                           color: Colors.grey
                                                               .withOpacity(0.3),
-                                                          margin: EdgeInsets.only(
-                                                              right: 5),
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  right: 5),
                                                           child: ExtendedImage
                                                               .network(
                                                                   "https://images.pexels.com/photos/428361/pexels-photo-428361.jpeg?auto=compress&cs=tinysrgb&w=600",
@@ -172,7 +188,8 @@ class MainView extends StatelessWidget {
                                                                   .start,
                                                           children: [
                                                             TextNormalBolded(
-                                                              text: history.driver
+                                                              text: history
+                                                                      .driver
                                                                       ?.name ??
                                                                   '',
                                                               textColor: Colors
@@ -186,8 +203,9 @@ class MainView extends StatelessWidget {
                                                             TextNormal(
                                                               text:
                                                                   "Proffesional",
-                                                              textColor: constants
-                                                                  .primary2,
+                                                              textColor:
+                                                                  constants
+                                                                      .primary2,
                                                             ),
                                                           ],
                                                         )
@@ -205,8 +223,8 @@ class MainView extends StatelessWidget {
                                                             .primaryColor
                                                             .withOpacity(0.5),
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                       ),
                                                       child: Text(
                                                           "${history.status}"),
@@ -230,7 +248,8 @@ class MainView extends StatelessWidget {
                                                       TextNormal(
                                                           text:
                                                               "${Constants().formatNumber(history.routes?.routes[0].distance ?? 0)(',')} KM",
-                                                          textColor: Colors.grey)
+                                                          textColor:
+                                                              Colors.grey)
                                                     ],
                                                   )
                                                 ],
@@ -266,7 +285,8 @@ class MainView extends StatelessWidget {
                                           .updateTravel(
                                               userModel: user,
                                               uid: e.id,
-                                              status: 'The driver is on the way')
+                                              status:
+                                                  'The driver is on the way')
                                           .then((value) => null);
                                       return TravelDetails(
                                         user: user,
@@ -287,12 +307,27 @@ class MainView extends StatelessWidget {
                           stream: FirebaseFirestore.instance
                               .collection('travel_history')
                               .where('passenger.id', isEqualTo: user.id)
-                              .where('status', whereNotIn: ['Completed','Accident happen'])
-                              .where('star', isNull: true)
+                              .where('status',
+                                  whereNotIn: ['Completed', 'Accident happen'])
+                              // .where('rate', isEqualTo: 'null')
+                              .where('star', isEqualTo: 'null')
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
-                              return Text('No Data');
+                              return EmptyWidget(
+                                  image: "assets/images/im_emptyIcon_2.png",
+                                  packageImage: PackageImage.Image_1,
+                                  title: 'No Booking',
+                                  subTitle: 'No  Booking available yet',
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 22,
+                                    color: Color(0xff9da9c7),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  subtitleTextStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xffabb8d6),
+                                  ));
                             } else {
                               ////print(snapshot.data!.docs.length);
                               showNotifications();
@@ -574,7 +609,20 @@ class MainView extends StatelessWidget {
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
-                              return Text('No Data');
+                              return EmptyWidget(
+                                  image: "assets/images/im_emptyIcon_2.png",
+                                  packageImage: PackageImage.Image_1,
+                                  title: 'No Booking',
+                                  subTitle: 'No  Booking available yet',
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 22,
+                                    color: Color(0xff9da9c7),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  subtitleTextStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xffabb8d6),
+                                  ));
                             } else {
                               ////print(snapshot.data!.docs.length);
                               return Column(
@@ -760,6 +808,7 @@ class MainView extends StatelessWidget {
         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
     return 12742 * asin(sqrt(a));
   }
+
   void showNotifications() {
     AwesomeNotifications().createNotification(
       content: NotificationContent(
@@ -767,8 +816,8 @@ class MainView extends StatelessWidget {
         channelKey: 'basic_channel',
         category: NotificationCategory.Promo,
         title: 'Hello Po',
-        body:
-        'This month, we have reduced prices for our races. Now it''s all free!!',
+        body: 'This month, we have reduced prices for our races. Now it'
+            's all free!!',
       ),
       schedule: NotificationCalendar.fromDate(
         date: DateTime.now().add(

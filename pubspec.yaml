@@ -80,6 +80,7 @@ dependencies:
   flutter_date_pickers: ^0.4.0
   flutter_material_color_picker: ^1.1.0+2
   calendar_date_picker2: ^0.3.5
+  empty_widget: ^0.0.5
 
 dependency_overrides:
   flutter_map: ^2.2.0

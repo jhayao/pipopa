@@ -34,6 +34,7 @@ class MapController extends GetxController {
   var searchWorld = ''.obs;
   var clicked = false.obs;
   var onced = true;
+
   // late StreamSubscription<Position> streamSubcrition;
   var polylines = <TaggedPolyline>[
     TaggedPolyline(
@@ -225,14 +226,10 @@ class MapController extends GetxController {
                 Container(
                   height: 40,
                   child: PrimaryButtonDecorated(
-                    
                     onclick: () async {
-
-                      var cpos = await determinePosition().then((value){
-
+                      var cpos = await determinePosition().then((value) {
                         clicked.value = true;
-                        if(clicked.value == true && onced)
-                        {
+                        if (clicked.value == true && onced) {
                           Get.back();
                           onced = false;
                         }
@@ -265,8 +262,6 @@ class MapController extends GetxController {
                         Get.snackbar("Error determining position",
                             "Make sure your GPS is on and try again");
                       }
-
-
                     },
                     children: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -469,11 +464,8 @@ class MapController extends GetxController {
 
   void getCordinates() async {
     try {
-
-
       var res = await Requests().GetRoutes(startPoint, endPoint);
       myRoute.value = res;
-
 
       if (res.routes.isNotEmpty) {
         List<PointLatLng> result =
@@ -683,10 +675,9 @@ class MapController extends GetxController {
             routes: myRoute.value,
             status: "Pending Ride"));
     // ////print("Travel History : ${travelHistory.value.first.status}");
-    if(Get.isDialogOpen ?? false)
-      {
-        Get.back();
-      }
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
     Get.back();
   }
 

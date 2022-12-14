@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:empty_widget/empty_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -72,7 +73,20 @@ class MyLocationsView extends StatelessWidget {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return Text("test");
+                        return EmptyWidget(
+                            image: "assets/images/im_emptyIcon_2.png",
+                            packageImage: PackageImage.Image_1,
+                            title: 'No Booking',
+                            subTitle: 'No  Booking available yet',
+                            titleTextStyle: TextStyle(
+                              fontSize: 22,
+                              color: Color(0xff9da9c7),
+                              fontWeight: FontWeight.w500,
+                            ),
+                            subtitleTextStyle: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xffabb8d6),
+                            ));
                       } else {
                         ////print(snapshot.data!.docs.length);
                         return Column(
@@ -306,14 +320,28 @@ class MyLocationsView extends StatelessWidget {
                     ? StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('travel_history')
+                            .where('star', isNotEqualTo: 'null')
+                            .orderBy('star', descending: true)
                             .where('passenger.id', isEqualTo: user.id)
                             .where('status', whereIn: ['Completed','Accident happen'])
-                            .where('star', isNull: true)
                             .orderBy('createdAt', descending: true)
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return Text("test");
+                            return EmptyWidget(
+                                  image: "assets/images/im_emptyIcon_2.png",
+                                  packageImage: PackageImage.Image_1,
+                                  title: 'No Booking',
+                                  subTitle: 'No  Booking available yet',
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 22,
+                                    color: Color(0xff9da9c7),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  subtitleTextStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xffabb8d6),
+                                  ));
                           } else {
                             ////print(snapshot.data!.docs.length);
                             return Column(
@@ -560,7 +588,20 @@ class MyLocationsView extends StatelessWidget {
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return Text("test");
+                            return EmptyWidget(
+                                  image: "assets/images/im_emptyIcon_2.png",
+                                  packageImage: PackageImage.Image_1,
+                                  title: 'No Booking',
+                                  subTitle: 'No  Booking available yet',
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 22,
+                                    color: Color(0xff9da9c7),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  subtitleTextStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xffabb8d6),
+                                  ));
                           } else {
                             ////print(snapshot.data!.docs.length);
                             return Column(

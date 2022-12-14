@@ -16,6 +16,7 @@ class TravelHistoryModel {
       this.uid,
       this.rate,
       this.comment,
+      this.star,
       this.currentLocation});
 
   UserModel? driver;
@@ -28,6 +29,7 @@ class TravelHistoryModel {
   String? uid;
   String? rate;
   String? comment;
+  String? star;
   LocationModel? currentLocation;
 
   factory TravelHistoryModel.fromRawJson(String str) =>
@@ -58,6 +60,7 @@ class TravelHistoryModel {
             json["createdAt"] == null ? null : (json["createdAt"]).toString(),
         status: json["status"] == null ? null : (json["status"]).toString(),
         rate: json["star"] == null ? null : (json["star"]).toString(),
+        star: json["star"] == null ? null : (json["star"]).toString(),
         comment: json["comment"] == null ? null : (json["comment"]).toString(),
       );
 
@@ -94,6 +97,7 @@ class TravelHistoryModel {
         "status": status.toString(),
         "currentLocation": currentLocation?.toJson(),
         "rate": rate.toString(),
+        "star": star.toString(),
         "comment": comment.toString()
       };
 }

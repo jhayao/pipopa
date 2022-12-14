@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:empty_widget/empty_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -60,7 +61,20 @@ class MySos extends StatelessWidget {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return Text("test");
+                        return EmptyWidget(
+                                  image: "assets/images/im_emptyIcon_2.png",
+                                  packageImage: PackageImage.Image_1,
+                                  title: 'No Booking',
+                                  subTitle: 'No  Booking available yet',
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 22,
+                                    color: Color(0xff9da9c7),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  subtitleTextStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xffabb8d6),
+                                  ));
                       } else {
                         ////print(snapshot.data!.docs.length);
                         return Column(
@@ -299,7 +313,20 @@ class MySos extends StatelessWidget {
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return Text("test");
+                            return EmptyWidget(
+                                  image: "assets/images/im_emptyIcon_2.png",
+                                  packageImage: PackageImage.Image_1,
+                                  title: 'No Booking',
+                                  subTitle: 'No  Booking available yet',
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 22,
+                                    color: Color(0xff9da9c7),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  subtitleTextStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xffabb8d6),
+                                  ));
                           } else {
                             ////print(snapshot.data!.docs.length);
                             return Column(
@@ -545,7 +572,20 @@ class MySos extends StatelessWidget {
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return Text("test");
+                            return EmptyWidget(
+                                  image: "assets/images/im_emptyIcon_2.png",
+                                  packageImage: PackageImage.Image_1,
+                                  title: 'No Booking',
+                                  subTitle: 'No  Booking available yet',
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 22,
+                                    color: Color(0xff9da9c7),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  subtitleTextStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xffabb8d6),
+                                  ));
                           } else {
                             ////print(snapshot.data!.docs.length);
                             return Column(
