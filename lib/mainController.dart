@@ -1,10 +1,13 @@
 import 'dart:developer';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:passit/map/mapPage.dart';
+
+import 'home/home.dart';
 
 class MainController extends GetxController {
   Future<bool> checkNotifPermissions() async {
@@ -59,5 +62,6 @@ class MainController extends GetxController {
 
       },
     );
+
   }
 }

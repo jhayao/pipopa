@@ -42,9 +42,16 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     DateTime(1999, 5, 21),
   ].obs;
 
+  // DateTime nows = new DateTime.now();
+  // DateTime date = new DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  // DateTime date2 = new DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().add(Duration(days: 1)).day);
   List<DateTime?> _rangeDatePickerValueWithDefaultValue2 = [
-    DateTime(2022, 11, 20),
-    DateTime(1999, 11, 30),
+  DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+  DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().add(Duration(days: 1)).day)
+  ];
+  List<DateTime?> _rangeDatePickerValueWithDefaultValue3 = [
+    DateTime(1999, 5, 6),
+    DateTime(1999, 5, 21),
   ];
   late StreamSubscription<Position> streamSubcrition;
 
@@ -204,7 +211,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
                           print(values.runtimeType);
                           print(values.first.toString());
                           print(values.last.toString());
-                          _rangeDatePickerValueWithDefaultValue2 = values;
+                          // _rangeDatePickerValueWithDefaultValue2 = values;
                           // _rangeDatePickerValueWithDefaultValue.value = values;
                         }),
                     const SizedBox(height: 15),

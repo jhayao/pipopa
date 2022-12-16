@@ -14,7 +14,6 @@ class Splash extends StatelessWidget {
       nextScreen: LoginPage(),
       duration: 3000,
       splashIconSize: double.maxFinite,
-
       splashTransition: SplashTransition.slideTransition,
     );
   }

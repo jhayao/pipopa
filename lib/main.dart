@@ -1,10 +1,12 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:passit/firebase_options.dart';
+import 'package:passit/home/home.dart';
 import 'package:passit/splash.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'mainController.dart';
@@ -85,7 +87,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: const Splash(),
+      home: FirebaseAuth.instance.currentUser?.uid == null ? HomePage() : Splash(),
     );
     //
     // return GetMaterialApp(
